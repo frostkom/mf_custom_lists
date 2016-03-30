@@ -1,13 +1,15 @@
 <?php
 /*
 Plugin Name: MF Custom Lists
-Plugin URI: 
+Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 1.5.2
+Version: 1.5.3
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_custom_lists
 Domain Path: /lang
+
+GitHub Plugin URI: frostkom/mf_custom_lists
 */
 
 include_once("include/functions.php");
