@@ -1,0 +1,27 @@
+.list_alternate li
+{
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+	.list_alternate li > *
+	{
+		-webkit-box-flex: 1 1 auto;
+		-webkit-flex: 1 1 auto;
+		-ms-flex: 1 1 auto;
+		flex: 1 1 auto;
+	}
+
+	.list_alternate li:nth-child(2n) > *:first-child, .list_alternate li:nth-child(2n + 1) > *:last-child
+	{
+		-webkit-order: 1;
+		order: 1;
+	}
+
+	.list_alternate li:nth-child(2n + 1) > *:first-child, .list_alternate li:nth-child(2n) > *:last-child
+	{
+		-webkit-order: 2;
+		order: 2;
+	}
