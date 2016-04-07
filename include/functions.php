@@ -2,8 +2,6 @@
 
 function init_custom_lists()
 {
-	wp_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css");
-
 	$labels = array(
 		'name' => _x(__('Custom Lists', 'lang_custom_lists'), 'post type general name'),
 		'singular_name' => _x(__('Custom List', 'lang_custom_lists'), 'post type singular name'),
@@ -171,7 +169,17 @@ function meta_boxes_custom_lists($meta_boxes)
 
 function meta_boxes_script_custom_lists()
 {
-	mf_enqueue_script('script_custom_lists_meta', plugin_dir_url(__FILE__)."/script_meta.js");
+	mf_enqueue_script('script_custom_lists_meta', plugin_dir_url(__FILE__)."script_meta.js");
+}
+
+function shortcode_scripts_custom_lists()
+{
+	global $post;
+
+	if(is_single() && is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'mf_custom_list'))
+	{
+		wp_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css");
+	}
 }
 
 function shortcode_custom_lists($atts)
@@ -181,6 +189,11 @@ function shortcode_custom_lists($atts)
 	extract(shortcode_atts(array(
 		'id' => ''
 	), $atts));
+
+	if(!is_single())
+	{
+		wp_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css");
+	}
 
 	$out = "";
 
