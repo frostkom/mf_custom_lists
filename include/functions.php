@@ -1,5 +1,49 @@
 <?php
 
+function count_shortcode_button_custom_lists($count)
+{
+	$templates = get_posts(array( 
+		'post_type' 		=> 'mf_custom_lists', 
+		'posts_per_page'	=> 1,
+		'post_status' 		=> 'publish'
+	));
+
+	if(count($templates) > 0)
+	{
+		$count++;
+	}
+
+	return $count;
+}
+
+function get_shortcode_output_custom_lists($out)
+{
+	$templates = get_posts(array( 
+		'post_type' 		=> 'mf_custom_lists', 
+		'posts_per_page'	=> -1,
+		'post_status' 		=> 'publish',
+		'order'				=> 'ASC',
+		'orderby'			=> 'title'
+	));
+
+	if(count($templates) > 0)
+	{
+		$out .= "<h3>".__("Choose a List", 'lang_custom_lists')."</h3>";
+
+		$arr_data = array();
+		$arr_data[''] = "-- ".__("Choose here", 'lang_custom_lists')." --";
+
+		foreach($templates as $template)
+		{
+			$arr_data[$template->ID] = $template->post_title;
+		}
+
+		$out .= show_select(array('data' => $arr_data, 'name' => 'select_list_id', 'xtra' => " rel='mf_custom_lists'"));
+	}
+
+	return $out;
+}
+
 function init_custom_lists()
 {
 	$labels = array(
@@ -46,7 +90,7 @@ function menu_custom_lists()
 
 	add_menu_page("", __("Custom Lists", 'lang_custom_lists'), $menu_capability, $menu_start, '', 'dashicons-list-view');
 
-	add_submenu_page($menu_start, __("Lists", 'lang_custom_lists'), __("Lists", 'lang_custom_lists'), $menu_capability, 'edit.php?post_type=mf_custom_lists');
+	add_submenu_page($menu_start, __("Lists", 'lang_custom_lists'), __("Lists", 'lang_custom_lists'), $menu_capability, $menu_start);
 	add_submenu_page($menu_start, __("Items", 'lang_custom_lists'), __("Items", 'lang_custom_lists'), $menu_capability, 'edit.php?post_type=mf_custom_item');
 }
 
@@ -66,7 +110,7 @@ function column_cell_custom_list($col, $id)
 		case 'shortcode':
 			$shortcode = "[mf_custom_list id=".$id."]";
 
-			echo $shortcode
+			echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly"))
 			."<div class='row-actions'>
 				<a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add new page", 'lang_custom_lists')."</a>
 			</div>";

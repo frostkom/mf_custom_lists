@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-27 15:34+0100\n"
+"POT-Creation-Date: 2016-05-03 09:00+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -16,65 +16,73 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../include/functions.php:6
-#: ../include/functions.php:8
-#: ../include/functions.php:47
+#: ../include/functions.php:31
+msgid "Choose a List"
+msgstr "Välj en lista"
+
+#: ../include/functions.php:34
+msgid "Choose here"
+msgstr "Välj här"
+
+#: ../include/functions.php:50
+#: ../include/functions.php:52
+#: ../include/functions.php:91
 msgid "Custom Lists"
 msgstr "Egna listor"
 
-#: ../include/functions.php:7
+#: ../include/functions.php:51
 msgid "Custom List"
 msgstr "Egen lista"
 
-#: ../include/functions.php:23
-#: ../include/functions.php:25
-#: ../include/functions.php:50
-#: ../include/functions.php:119
+#: ../include/functions.php:67
+#: ../include/functions.php:69
+#: ../include/functions.php:94
+#: ../include/functions.php:163
 msgid "Items"
 msgstr "Objekt"
 
-#: ../include/functions.php:24
+#: ../include/functions.php:68
 msgid "Item"
 msgstr "Objekt"
 
-#: ../include/functions.php:49
+#: ../include/functions.php:93
 msgid "Lists"
 msgstr "Listor"
 
-#: ../include/functions.php:55
+#: ../include/functions.php:99
 msgid "Shortcode"
 msgstr "Kortkod"
 
-#: ../include/functions.php:71
+#: ../include/functions.php:115
 msgid "Add new page"
 msgstr "Lägg till ny sida"
 
-#: ../include/functions.php:79
-#: ../include/functions.php:135
+#: ../include/functions.php:123
+#: ../include/functions.php:179
 msgid "List"
 msgstr "Lista"
 
-#: ../include/functions.php:107
+#: ../include/functions.php:151
 msgid "Structure"
 msgstr "Struktur"
 
-#: ../include/functions.php:113
+#: ../include/functions.php:157
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/functions.php:129
+#: ../include/functions.php:173
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../include/functions.php:141
+#: ../include/functions.php:185
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/functions.php:146
+#: ../include/functions.php:190
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/functions.php:156
+#: ../include/functions.php:200
 msgid "External Link"
 msgstr "Extern länk"
 
@@ -83,9 +91,6 @@ msgstr "Extern länk"
 
 #~ msgid "Parent"
 #~ msgstr "Förälder"
-
-#~ msgid "Choose here"
-#~ msgstr "Välj här"
 
 #~ msgid "Height"
 #~ msgstr "Höjd"
@@ -424,9 +429,6 @@ msgstr "Extern länk"
 
 #~ msgid "Start typing a name"
 #~ msgstr "Börja skriva ett namn"
-
-#~ msgid "Choose users"
-#~ msgstr "Välj användare"
 
 #~ msgid "Select/deselect users"
 #~ msgstr "Markera/avmarkera användare"
