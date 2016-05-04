@@ -56,6 +56,7 @@ function init_custom_lists()
 		'labels' => $labels,
 		'public' => true,
 		'show_in_menu' => false,
+		'show_in_nav_menus' => false,
 		'supports' => array('title'), //, 'editor', 'custom-fields', 'page-attributes'
 		'hierarchical' => false,
 		'has_archive' => false,
@@ -73,6 +74,7 @@ function init_custom_lists()
 		'labels' => $labels,
 		'public' => true,
 		'show_in_menu' => false,
+		'show_in_nav_menus' => false,
 		'supports' => array('title', 'editor', 'custom-fields'), //, 'page-attributes'
 		'hierarchical' => true,
 		'has_archive' => false,
