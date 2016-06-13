@@ -134,7 +134,7 @@ function column_cell_custom_item($col, $id)
 	switch($col)
 	{
 		case 'list_id':
-			$parent_id = get_post_meta($id, $meta_prefix."list_id", true);
+			$parent_id = get_post_meta($id, $meta_prefix.'list_id', true);
 			$parent_title = get_the_title($parent_id);
 
 			echo $parent_title;
@@ -157,13 +157,13 @@ function meta_boxes_custom_lists($meta_boxes)
 		'fields' => array(
 			array(
 				'name' => __('Container', 'lang_custom_lists'),
-				'id' => $meta_prefix."container",
+				'id' => $meta_prefix.'container',
 				'type' => 'text',
 				'std' => "<ul>[children]</ul>",
 			),
 			array(
 				'name' => __('Items', 'lang_custom_lists'),
-				'id' => $meta_prefix."items",
+				'id' => $meta_prefix.'items',
 				'type' => 'textarea',
 				'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image]<p>[list_text]</p></li>",
 			),
@@ -179,32 +179,32 @@ function meta_boxes_custom_lists($meta_boxes)
 		'fields' => array(
 			array(
 				'name' => __('List', 'lang_custom_lists'),
-				'id' => $meta_prefix."list_id",
+				'id' => $meta_prefix.'list_id',
 				'type' => 'select',
 				'options' => get_posts_for_select(array('post_type' => "mf_custom_lists")),
 			),
 			array(
 				'name' => __('Image', 'lang_custom_lists'),
-				'id' => $meta_prefix."image",
+				'id' => $meta_prefix.'image',
 				'type' => 'thickbox_image',
 			),
 			array(
 				'name' => __('Page', 'lang_custom_lists'),
-				'id' => $meta_prefix."page",
+				'id' => $meta_prefix.'page',
 				'type' => 'select',
 				'options' => get_posts_for_select(array('optgroup' => false)),
 				'attributes' => array(
 					'condition_type' => 'show_if_empty',
-					'condition_field' => $meta_prefix."link",
+					'condition_field' => $meta_prefix.'link',
 				),
 			),
 			array(
 				'name' => __('External Link', 'lang_custom_lists'),
-				'id' => $meta_prefix."link",
+				'id' => $meta_prefix.'link',
 				'type' => 'url',
 				'attributes' => array(
 					'condition_type' => 'show_if_empty',
-					'condition_field' => $meta_prefix."page",
+					'condition_field' => $meta_prefix.'page',
 				),
 			),
 		)
