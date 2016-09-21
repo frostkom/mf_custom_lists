@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-03 09:00+0100\n"
+"POT-Creation-Date: 2016-09-10 16:55+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -26,7 +26,7 @@ msgstr "Välj här"
 
 #: ../include/functions.php:50
 #: ../include/functions.php:52
-#: ../include/functions.php:91
+#: ../include/functions.php:93
 msgid "Custom Lists"
 msgstr "Egna listor"
 
@@ -34,55 +34,55 @@ msgstr "Egna listor"
 msgid "Custom List"
 msgstr "Egen lista"
 
-#: ../include/functions.php:67
-#: ../include/functions.php:69
-#: ../include/functions.php:94
-#: ../include/functions.php:163
+#: ../include/functions.php:68
+#: ../include/functions.php:70
+#: ../include/functions.php:99
+#: ../include/functions.php:169
 msgid "Items"
 msgstr "Objekt"
 
-#: ../include/functions.php:68
+#: ../include/functions.php:69
 msgid "Item"
 msgstr "Objekt"
 
-#: ../include/functions.php:93
+#: ../include/functions.php:96
 msgid "Lists"
 msgstr "Listor"
 
-#: ../include/functions.php:99
+#: ../include/functions.php:105
 msgid "Shortcode"
 msgstr "Kortkod"
 
-#: ../include/functions.php:115
+#: ../include/functions.php:121
 msgid "Add new page"
 msgstr "Lägg till ny sida"
 
-#: ../include/functions.php:123
-#: ../include/functions.php:179
+#: ../include/functions.php:129
+#: ../include/functions.php:185
 msgid "List"
 msgstr "Lista"
 
-#: ../include/functions.php:151
+#: ../include/functions.php:157
 msgid "Structure"
 msgstr "Struktur"
 
-#: ../include/functions.php:157
+#: ../include/functions.php:163
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/functions.php:173
+#: ../include/functions.php:179
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../include/functions.php:185
+#: ../include/functions.php:191
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/functions.php:190
+#: ../include/functions.php:196
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/functions.php:200
+#: ../include/functions.php:206
 msgid "External Link"
 msgstr "Extern länk"
 

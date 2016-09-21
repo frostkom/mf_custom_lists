@@ -90,10 +90,14 @@ function menu_custom_lists()
 	$menu_start = "edit.php?post_type=mf_custom_lists";
 	$menu_capability = "edit_pages";
 
-	add_menu_page("", __("Custom Lists", 'lang_custom_lists'), $menu_capability, $menu_start, '', 'dashicons-list-view');
+	$menu_title = __("Custom Lists", 'lang_custom_lists');
+	add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view');
 
-	add_submenu_page($menu_start, __("Lists", 'lang_custom_lists'), __("Lists", 'lang_custom_lists'), $menu_capability, $menu_start);
-	add_submenu_page($menu_start, __("Items", 'lang_custom_lists'), __("Items", 'lang_custom_lists'), $menu_capability, 'edit.php?post_type=mf_custom_item');
+	$menu_title = __("Lists", 'lang_custom_lists');
+	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
+
+	$menu_title = __("Items", 'lang_custom_lists');
+	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
 }
 
 function column_header_custom_list($cols)
