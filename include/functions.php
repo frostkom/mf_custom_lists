@@ -116,8 +116,11 @@ function column_cell_custom_list($col, $id)
 		case 'shortcode':
 			$shortcode = "[mf_custom_list id=".$id."]";
 
-			echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly"))
-			."<div class='row-actions'>
+			echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly"));
+
+			//echo "<div class='force-select-all'>".$shortcode."</div>";
+
+			echo "<div class='row-actions'>
 				<a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add new page", 'lang_custom_lists')."</a>
 			</div>";
 		break;
@@ -190,13 +193,13 @@ function meta_boxes_custom_lists($meta_boxes)
 			array(
 				'name' => __('Image', 'lang_custom_lists'),
 				'id' => $meta_prefix.'image',
-				'type' => 'thickbox_image',
+				'type' => 'file_advanced',
 			),
 			array(
 				'name' => __('Page', 'lang_custom_lists'),
 				'id' => $meta_prefix.'page',
 				'type' => 'select',
-				'options' => get_posts_for_select(array('optgroup' => false)),
+				'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
 				'attributes' => array(
 					'condition_type' => 'show_if_empty',
 					'condition_field' => $meta_prefix.'link',
