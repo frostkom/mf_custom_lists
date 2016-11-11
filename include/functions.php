@@ -121,7 +121,7 @@ function column_cell_custom_list($col, $id)
 			//echo "<div class='force-select-all'>".$shortcode."</div>";
 
 			echo "<div class='row-actions'>
-				<a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add new page", 'lang_custom_lists')."</a>
+				<a href='".admin_url("post-new.php?content=".$shortcode)."'>".__("Add New Post", 'lang_custom_lists')."</a> | <a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
 			</div>";
 		break;
 	}
