@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-31 16:35+0100\n"
+"POT-Creation-Date: 2016-11-16 14:58+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -37,7 +37,8 @@ msgstr "Egen lista"
 #: ../include/functions.php:68
 #: ../include/functions.php:70
 #: ../include/functions.php:99
-#: ../include/functions.php:172
+#: ../include/functions.php:105
+#: ../include/functions.php:183
 msgid "Items"
 msgstr "Objekt"
 
@@ -49,44 +50,48 @@ msgstr "Objekt"
 msgid "Lists"
 msgstr "Listor"
 
-#: ../include/functions.php:105
+#: ../include/functions.php:106
 msgid "Shortcode"
 msgstr "Kortkod"
 
 #: ../include/functions.php:124
+msgid "Add New"
+msgstr "Lägg till ny"
+
+#: ../include/functions.php:135
 msgid "Add New Post"
 msgstr "Lägg till nytt inlägg"
 
-#: ../include/functions.php:124
+#: ../include/functions.php:135
 msgid "Add New Page"
 msgstr "Lägg till ny sida"
 
-#: ../include/functions.php:132
-#: ../include/functions.php:188
+#: ../include/functions.php:143
+#: ../include/functions.php:216
 msgid "List"
 msgstr "Lista"
 
-#: ../include/functions.php:160
+#: ../include/functions.php:171
 msgid "Structure"
 msgstr "Struktur"
 
-#: ../include/functions.php:166
+#: ../include/functions.php:177
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/functions.php:182
+#: ../include/functions.php:210
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../include/functions.php:194
+#: ../include/functions.php:223
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/functions.php:199
+#: ../include/functions.php:228
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/functions.php:209
+#: ../include/functions.php:238
 msgid "External Link"
 msgstr "Extern länk"
 
@@ -396,10 +401,6 @@ msgstr "Extern länk"
 #, fuzzy
 #~ msgid "Export options"
 #~ msgstr "Exportera svar"
-
-#, fuzzy
-#~ msgid "Add new"
-#~ msgstr "Lägg till ny"
 
 #~ msgid "Show answers"
 #~ msgstr "Visa svar"

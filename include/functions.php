@@ -38,7 +38,7 @@ function get_shortcode_output_custom_lists($out)
 			$arr_data[$template->ID] = $template->post_title;
 		}
 
-		$out .= show_select(array('data' => $arr_data, 'name' => 'select_list_id', 'xtra' => " rel='mf_custom_lists'"));
+		$out .= show_select(array('data' => $arr_data, 'name' => 'select_list_id', 'xtra' => " rel='mf_custom_list'"));
 	}
 
 	return $out;
@@ -47,8 +47,8 @@ function get_shortcode_output_custom_lists($out)
 function init_custom_lists()
 {
 	$labels = array(
-		'name' => _x(__('Custom Lists', 'lang_custom_lists'), 'post type general name'),
-		'singular_name' => _x(__('Custom List', 'lang_custom_lists'), 'post type singular name'),
+		'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
+		'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
 		'menu_name' => __("Custom Lists", 'lang_custom_lists')
 	);
 
@@ -65,8 +65,8 @@ function init_custom_lists()
 	register_post_type('mf_custom_lists', $args);
 
 	$labels = array(
-		'name' => _x(__('Items', 'lang_custom_lists'), 'post type general name'),
-		'singular_name' => _x(__('Item', 'lang_custom_lists'), 'post type singular name'),
+		'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
+		'singular_name' => _x(__("Item", 'lang_custom_lists'), 'post type singular name'),
 		'menu_name' => __("Items", 'lang_custom_lists')
 	);
 
@@ -102,22 +102,33 @@ function menu_custom_lists()
 
 function column_header_custom_list($cols)
 {
-	$cols['shortcode'] = __('Shortcode', 'lang_custom_lists');
+	$cols['items'] = __("Items", 'lang_custom_lists');
+	$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
 
 	return $cols;
 }
 
 function column_cell_custom_list($col, $id)
 {
+	global $wpdb;
+
 	$meta_prefix = "mf_custom_lists_";
 
 	switch($col)
 	{
+		case 'items':
+			$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", 'mf_custom_lists_list_id', $id));
+
+			echo $item_amount
+			."<div class='row-actions'>
+				<a href='".admin_url("post-new.php?post_type=mf_custom_item&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
+			</div>";
+		break;
+
 		case 'shortcode':
 			$shortcode = "[mf_custom_list id=".$id."]";
 
 			echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly"));
-
 			//echo "<div class='force-select-all'>".$shortcode."</div>";
 
 			echo "<div class='row-actions'>
@@ -129,7 +140,7 @@ function column_cell_custom_list($col, $id)
 
 function column_header_custom_item($cols)
 {
-	$cols['list_id'] = __('List', 'lang_custom_lists');
+	$cols['list_id'] = __("List", 'lang_custom_lists');
 
 	return $cols;
 }
@@ -177,6 +188,23 @@ function meta_boxes_custom_lists($meta_boxes)
 		)
 	);
 
+	$default_list_id = '';
+
+	if($default_list_id == '')
+	{
+		$default_list_id = check_var('list_id', 'int');
+	}
+
+	if($default_list_id == '')
+	{
+		$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", 'mf_custom_lists_list_id'));
+	}
+
+	if($default_list_id == '')
+	{
+		$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", 'mf_custom_lists', 'publish'));
+	}
+
 	$meta_boxes[] = array(
 		'id' => 'settings',
 		'title' => __('Settings', 'lang_custom_lists'),
@@ -189,6 +217,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'id' => $meta_prefix.'list_id',
 				'type' => 'select',
 				'options' => get_posts_for_select(array('post_type' => "mf_custom_lists")),
+				'std' => $default_list_id,
 			),
 			array(
 				'name' => __('Image', 'lang_custom_lists'),
