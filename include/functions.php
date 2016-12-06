@@ -212,19 +212,19 @@ function meta_boxes_custom_lists($meta_boxes)
 
 	$meta_boxes[] = array(
 		'id' => 'structure',
-		'title' => __('Structure', 'lang_custom_lists'),
+		'title' => __("Structure", 'lang_custom_lists'),
 		'pages' => array('mf_custom_lists'),
 		//'context' => 'side',
 		'priority' => 'low',
 		'fields' => array(
 			array(
-				'name' => __('Container', 'lang_custom_lists'),
+				'name' => __("Container", 'lang_custom_lists'),
 				'id' => $meta_prefix.'container',
 				'type' => 'text',
 				'std' => "<ul>[children]</ul>",
 			),
 			array(
-				'name' => __('Items', 'lang_custom_lists'),
+				'name' => __("Items", 'lang_custom_lists'),
 				'id' => $meta_prefix.'items',
 				'type' => 'textarea',
 				'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image]<p>[list_text]</p></li>",
@@ -251,25 +251,25 @@ function meta_boxes_custom_lists($meta_boxes)
 
 	$meta_boxes[] = array(
 		'id' => 'settings',
-		'title' => __('Settings', 'lang_custom_lists'),
+		'title' => __("Settings", 'lang_custom_lists'),
 		'pages' => array('mf_custom_item'),
 		'context' => 'side',
 		'priority' => 'low',
 		'fields' => array(
 			array(
-				'name' => __('List', 'lang_custom_lists'),
+				'name' => __("List", 'lang_custom_lists'),
 				'id' => $meta_prefix.'list_id',
 				'type' => 'select',
 				'options' => get_posts_for_select(array('post_type' => "mf_custom_lists")),
 				'std' => $default_list_id,
 			),
 			array(
-				'name' => __('Image', 'lang_custom_lists'),
+				'name' => __("Image", 'lang_custom_lists'),
 				'id' => $meta_prefix.'image',
 				'type' => 'file_advanced',
 			),
 			array(
-				'name' => __('Page', 'lang_custom_lists'),
+				'name' => __("Page", 'lang_custom_lists'),
 				'id' => $meta_prefix.'page',
 				'type' => 'select',
 				'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
@@ -279,7 +279,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				),
 			),
 			array(
-				'name' => __('External Link', 'lang_custom_lists'),
+				'name' => __("External Link", 'lang_custom_lists'),
 				'id' => $meta_prefix.'link',
 				'type' => 'url',
 				'attributes' => array(
