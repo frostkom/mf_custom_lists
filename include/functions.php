@@ -109,9 +109,7 @@ function post_filter_select_custom_lists()
 		$strFilter = check_var('strFilter');
 
 		$arr_data = array();
-		$arr_data[''] = "-- ".__("Choose here", 'lang_custom_lists')." --";
-
-		get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'output_array' => true), $arr_data);
+		get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true, 'output_array' => true), $arr_data);
 
 		if(count($arr_data) > 1)
 		{
