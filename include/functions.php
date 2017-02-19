@@ -219,7 +219,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'name' => __("Container", 'lang_custom_lists'),
 				'id' => $meta_prefix.'container',
 				'type' => 'text',
-				'std' => "<ul>[children]</ul>",
+				'std' => "<ul[parent_class]>[children]</ul>",
 			),
 			array(
 				'name' => __("Items", 'lang_custom_lists'),
@@ -323,11 +323,12 @@ function shortcode_custom_lists($atts)
 
 	$meta_prefix_cl = "mf_custom_lists_";
 
-	$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
+	$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
 
 	foreach($result as $r)
 	{
 		$parent_id = $r->ID;
+		$post_name = $r->post_name;
 		$parent_content = $r->post_content;
 		$parent_excerpt = $r->post_excerpt;
 
@@ -438,6 +439,8 @@ function shortcode_custom_lists($atts)
 		{
 			$out .= $parent_container;
 		}
+
+		$out = str_replace("[parent_class]", " class='custom_list_".$post_name."'", $out);
 	}
 
 	return apply_filters('the_content', $out);
