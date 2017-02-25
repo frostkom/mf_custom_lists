@@ -2,15 +2,18 @@
 
 function count_shortcode_button_custom_lists($count)
 {
-	$templates = get_posts(array( 
-		'post_type' 		=> 'mf_custom_lists', 
-		'posts_per_page'	=> 1,
-		'post_status' 		=> 'publish'
-	));
-
-	if(count($templates) > 0)
+	if($count == 0)
 	{
-		$count++;
+		$templates = get_posts(array( 
+			'post_type' 		=> 'mf_custom_lists', 
+			'posts_per_page'	=> 1,
+			'post_status' 		=> 'publish'
+		));
+
+		if(count($templates) > 0)
+		{
+			$count++;
+		}
 	}
 
 	return $count;
