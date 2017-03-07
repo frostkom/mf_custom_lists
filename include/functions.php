@@ -57,7 +57,7 @@ function init_custom_lists()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => false,
+		'public' => true,
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
@@ -76,7 +76,7 @@ function init_custom_lists()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => false,
+		'public' => true,
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
@@ -91,7 +91,6 @@ function init_custom_lists()
 function menu_custom_lists()
 {
 	$menu_root = 'mf_custom_lists/';
-	//$menu_start = $menu_root.'list/index.php';
 	$menu_start = "edit.php?post_type=mf_custom_lists";
 	$menu_capability = "edit_pages";
 
@@ -103,6 +102,9 @@ function menu_custom_lists()
 
 	$menu_title = __("Items", 'lang_custom_lists');
 	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
+
+	$menu_title = __("Add New", 'lang_custom_lists');
+	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=mf_custom_item");
 }
 
 function post_filter_select_custom_lists()
@@ -149,8 +151,11 @@ function post_filter_query_custom_lists($wp_query)
 
 function column_header_custom_list($cols)
 {
+	unset($cols['date']);
+
 	$cols['items'] = __("Items", 'lang_custom_lists');
 	$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
+	$cols['date'] = __("Date", 'lang_custom_lists');
 
 	return $cols;
 }
@@ -187,7 +192,10 @@ function column_cell_custom_list($col, $id)
 
 function column_header_custom_item($cols)
 {
+	unset($cols['date']);
+
 	$cols['list_id'] = __("List", 'lang_custom_lists');
+	$cols['date'] = __("Date", 'lang_custom_lists');
 
 	return $cols;
 }
@@ -202,7 +210,12 @@ function column_cell_custom_item($col, $id)
 			$parent_id = get_post_meta($id, $meta_prefix.'list_id', true);
 			$parent_title = get_the_title($parent_id);
 
-			echo $parent_title;
+			$edit_url = "post.php?post=".$parent_id."&action=edit";
+
+			echo "<a href='".$edit_url."'>".$parent_title."</a>
+			<div class='row-actions'>
+				<span class='edit'><a href='".$edit_url."'>".__("Edit", 'lang_custom_lists')."</a></span>
+			</div>";
 		break;
 	}
 }
