@@ -61,7 +61,7 @@ function init_custom_lists()
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
-		'supports' => array('title'), //, 'editor', 'custom-fields', 'page-attributes'
+		'supports' => array('title'),
 		'hierarchical' => false,
 		'has_archive' => false,
 	);
@@ -80,7 +80,7 @@ function init_custom_lists()
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
-		'supports' => array('title', 'editor', 'custom-fields'), //, 'page-attributes'
+		'supports' => array('title', 'editor', 'custom-fields'),
 		'hierarchical' => true,
 		'has_archive' => false,
 	);
