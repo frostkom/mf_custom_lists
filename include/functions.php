@@ -41,7 +41,7 @@ function get_shortcode_output_custom_lists($out)
 			$arr_data[$template->ID] = $template->post_title;
 		}
 
-		$out .= show_select(array('data' => $arr_data, 'name' => 'select_list_id', 'xtra' => " rel='mf_custom_list'"));
+		$out .= show_select(array('data' => $arr_data, 'xtra' => " rel='mf_custom_list'"));
 	}
 
 	return $out;
