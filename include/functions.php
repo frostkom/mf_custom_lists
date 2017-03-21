@@ -290,7 +290,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'type' => 'select',
 				'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
 				'attributes' => array(
-					'condition_type' => 'show_if_empty',
+					'condition_type' => 'show_if',
 					'condition_field' => $meta_prefix.'link',
 				),
 			),
@@ -299,7 +299,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'id' => $meta_prefix.'link',
 				'type' => 'url',
 				'attributes' => array(
-					'condition_type' => 'show_if_empty',
+					'condition_type' => 'show_if',
 					'condition_field' => $meta_prefix.'page',
 				),
 			),
@@ -307,11 +307,6 @@ function meta_boxes_custom_lists($meta_boxes)
 	);
 
 	return $meta_boxes;
-}
-
-function meta_boxes_script_custom_lists()
-{
-	mf_enqueue_script('script_custom_lists_meta', plugin_dir_url(__FILE__)."script_meta.js");
 }
 
 function shortcode_scripts_custom_lists()

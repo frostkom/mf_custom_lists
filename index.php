@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 2.3.11
+Version: 2.4.0
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_custom_lists
@@ -22,7 +22,6 @@ if(is_admin())
 
 	add_action('admin_menu', 'menu_custom_lists');
 	add_action('rwmb_meta_boxes', 'meta_boxes_custom_lists');
-	add_action('rwmb_enqueue_scripts', 'meta_boxes_script_custom_lists');
 
 	add_action('restrict_manage_posts', 'post_filter_select_custom_lists');
 	add_action('pre_get_posts', 'post_filter_query_custom_lists');
