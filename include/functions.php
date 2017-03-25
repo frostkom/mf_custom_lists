@@ -116,7 +116,7 @@ function post_filter_select_custom_lists()
 		$strFilter = check_var('strFilter');
 
 		$arr_data = array();
-		get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true, 'output_array' => true), $arr_data);
+		get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true), $arr_data);
 
 		if(count($arr_data) > 1)
 		{
@@ -257,7 +257,7 @@ function meta_boxes_custom_lists($meta_boxes)
 
 	if($default_list_id == '')
 	{
-		$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", 'mf_custom_lists_list_id'));
+		$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", $meta_prefix.'list_id'));
 	}
 
 	if($default_list_id == '')
@@ -287,7 +287,7 @@ function meta_boxes_custom_lists($meta_boxes)
 			array(
 				'name' => __("Page", 'lang_custom_lists'),
 				'id' => $meta_prefix.'page',
-				'type' => 'select',
+				'type' => 'select', //Replace with 'page'
 				'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
 				'attributes' => array(
 					'condition_type' => 'show_if',
