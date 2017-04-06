@@ -4,10 +4,10 @@ function count_shortcode_button_custom_lists($count)
 {
 	if($count == 0)
 	{
-		$templates = get_posts(array( 
-			'post_type' 		=> 'mf_custom_lists', 
-			'posts_per_page'	=> 1,
-			'post_status' 		=> 'publish'
+		$templates = get_posts(array(
+			'post_type' => 'mf_custom_lists',
+			'posts_per_page' => 1,
+			'post_status' => 'publish'
 		));
 
 		if(count($templates) > 0)
@@ -21,12 +21,12 @@ function count_shortcode_button_custom_lists($count)
 
 function get_shortcode_output_custom_lists($out)
 {
-	$templates = get_posts(array( 
-		'post_type' 		=> 'mf_custom_lists', 
-		'posts_per_page'	=> -1,
-		'post_status' 		=> 'publish',
-		'order'				=> 'ASC',
-		'orderby'			=> 'title'
+	$templates = get_posts(array(
+		'post_type' => 'mf_custom_lists',
+		'posts_per_page' => -1,
+		'post_status' => 'publish',
+		'order' => 'ASC',
+		'orderby' => 'title'
 	));
 
 	if(count($templates) > 0)
@@ -41,7 +41,7 @@ function get_shortcode_output_custom_lists($out)
 			$arr_data[$template->ID] = $template->post_title;
 		}
 
-		$out .= show_select(array('data' => $arr_data, 'xtra' => " rel='mf_custom_list'"));
+		$out .= show_select(array('data' => $arr_data, 'xtra' => "rel='mf_custom_list'"));
 	}
 
 	return $out;
@@ -345,8 +345,8 @@ function shortcode_custom_lists($atts)
 		$parent_content = $r->post_content;
 		$parent_excerpt = $r->post_excerpt;
 
-		$parent_container = get_post_meta($parent_id, $meta_prefix_cl."container", true);
-		$parent_items = get_post_meta($parent_id, $meta_prefix_cl."items", true);
+		$parent_container = get_post_meta($parent_id, $meta_prefix_cl.'container', true);
+		$parent_items = get_post_meta($parent_id, $meta_prefix_cl.'items', true);
 
 		if($parent_container == '')
 		{
@@ -402,7 +402,8 @@ function shortcode_custom_lists($atts)
 
 						else if($match[1] == "list_image")
 						{
-							$child_image = get_meta_image_url($child_id, $meta_prefix_cl."image");
+							//$child_image = get_meta_image_url($child_id, $meta_prefix_cl.'image');
+							$child_image = get_post_meta_file_src(array('post_id' => $child_id, 'meta_key' => $meta_prefix_cl.'image', 'image_size' => 'full'));
 
 							if($child_image != '')
 							{
@@ -414,7 +415,7 @@ function shortcode_custom_lists($atts)
 
 						else if($match[1] == "list_link")
 						{
-							$child_page = get_post_meta($child_id, $meta_prefix_cl."page", true);
+							$child_page = get_post_meta($child_id, $meta_prefix_cl.'page', true);
 
 							if(intval($child_page) > 0)
 							{
@@ -423,7 +424,7 @@ function shortcode_custom_lists($atts)
 
 							else
 							{
-								$child_link = get_post_meta($child_id, $meta_prefix_cl."link", true);
+								$child_link = get_post_meta($child_id, $meta_prefix_cl.'link', true);
 
 								if($child_link == '')
 								{
