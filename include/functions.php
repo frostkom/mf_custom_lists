@@ -315,7 +315,7 @@ function shortcode_scripts_custom_lists()
 
 	if(is_single() && is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'mf_custom_list'))
 	{
-		wp_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css");
+		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
 	}
 }
 
@@ -329,7 +329,7 @@ function shortcode_custom_lists($atts)
 
 	if(!is_single())
 	{
-		wp_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css");
+		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
 	}
 
 	$out = "";
