@@ -47,6 +47,26 @@ function get_shortcode_output_custom_lists($out)
 	return $out;
 }
 
+function get_shortcode_list_custom_lists($data)
+{
+	$post_id = $data[0];
+	$content_list = $data[1];
+
+	if($post_id > 0)
+	{
+		$post_content = mf_get_post_content($post_id);
+
+		$list_id = get_match("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
+
+		if($list_id > 0)
+		{
+			$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)." -> [mf_custom_list id=".$list_id."]</a></li>";
+		}
+	}
+
+	return array($post_id, $content_list);
+}
+
 function init_custom_lists()
 {
 	$labels = array(
@@ -402,7 +422,6 @@ function shortcode_custom_lists($atts)
 
 						else if($match[1] == "list_image")
 						{
-							//$child_image = get_meta_image_url($child_id, $meta_prefix_cl.'image');
 							$child_image = get_post_meta_file_src(array('post_id' => $child_id, 'meta_key' => $meta_prefix_cl.'image', 'image_size' => 'full'));
 
 							if($child_image != '')
