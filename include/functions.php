@@ -49,6 +49,10 @@ function get_shortcode_output_custom_lists($out)
 
 function get_shortcode_list_custom_lists($data)
 {
+	global $wpdb;
+
+	$meta_prefix = "mf_custom_lists_";
+
 	$post_id = $data[0];
 	$content_list = $data[1];
 
@@ -60,7 +64,23 @@ function get_shortcode_list_custom_lists($data)
 
 		if($list_id > 0)
 		{
-			$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)." -> [mf_custom_list id=".$list_id."]</a></li>";
+			$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+
+			$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $meta_prefix.'list_id', $list_id));
+
+			if($wpdb->num_rows > 0)
+			{
+				$content_list .= "<ul>";
+
+					foreach($result as $r)
+					{
+						$object_id = $r->post_id;
+
+						$content_list .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
+					}
+
+				$content_list .= "</ul>";
+			}
 		}
 	}
 
@@ -189,7 +209,7 @@ function column_cell_custom_list($col, $id)
 	switch($col)
 	{
 		case 'items':
-			$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", 'mf_custom_lists_list_id', $id));
+			$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $meta_prefix.'list_id', $id));
 
 			echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilter=".$id)."'>".$item_amount."</a>
 			<div class='row-actions'>
