@@ -14,7 +14,7 @@ GitHub Plugin URI: frostkom/mf_custom_lists
 
 include_once("include/functions.php");
 
-add_action('init', 'init_custom_lists');
+add_action('init', 'init_custom_lists', 1);
 
 if(is_admin())
 {

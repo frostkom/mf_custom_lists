@@ -269,7 +269,7 @@ function meta_boxes_custom_lists($meta_boxes)
 	$meta_boxes[] = array(
 		'id' => 'structure',
 		'title' => __("Structure", 'lang_custom_lists'),
-		'pages' => array('mf_custom_lists'),
+		'post_types' => array('mf_custom_lists'),
 		//'context' => 'side',
 		'priority' => 'low',
 		'fields' => array(
@@ -308,7 +308,7 @@ function meta_boxes_custom_lists($meta_boxes)
 	$meta_boxes[] = array(
 		'id' => 'settings',
 		'title' => __("Settings", 'lang_custom_lists'),
-		'pages' => array('mf_custom_item'),
+		'post_types' => array('mf_custom_item'),
 		'context' => 'side',
 		'priority' => 'low',
 		'fields' => array(
