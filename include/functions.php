@@ -130,7 +130,6 @@ function init_custom_lists()
 
 function menu_custom_lists()
 {
-	$menu_root = 'mf_custom_lists/';
 	$menu_start = "edit.php?post_type=mf_custom_lists";
 	$menu_capability = "edit_pages";
 
