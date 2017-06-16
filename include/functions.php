@@ -490,7 +490,7 @@ function shortcode_custom_lists($atts)
 			$out .= $parent_container;
 		}
 
-		$out = str_replace("[parent_class]", " class='custom_list_".$post_name."'", $out);
+		$out = str_replace("[parent_class]", " class='custom_list custom_list_".$post_name."'", $out);
 	}
 
 	return apply_filters('the_content', $out);
