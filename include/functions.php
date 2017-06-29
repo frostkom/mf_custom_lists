@@ -445,7 +445,7 @@ function shortcode_custom_lists($atts)
 							{
 								$child_title = get_the_title($child_id);
 
-								$out .= "<img src='".$child_image."' alt='".$child_title."'>";
+								$out .= "<div class='image'><img src='".$child_image."' alt='".$child_title."'></div>";
 							}
 						}
 
