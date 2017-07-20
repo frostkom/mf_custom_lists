@@ -285,6 +285,26 @@ function meta_boxes_custom_lists($meta_boxes)
 		)
 	);
 
+	$meta_boxes[] = array(
+		'id' => 'settings',
+		'title' => __("Settings", 'lang_custom_lists'),
+		'post_types' => array('mf_custom_lists'),
+		'context' => 'side',
+		'priority' => 'low',
+		'fields' => array(
+			array(
+				'name' => __("Order", 'lang_custom_lists'),
+				'id' => $meta_prefix.'order',
+				'type' => 'select',
+				'options' => array(
+					'numerical' => __("Numerical", 'lang_custom_lists'),
+					'alphabetic' => __("Alphabetical", 'lang_custom_lists'),
+				),
+				'std' => 'numerical',
+			),
+		)
+	);
+
 	$default_list_id = '';
 
 	if($default_list_id == '')
@@ -397,9 +417,11 @@ function shortcode_custom_lists($atts)
 
 		if(preg_match("/\[children\]/i", $parent_container))
 		{
+			$child_order = get_post_meta($parent_id, $meta_prefix_cl.'order', true);
+
 			$out_children = "";
 
-			$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix_cl."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d' ORDER BY menu_order ASC", $parent_id));
+			$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix_cl."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d' ORDER BY ".($child_order == 'alphabetic' ? "post_title" : "menu_order")." ASC", $parent_id));
 
 			foreach($result2 as $r)
 			{
