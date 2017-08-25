@@ -126,6 +126,11 @@ function init_custom_lists()
 	);
 
 	register_post_type('mf_custom_item', $args);
+
+	if(!is_admin())
+	{
+		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
+	}
 }
 
 function menu_custom_lists()
@@ -366,16 +371,6 @@ function meta_boxes_custom_lists($meta_boxes)
 	return $meta_boxes;
 }
 
-function shortcode_scripts_custom_lists()
-{
-	global $post;
-
-	if(is_single() && is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'mf_custom_list'))
-	{
-		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
-	}
-}
-
 function shortcode_custom_lists($atts)
 {
 	global $wpdb, $meta_prefix_cl;
@@ -383,11 +378,6 @@ function shortcode_custom_lists($atts)
 	extract(shortcode_atts(array(
 		'id' => ''
 	), $atts));
-
-	if(!is_single())
-	{
-		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
-	}
 
 	$out = "";
 
