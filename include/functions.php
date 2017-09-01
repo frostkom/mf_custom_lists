@@ -451,13 +451,20 @@ function shortcode_custom_lists($atts)
 
 						else if($match[1] == "list_image")
 						{
-							$child_image = get_post_meta_file_src(array('post_id' => $child_id, 'meta_key' => $meta_prefix_cl.'image', 'image_size' => 'full'));
+							/*$child_image = get_post_meta_file_src(array('post_id' => $child_id, 'meta_key' => $meta_prefix_cl.'image'));
 
 							if($child_image != '')
 							{
 								$child_title = get_the_title($child_id);
 
 								$out .= "<div class='image'><img src='".$child_image."' alt='".$child_title."'></div>";
+							}*/
+
+							$child_image_id = get_post_meta($child_id, $meta_prefix_cl.'image', true);
+
+							if($child_image_id > 0)
+							{
+								$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
 							}
 						}
 
