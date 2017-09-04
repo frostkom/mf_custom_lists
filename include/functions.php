@@ -144,11 +144,17 @@ function menu_custom_lists()
 	$menu_title = __("Lists", 'lang_custom_lists');
 	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
 
-	$menu_title = __("Items", 'lang_custom_lists');
-	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
+	$arr_data = array();
+	get_post_children(array('post_type' => 'mf_custom_lists'), $arr_data);
 
-	$menu_title = __("Add New", 'lang_custom_lists');
-	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=mf_custom_item");
+	if(count($arr_data) > 0)
+	{
+		$menu_title = __("Items", 'lang_custom_lists');
+		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
+
+		$menu_title = __("Add New", 'lang_custom_lists');
+		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=mf_custom_item");
+	}
 }
 
 function post_filter_select_custom_lists()
