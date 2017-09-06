@@ -1,5 +1,10 @@
 <?php
 
+function widgets_custom_lists()
+{
+	register_widget('widget_custom_lists');
+}
+
 function count_shortcode_button_custom_lists($count)
 {
 	if($count == 0)
@@ -268,6 +273,15 @@ function column_cell_custom_item($col, $id)
 	}
 }
 
+function get_order_for_select()
+{
+	return array(
+		'numerical' => __("Numerical", 'lang_custom_lists'),
+		'alphabetic' => __("Alphabetical", 'lang_custom_lists'),
+		'random' => __("Random", 'lang_custom_lists'),
+	);
+}
+
 function meta_boxes_custom_lists($meta_boxes)
 {
 	global $wpdb;
@@ -307,10 +321,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'name' => __("Order", 'lang_custom_lists'),
 				'id' => $meta_prefix.'order',
 				'type' => 'select',
-				'options' => array(
-					'numerical' => __("Numerical", 'lang_custom_lists'),
-					'alphabetic' => __("Alphabetical", 'lang_custom_lists'),
-				),
+				'options' => get_order_for_select(),
 				'std' => 'numerical',
 			),
 		)
@@ -375,148 +386,4 @@ function meta_boxes_custom_lists($meta_boxes)
 	);
 
 	return $meta_boxes;
-}
-
-function shortcode_custom_lists($atts)
-{
-	global $wpdb, $meta_prefix_cl;
-
-	extract(shortcode_atts(array(
-		'id' => ''
-	), $atts));
-
-	$out = "";
-
-	$meta_prefix_cl = "mf_custom_lists_";
-
-	$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
-
-	foreach($result as $r)
-	{
-		$parent_id = $r->ID;
-		$post_name = $r->post_name;
-		$parent_content = $r->post_content;
-		$parent_excerpt = $r->post_excerpt;
-
-		$parent_container = get_post_meta($parent_id, $meta_prefix_cl.'container', true);
-		$parent_items = get_post_meta($parent_id, $meta_prefix_cl.'items', true);
-
-		if($parent_container == '')
-		{
-			$parent_container = $parent_content;
-		}
-
-		if($parent_items == '')
-		{
-			$parent_items = $parent_excerpt;
-		}
-
-		if(preg_match("/\[children\]/i", $parent_container))
-		{
-			$child_order = get_post_meta($parent_id, $meta_prefix_cl.'order', true);
-
-			$out_children = "";
-
-			$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix_cl."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d' ORDER BY ".($child_order == 'alphabetic' ? "post_title" : "menu_order")." ASC", $parent_id));
-
-			foreach($result2 as $r)
-			{
-				$child_id = $r->ID;
-
-				if($parent_items != '')
-				{
-					$child_content = $parent_items;
-				}
-
-				else
-				{
-					$child_content = $r->post_content;
-				}
-
-				$out_children .= preg_replace_callback(
-					"/\[(.*?)\]/i",
-					function($match) use ($child_id)
-					{
-						global $wpdb, $meta_prefix_cl;
-
-						$out = "";
-
-						if($match[1] == "list_title")
-						{
-							$child_title = get_the_title($child_id);
-
-							$out .= $child_title;
-						}
-
-						else if($match[1] == "list_text")
-						{
-							$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
-
-							$out .= $child_text;
-						}
-
-						else if($match[1] == "list_image")
-						{
-							/*$child_image = get_post_meta_file_src(array('post_id' => $child_id, 'meta_key' => $meta_prefix_cl.'image'));
-
-							if($child_image != '')
-							{
-								$child_title = get_the_title($child_id);
-
-								$out .= "<div class='image'><img src='".$child_image."' alt='".$child_title."'></div>";
-							}*/
-
-							$child_image_id = get_post_meta($child_id, $meta_prefix_cl.'image', true);
-
-							if($child_image_id > 0)
-							{
-								$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
-							}
-						}
-
-						else if($match[1] == "list_link")
-						{
-							$child_page = get_post_meta($child_id, $meta_prefix_cl.'page', true);
-
-							if(intval($child_page) > 0)
-							{
-								$out .= get_permalink($child_page);
-							}
-
-							else
-							{
-								$child_link = get_post_meta($child_id, $meta_prefix_cl.'link', true);
-
-								if($child_link == '')
-								{
-									$child_link = "#";
-								}
-
-								$out .= $child_link;
-							}
-						}
-
-						else
-						{
-							$out .= get_post_meta($child_id, $match[1], true);
-						}
-
-						return $out;
-					},
-					$child_content
-				);
-			}
-
-			$out .= str_replace("[children]", $out_children, $parent_container);
-		}
-
-		else
-		{
-			$out .= $parent_container;
-		}
-
-		$out = str_replace("[parent_class]", " class='custom_list custom_list_".$post_name."'", $out);
-	}
-
-	return apply_filters('the_content', $out);
 }
