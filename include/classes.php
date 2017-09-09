@@ -158,7 +158,8 @@ class mf_custom_list
 			$out = str_replace("[parent_class]", " class='custom_list custom_list_".$post_name."'", $out);
 		}
 
-		return apply_filters('the_content', $out);
+		//return apply_filters('the_content', $out);
+		return $out;
 	}
 }
 
