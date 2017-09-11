@@ -53,6 +53,7 @@ class mf_custom_list
 
 				switch($child_order)
 				{
+					default:
 					case 'alphabetic':
 						$query_order = " ORDER BY post_title ASC";
 					break;
