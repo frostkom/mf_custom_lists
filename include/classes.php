@@ -173,16 +173,21 @@ class widget_custom_lists extends WP_Widget
 			'description' => __("Display a custom list that you have created", 'lang_custom_lists')
 		);
 
-		$control_ops = array('id_base' => 'custom-list-widget');
+		$this->arr_default = array(
+			'list_heading' => '',
+			'list_id' => '',
+			'list_amount' => 0,
+			'list_order' => 'numerical',
+		);
 
-		parent::__construct('custom-list-widget', __("Custom List", 'lang_custom_lists'), $widget_ops, $control_ops);
+		parent::__construct('custom-list-widget', __("Custom List", 'lang_custom_lists'), $widget_ops);
 	}
 
 	function widget($args, $instance)
 	{
-		global $wpdb;
-
 		extract($args);
+
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		if($instance['list_id'] > 0)
 		{
@@ -197,15 +202,16 @@ class widget_custom_lists extends WP_Widget
 
 				$obj_custom_list = new mf_custom_list();
 
-				echo $obj_custom_list->render_shortcode(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']));
-
-			echo $after_widget;
+				echo $obj_custom_list->render_shortcode(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
+			.$after_widget;
 		}
 	}
 
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
+
+		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['list_heading'] = strip_tags($new_instance['list_heading']);
 		$instance['list_id'] = strip_tags($new_instance['list_id']);
@@ -217,15 +223,7 @@ class widget_custom_lists extends WP_Widget
 
 	function form($instance)
 	{
-		global $wpdb;
-
-		$defaults = array(
-			'list_heading' => '',
-			'list_id' => '',
-			'list_amount' => 0,
-			'list_order' => 'numerical',
-		);
-		$instance = wp_parse_args((array)$instance, $defaults);
+		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading']))
