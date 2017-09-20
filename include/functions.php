@@ -102,7 +102,8 @@ function init_custom_lists()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => true,
+		'public' => false,
+		'show_ui' => true,
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
@@ -121,7 +122,8 @@ function init_custom_lists()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => true,
+		'public' => false,
+		'show_ui' => true,
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
 		'exclude_from_search' => true,
@@ -366,8 +368,9 @@ function meta_boxes_custom_lists($meta_boxes)
 			array(
 				'name' => __("Page", 'lang_custom_lists'),
 				'id' => $meta_prefix.'page',
-				'type' => 'select', //Replace with 'page'
-				'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
+				'type' => 'page',
+				//'type' => 'select',
+				//'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
 				'attributes' => array(
 					'condition_type' => 'show_if',
 					'condition_field' => $meta_prefix.'link',
