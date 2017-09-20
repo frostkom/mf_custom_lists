@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.0.4
+Version: 3.1.1
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_custom_lists
@@ -38,6 +38,10 @@ if(is_admin())
 	add_filter('count_shortcode_button', 'count_shortcode_button_custom_lists');
 	add_filter('get_shortcode_output', 'get_shortcode_output_custom_lists');
 	add_filter('get_shortcode_list', 'get_shortcode_list_custom_lists');
+
+	$obj_custom_list = new mf_custom_list();
+
+	add_action('post_updated', array($obj_custom_list, 'post_updated'), 10, 3);
 }
 
 else

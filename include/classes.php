@@ -2,11 +2,45 @@
 
 class mf_custom_list
 {
-	function __construct(){}
+	function __construct()	
+	{
+		$this->meta_prefix = "mf_custom_lists_";
+	}
+
+	function post_updated($post_id, $post_after, $post_before)
+	{
+		$arr_include = array('mf_custom_lists', 'mf_custom_item');
+
+		if(isset($post_after) && in_array($post_after->post_type, $arr_include) && ($post_after->post_status == 'publish' || $post_before->post_status == 'publish') && class_exists('mf_cache')) // && $post_after != $post_before //post_modified is different so point in checking for changes this way
+		{
+			switch($post_after->post_type)
+			{
+				case 'mf_custom_lists':
+					$list_id = $post_id;
+				break;
+
+				case 'mf_custom_item':
+					$list_id = get_post_meta($post_id, $this->meta_prefix.'list_id', true);
+				break;
+
+				default:
+					$list_id = 0;
+				break;
+			}
+
+			if($list_id > 0)
+			{
+				$shortcode = "[mf_custom_list id=".$list_id."]";
+
+				$obj_cache = new mf_cache();
+				$obj_cache->shortcode_updated($shortcode);
+			}
+		}
+	}
 
 	function render_shortcode($atts)
 	{
-		global $wpdb, $meta_prefix_cl;
+		global $wpdb;
 
 		extract(shortcode_atts(array(
 			'id' => '',
@@ -15,8 +49,6 @@ class mf_custom_list
 		), $atts));
 
 		$out = "";
-
-		$meta_prefix_cl = "mf_custom_lists_";
 
 		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
 
@@ -27,8 +59,8 @@ class mf_custom_list
 			$parent_content = $r->post_content;
 			$parent_excerpt = $r->post_excerpt;
 
-			$parent_container = get_post_meta($parent_id, $meta_prefix_cl.'container', true);
-			$parent_items = get_post_meta($parent_id, $meta_prefix_cl.'items', true);
+			$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
+			$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
 
 			if($parent_container == '')
 			{
@@ -42,7 +74,7 @@ class mf_custom_list
 
 			if(preg_match("/\[children\]/i", $parent_container))
 			{
-				$child_order = get_post_meta($parent_id, $meta_prefix_cl.'order', true);
+				$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
 
 				if($order != '')
 				{
@@ -67,7 +99,7 @@ class mf_custom_list
 					break;
 				}
 
-				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$meta_prefix_cl."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d'".$query_order." LIMIT 0, %d", $parent_id, ($amount > 0 ? $amount : 100)));
+				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d'".$query_order." LIMIT 0, %d", $parent_id, ($amount > 0 ? $amount : 100)));
 
 				foreach($result2 as $r)
 				{
@@ -87,7 +119,7 @@ class mf_custom_list
 						"/\[(.*?)\]/i",
 						function($match) use ($child_id)
 						{
-							global $wpdb, $meta_prefix_cl;
+							global $wpdb;
 
 							$out = "";
 
@@ -107,7 +139,7 @@ class mf_custom_list
 
 							else if($match[1] == "list_image")
 							{
-								$child_image_id = get_post_meta($child_id, $meta_prefix_cl.'image', true);
+								$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
 								if($child_image_id > 0)
 								{
@@ -117,7 +149,7 @@ class mf_custom_list
 
 							else if($match[1] == "list_link")
 							{
-								$child_page = get_post_meta($child_id, $meta_prefix_cl.'page', true);
+								$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
 
 								if(intval($child_page) > 0)
 								{
@@ -126,7 +158,7 @@ class mf_custom_list
 
 								else
 								{
-									$child_link = get_post_meta($child_id, $meta_prefix_cl.'link', true);
+									$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
 
 									if($child_link == '')
 									{
