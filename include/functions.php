@@ -186,6 +186,8 @@ function post_filter_query_custom_lists($wp_query)
 {
     global $post_type, $pagenow;
 
+	$meta_prefix = "mf_custom_lists_";
+
     if($pagenow == 'edit.php')
 	{
 		if($post_type == 'mf_custom_item')
@@ -196,7 +198,7 @@ function post_filter_query_custom_lists($wp_query)
 			{
 				$wp_query->query_vars['meta_query'] = array(
 					array(
-						'key' => 'mf_custom_lists_list_id',
+						'key' => $meta_prefix.'list_id',
 						'value' => $strFilter,
 						'compare' => '=',
 					),
