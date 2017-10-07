@@ -65,26 +65,29 @@ function get_shortcode_list_custom_lists($data)
 	{
 		$post_content = mf_get_post_content($post_id);
 
-		$list_id = get_match("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
+		$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
 
-		if($list_id > 0)
+		foreach($arr_list_id[0] as $list_id)
 		{
-			$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
-
-			$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $meta_prefix.'list_id', $list_id));
-
-			if($wpdb->num_rows > 0)
+			if($list_id > 0)
 			{
-				$content_list .= "<ul>";
+				$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
 
-					foreach($result as $r)
-					{
-						$object_id = $r->post_id;
+				$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $meta_prefix.'list_id', $list_id));
 
-						$content_list .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
-					}
+				if($wpdb->num_rows > 0)
+				{
+					$content_list .= "<ul>";
 
-				$content_list .= "</ul>";
+						foreach($result as $r)
+						{
+							$object_id = $r->post_id;
+
+							$content_list .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
+						}
+
+					$content_list .= "</ul>";
+				}
 			}
 		}
 	}
@@ -309,7 +312,7 @@ function meta_boxes_custom_lists($meta_boxes)
 				'name' => __("Items", 'lang_custom_lists'),
 				'id' => $meta_prefix.'items',
 				'type' => 'textarea',
-				'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image]<p>[list_text]</p></li>",
+				'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
 			),
 		)
 	);

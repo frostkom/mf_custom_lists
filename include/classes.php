@@ -115,6 +115,8 @@ class mf_custom_list
 						$child_content = $r->post_content;
 					}
 
+					$child_content = str_replace("<p>[list_text]</p>", "[list_text]", $child_content); //When apply_filters() on list_text was added, this had to be corrected
+
 					$out_children .= preg_replace_callback(
 						"/\[(.*?)\]/i",
 						function($match) use ($child_id)
@@ -134,7 +136,7 @@ class mf_custom_list
 							{
 								$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
 
-								$out .= $child_text;
+								$out .= apply_filters('the_content', $child_text);
 							}
 
 							else if($match[1] == "list_image")
