@@ -38,6 +38,21 @@ class mf_custom_list
 		}
 	}
 
+	function delete_post($post_id)
+	{
+		global $wpdb, $post_type;
+
+		if($post_type == 'mf_custom_lists')
+		{
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = 'mf_custom_item' AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", $post_id));
+
+			foreach($result as $r)
+			{
+				wp_trash_post($r->ID);
+			}
+		}
+	}
+
 	function render_shortcode($atts)
 	{
 		global $wpdb;

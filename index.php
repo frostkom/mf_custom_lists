@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.2.1
+Version: 3.2.2
 Author: Martin Fors
 Author URI: http://frostkom.se
 Text Domain: lang_custom_lists
@@ -42,6 +42,7 @@ if(is_admin())
 	$obj_custom_list = new mf_custom_list();
 
 	add_action('post_updated', array($obj_custom_list, 'post_updated'), 10, 3);
+	add_action('delete_post', array($obj_custom_list, 'delete_post'));
 }
 
 else
