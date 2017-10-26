@@ -7,7 +7,7 @@ class mf_custom_list
 		$this->meta_prefix = "mf_custom_lists_";
 	}
 
-	function post_updated($post_id, $post_after, $post_before)
+	/*function post_updated($post_id, $post_after, $post_before)
 	{
 		$arr_include = array('mf_custom_lists', 'mf_custom_item');
 
@@ -36,7 +36,7 @@ class mf_custom_list
 				$obj_cache->shortcode_updated($shortcode);
 			}
 		}
-	}
+	}*/
 
 	function delete_post($post_id)
 	{
