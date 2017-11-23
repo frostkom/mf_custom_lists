@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-10 09:45+0100\n"
+"POT-Creation-Date: 2017-11-23 11:50+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -21,7 +21,7 @@ msgid "Display a custom list that you have created"
 msgstr "Visa en egen lista som du har skapat"
 
 #: ../include/classes.php:232
-#: ../include/functions.php:102
+#: ../include/functions.php:88
 msgid "Custom List"
 msgstr "Egen lista"
 
@@ -30,8 +30,8 @@ msgid "Heading"
 msgstr "Rubrik"
 
 #: ../include/classes.php:279
-#: ../include/functions.php:257
-#: ../include/functions.php:362
+#: ../include/functions.php:243
+#: ../include/functions.php:348
 msgid "List"
 msgstr "Lista"
 
@@ -40,100 +40,96 @@ msgid "Amount"
 msgstr "Antal"
 
 #: ../include/classes.php:282
-#: ../include/functions.php:328
+#: ../include/functions.php:314
 msgid "Order"
 msgstr "Sortering"
 
-#: ../include/functions.php:39
+#: ../include/functions.php:34
 msgid "Choose a List"
 msgstr "Välj en lista"
 
-#: ../include/functions.php:42
-msgid "Choose here"
-msgstr "Välj här"
-
-#: ../include/functions.php:101
-#: ../include/functions.php:103
-#: ../include/functions.php:151
+#: ../include/functions.php:87
+#: ../include/functions.php:89
+#: ../include/functions.php:137
 msgid "Custom Lists"
 msgstr "Egna listor"
 
-#: ../include/functions.php:121
-#: ../include/functions.php:123
-#: ../include/functions.php:162
-#: ../include/functions.php:218
-#: ../include/functions.php:312
+#: ../include/functions.php:107
+#: ../include/functions.php:109
+#: ../include/functions.php:148
+#: ../include/functions.php:204
+#: ../include/functions.php:298
 msgid "Items"
 msgstr "Objekt"
 
-#: ../include/functions.php:122
+#: ../include/functions.php:108
 msgid "Item"
 msgstr "Objekt"
 
-#: ../include/functions.php:154
+#: ../include/functions.php:140
 msgid "Lists"
 msgstr "Listor"
 
-#: ../include/functions.php:165
-#: ../include/functions.php:238
+#: ../include/functions.php:151
+#: ../include/functions.php:224
 msgid "Add New"
 msgstr "Skapa ny"
 
-#: ../include/functions.php:219
+#: ../include/functions.php:205
 msgid "Shortcode"
 msgstr "Kortkod"
 
-#: ../include/functions.php:220
-#: ../include/functions.php:258
+#: ../include/functions.php:206
+#: ../include/functions.php:244
 msgid "Date"
 msgstr "Datum"
 
-#: ../include/functions.php:247
+#: ../include/functions.php:233
 msgid "Add New Post"
 msgstr "Skapa nytt inlägg"
 
-#: ../include/functions.php:247
+#: ../include/functions.php:233
 msgid "Add New Page"
 msgstr "Skapa ny sida"
 
-#: ../include/functions.php:277
+#: ../include/functions.php:263
 msgid "Edit"
 msgstr "Redigera"
 
-#: ../include/functions.php:286
+#: ../include/functions.php:272
 msgid "Numerical"
 msgstr "Nummerordning"
 
-#: ../include/functions.php:287
+#: ../include/functions.php:273
 msgid "Alphabetical"
 msgstr "Bokstavsordning"
 
-#: ../include/functions.php:288
+#: ../include/functions.php:274
 msgid "Random"
 msgstr "Slumpvis"
 
-#: ../include/functions.php:300
+#: ../include/functions.php:286
 msgid "Structure"
 msgstr "Struktur"
 
-#: ../include/functions.php:306
+#: ../include/functions.php:292
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/functions.php:322
-#: ../include/functions.php:356
+#: ../include/functions.php:308
+#: ../include/functions.php:342
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../include/functions.php:369
+#: ../include/functions.php:355
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/functions.php:374
+#: ../include/functions.php:360
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/functions.php:385
+#: ../include/functions.php:371
 msgid "External Link"
 msgstr "Extern länk"
 

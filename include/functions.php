@@ -26,27 +26,13 @@ function count_shortcode_button_custom_lists($count)
 
 function get_shortcode_output_custom_lists($out)
 {
-	$templates = get_posts(array(
-		'post_type' => 'mf_custom_lists',
-		'posts_per_page' => -1,
-		'post_status' => 'publish',
-		'order' => 'ASC',
-		'orderby' => 'title'
-	));
+	$arr_data = array();
+	get_post_children(array('add_choose_here' => true, 'post_type' => 'mf_custom_lists'), $arr_data);
 
-	if(count($templates) > 0)
+	if(count($arr_data) > 1)
 	{
-		$out .= "<h3>".__("Choose a List", 'lang_custom_lists')."</h3>";
-
-		$arr_data = array();
-		$arr_data[''] = "-- ".__("Choose here", 'lang_custom_lists')." --";
-
-		foreach($templates as $template)
-		{
-			$arr_data[$template->ID] = $template->post_title;
-		}
-
-		$out .= show_select(array('data' => $arr_data, 'xtra' => "rel='mf_custom_list'"));
+		$out .= "<h3>".__("Choose a List", 'lang_custom_lists')."</h3>"
+		.show_select(array('data' => $arr_data, 'xtra' => "rel='mf_custom_list'"));
 	}
 
 	return $out;

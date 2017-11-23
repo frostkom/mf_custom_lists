@@ -2,7 +2,7 @@
 
 class mf_custom_list
 {
-	function __construct()	
+	function __construct()
 	{
 		$this->meta_prefix = "mf_custom_lists_";
 	}
