@@ -262,10 +262,10 @@ class widget_custom_lists extends WP_Widget
 
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
-		$instance['list_heading'] = strip_tags($new_instance['list_heading']);
-		$instance['list_id'] = strip_tags($new_instance['list_id']);
-		$instance['list_amount'] = strip_tags($new_instance['list_amount']);
-		$instance['list_order'] = strip_tags($new_instance['list_order']);
+		$instance['list_heading'] = sanitize_text_field($new_instance['list_heading']);
+		$instance['list_id'] = sanitize_text_field($new_instance['list_id']);
+		$instance['list_amount'] = sanitize_text_field($new_instance['list_amount']);
+		$instance['list_order'] = sanitize_text_field($new_instance['list_order']);
 
 		return $instance;
 	}
