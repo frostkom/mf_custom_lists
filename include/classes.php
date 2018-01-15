@@ -208,7 +208,6 @@ class mf_custom_list
 			$out = str_replace("[parent_class]", " class='custom_list custom_list_".$post_name."'", $out);
 		}
 
-		//return apply_filters('the_content', $out);
 		return $out;
 	}
 }
@@ -251,7 +250,9 @@ class widget_custom_lists extends WP_Widget
 
 				$obj_custom_list = new mf_custom_list();
 
-				echo $obj_custom_list->render_shortcode(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
+				echo "<div class='section'>"
+					.$obj_custom_list->render_shortcode(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
+				."</div>"
 			.$after_widget;
 		}
 	}
