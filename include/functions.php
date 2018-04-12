@@ -135,7 +135,7 @@ function menu_custom_lists()
 	$menu_capability = "edit_pages";
 
 	$menu_title = __("Custom Lists", 'lang_custom_lists');
-	add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view');
+	add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view', 21);
 
 	$menu_title = __("Lists", 'lang_custom_lists');
 	add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
