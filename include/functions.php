@@ -122,11 +122,6 @@ function init_custom_lists()
 	);
 
 	register_post_type('mf_custom_item', $args);
-
-	if(!is_admin())
-	{
-		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
-	}
 }
 
 function menu_custom_lists()

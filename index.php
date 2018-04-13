@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.2.11
+Version: 3.2.12
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: http://frostkom.se
@@ -16,6 +16,8 @@ GitHub Plugin URI: frostkom/mf_custom_lists
 
 include_once("include/classes.php");
 include_once("include/functions.php");
+
+$obj_custom_list = new mf_custom_list();
 
 add_action('init', 'init_custom_lists', 1);
 add_action('widgets_init', 'widgets_custom_lists');
@@ -41,13 +43,12 @@ if(is_admin())
 	add_filter('get_shortcode_output', 'get_shortcode_output_custom_lists');
 	add_filter('get_shortcode_list', 'get_shortcode_list_custom_lists');
 
-	$obj_custom_list = new mf_custom_list();
 	add_action('delete_post', array($obj_custom_list, 'delete_post'));
 }
 
 else
 {
-	$obj_custom_list = new mf_custom_list();
+	add_action('wp_head', array($obj_custom_list, 'wp_head'), 0);
 
 	add_shortcode('mf_custom_list', array($obj_custom_list, 'render_shortcode'));
 }

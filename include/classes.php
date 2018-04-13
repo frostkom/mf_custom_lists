@@ -7,6 +7,11 @@ class mf_custom_list
 		$this->meta_prefix = "mf_custom_lists_";
 	}
 
+	function wp_head()
+	{
+		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
+	}
+
 	function delete_post($post_id)
 	{
 		global $wpdb, $post_type;
