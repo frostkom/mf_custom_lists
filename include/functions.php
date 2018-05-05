@@ -154,14 +154,15 @@ function post_filter_select_custom_lists()
 
     if($post_type == 'mf_custom_item')
 	{
-		$strFilter = check_var('strFilter');
+		//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList', 'save' => true));
+		$strFilterCustomList = check_var('strFilterCustomList');
 
 		$arr_data = array();
 		get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true), $arr_data);
 
-		if(count($arr_data) > 1)
+		if(count($arr_data) > 2)
 		{
-			echo show_select(array('data' => $arr_data, 'name' => "strFilter", 'value' => $strFilter));
+			echo show_select(array('data' => $arr_data, 'name' => 'strFilterCustomList', 'value' => $strFilterCustomList));
 		}
     }
 }
@@ -172,22 +173,20 @@ function post_filter_query_custom_lists($wp_query)
 
 	$meta_prefix = "mf_custom_lists_";
 
-    if($pagenow == 'edit.php')
+    if($pagenow == 'edit.php' && $post_type == 'mf_custom_item')
 	{
-		if($post_type == 'mf_custom_item')
-		{
-			$strFilter = check_var('strFilter');
+		//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList'));
+		$strFilterCustomList = check_var('strFilterCustomList');
 
-			if($strFilter != '')
-			{
-				$wp_query->query_vars['meta_query'] = array(
-					array(
-						'key' => $meta_prefix.'list_id',
-						'value' => $strFilter,
-						'compare' => '=',
-					),
-				);
-			}
+		if($strFilterCustomList != '')
+		{
+			$wp_query->query_vars['meta_query'] = array(
+				array(
+					'key' => $meta_prefix.'list_id',
+					'value' => $strFilterCustomList,
+					'compare' => '=',
+				),
+			);
 		}
 	}
 }
@@ -214,7 +213,7 @@ function column_cell_custom_list($col, $id)
 		case 'items':
 			$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $meta_prefix.'list_id', $id));
 
-			echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilter=".$id)."'>".$item_amount."</a>
+			echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilterCustomList=".$id)."'>".$item_amount."</a>
 			<div class='row-actions'>
 				<a href='".admin_url("post-new.php?post_type=mf_custom_item&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
 			</div>";
