@@ -127,7 +127,7 @@ function init_custom_lists()
 function menu_custom_lists()
 {
 	$menu_start = "edit.php?post_type=mf_custom_lists";
-	$menu_capability = "edit_pages";
+	$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
 
 	$menu_title = __("Custom Lists", 'lang_custom_lists');
 	add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view', 21);
