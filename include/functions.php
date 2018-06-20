@@ -91,7 +91,7 @@ function init_custom_lists()
 
 	$args = array(
 		'labels' => $labels,
-		'public' => false,
+		'public' => true,
 		'show_ui' => true,
 		'show_in_menu' => false,
 		'show_in_nav_menus' => false,
@@ -394,11 +394,9 @@ function meta_boxes_custom_lists($meta_boxes)
 				'type' => 'file_advanced',
 			),
 			array(
-				'name' => __("Page", 'lang_custom_lists'),
+				'name' => __("Page", 'lang_custom_lists')." <a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>",
 				'id' => $meta_prefix.'page',
 				'type' => 'page',
-				//'type' => 'select',
-				//'options' => get_posts_for_select(array('add_choose_here' => true, 'optgroup' => false)),
 				'attributes' => array(
 					'condition_type' => 'show_if',
 					'condition_field' => $meta_prefix.'link',
