@@ -294,6 +294,12 @@ function meta_boxes_custom_lists($meta_boxes)
 				'type' => 'textarea',
 				'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
 			),
+			array(
+				'name' => __("Custom Style", 'lang_custom_lists'),
+				'id' => $meta_prefix.'custom_style',
+				'type' => 'textarea',
+				'std' => "",
+			),
 		)
 	);
 
@@ -310,6 +316,43 @@ function meta_boxes_custom_lists($meta_boxes)
 				'type' => 'select',
 				'options' => get_order_for_select(),
 				'std' => 'numerical',
+			),
+			array(
+				'name' => __("Style", 'lang_custom_lists'),
+				'id' => $meta_prefix.'style',
+				'type' => 'select',
+				'options' => array(
+					'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
+					'vertical' => __("Vertical", 'lang_custom_lists'),
+					'horizontal' => __("Horizontal", 'lang_custom_lists'),
+				),
+			),
+			array(
+				'name' => __("Columns", 'lang_custom_lists')." (".__("Desktop", 'lang_custom_lists').")",
+				'id' => $meta_prefix.'columns_desktop',
+				'type' => 'number',
+				'attributes' => array(
+					'min' => 1,
+					'max' => 4,
+				),
+			),
+			array(
+				'name' => __("Columns", 'lang_custom_lists')." (".__("Tablet", 'lang_custom_lists').")",
+				'id' => $meta_prefix.'columns_tablet',
+				'type' => 'number',
+				'attributes' => array(
+					'min' => 1,
+					'max' => 3,
+				),
+			),
+			array(
+				'name' => __("Columns", 'lang_custom_lists')." (".__("Mobile", 'lang_custom_lists').")",
+				'id' => $meta_prefix.'columns_mobile',
+				'type' => 'number',
+				'attributes' => array(
+					'min' => 1,
+					'max' => 2,
+				),
 			),
 		)
 	);

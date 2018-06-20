@@ -50,6 +50,11 @@ class mf_custom_list
 
 			$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
 			$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
+			$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
+			$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
+			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
+			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
+			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
 
 			if($parent_container == '')
 			{
@@ -179,7 +184,44 @@ class mf_custom_list
 				$out .= $parent_container;
 			}
 
-			$out = str_replace("[parent_class]", " class='custom_list custom_list_".$post_name."'", $out);
+			$parent_class = "custom_list";
+
+			if($post_name != '')
+			{
+				$parent_class .= " custom_list_".$post_name;
+			}
+
+			if($parent_style != '')
+			{
+				$parent_class .= " custom_list_style_".$parent_style;
+			}
+
+			if($parent_columns_desktop > 0)
+			{
+				$parent_class .= " custom_list_columns_desktop_".$parent_columns_desktop;
+			}
+
+			if($parent_columns_tablet > 0)
+			{
+				$parent_class .= " custom_list_columns_tablet_".$parent_columns_tablet;
+			}
+
+			if($parent_columns_mobile > 0)
+			{
+				$parent_class .= " custom_list_columns_mobile_".$parent_columns_mobile;
+			}
+
+			$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
+
+			if($parent_custom_style != '')
+			{
+				$out .= "<style>
+					@media all
+					{"
+						.$parent_custom_style
+					."}
+				</style>";
+			}
 		}
 
 		return $out;
