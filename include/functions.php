@@ -323,8 +323,11 @@ function meta_boxes_custom_lists($meta_boxes)
 				'type' => 'select',
 				'options' => array(
 					'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
-					'vertical' => __("Vertical", 'lang_custom_lists'),
+					//'about_us' => __("About Us", 'lang_custom_lists'),
 					'horizontal' => __("Horizontal", 'lang_custom_lists'),
+					//'logos' => __("Logos", 'lang_custom_lists'),
+					//'screenshots' => __("Screenshots", 'lang_custom_lists'),
+					'vertical' => __("Vertical", 'lang_custom_lists'),
 				),
 			),
 			array(
