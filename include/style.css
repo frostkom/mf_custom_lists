@@ -135,6 +135,12 @@
 					width: 65%;
 				}
 
+				.is_mobile .custom_list_style_horizontal li > *
+				{
+					float: none;
+					width: 100%;
+				}
+
 	/*.custom_list_style_screenshots li
 	{
 		border: .3em solid #999;
