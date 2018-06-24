@@ -141,6 +141,16 @@
 					width: 100%;
 				}
 
+					.is_mobile .custom_list_style_horizontal .image
+					{
+						text-align: center;
+					}
+
+						.is_mobile .custom_list_style_horizontal .image img
+						{
+							max-width: 75%;
+						}
+
 	/*.custom_list_style_screenshots li
 	{
 		border: .3em solid #999;
