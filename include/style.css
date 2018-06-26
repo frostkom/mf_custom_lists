@@ -36,10 +36,10 @@
 				-ms-flex-order: 2;
 				order: 2;
 			}
-	
+
 	/* Style */
 	.custom_list{}
-	
+
 		.custom_list li{}
 
 			.custom_list h2, .custom_list h3
@@ -122,7 +122,7 @@
 			{
 				overflow: hidden;
 			}
-			
+
 				.custom_list_style_horizontal .image
 				{
 					float: left;
