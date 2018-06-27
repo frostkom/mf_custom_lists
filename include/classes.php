@@ -9,7 +9,169 @@ class mf_custom_list
 
 	function wp_head()
 	{
-		mf_enqueue_style('style_custom_lists', plugin_dir_url(__FILE__)."style.css", get_plugin_version(__FILE__));
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_script('script_custom_lists', $plugin_include_url."script.js", $plugin_version);
+	}
+
+	function meta_boxes($meta_boxes)
+	{
+		global $wpdb;
+
+		//$meta_prefix = "mf_custom_lists_";
+
+		$meta_boxes[] = array(
+			'id' => 'structure',
+			'title' => __("Structure", 'lang_custom_lists'),
+			'post_types' => array('mf_custom_lists'),
+			//'context' => 'side',
+			'priority' => 'low',
+			'fields' => array(
+				array(
+					'name' => __("Container", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'container',
+					'type' => 'text',
+					'std' => "<ul[parent_class]>[children]</ul>",
+				),
+				array(
+					'name' => __("Items", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'items',
+					'type' => 'textarea',
+					'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
+				),
+				array(
+					'name' => __("Custom Style", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'custom_style',
+					'type' => 'textarea',
+					'std' => "",
+				),
+			)
+		);
+
+		$meta_boxes[] = array(
+			'id' => 'settings',
+			'title' => __("Settings", 'lang_custom_lists'),
+			'post_types' => array('mf_custom_lists'),
+			'context' => 'side',
+			'priority' => 'low',
+			'fields' => array(
+				array(
+					'name' => __("Order", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'order',
+					'type' => 'select',
+					'options' => get_order_for_select(),
+					'std' => 'numerical',
+				),
+				array(
+					'name' => __("Style", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'style',
+					'type' => 'select',
+					'options' => array(
+						'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
+						//'about_us' => __("About Us", 'lang_custom_lists'),
+						'horizontal' => __("Horizontal", 'lang_custom_lists'),
+						//'logos' => __("Logos", 'lang_custom_lists'),
+						//'screenshots' => __("Screenshots", 'lang_custom_lists'),
+						'vertical' => __("Vertical", 'lang_custom_lists'),
+					),
+				),
+				array(
+					'name' => __("Read More", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'read_more',
+					'type' => 'select',
+					'options' => get_yes_no_for_select(),
+					'std' => 'no',
+				),
+				array(
+					'name' => __("Columns", 'lang_custom_lists')." (".__("Desktop", 'lang_custom_lists').")",
+					'id' => $this->meta_prefix.'columns_desktop',
+					'type' => 'number',
+					'attributes' => array(
+						'min' => 1,
+						'max' => 4,
+					),
+				),
+				array(
+					'name' => __("Columns", 'lang_custom_lists')." (".__("Tablet", 'lang_custom_lists').")",
+					'id' => $this->meta_prefix.'columns_tablet',
+					'type' => 'number',
+					'attributes' => array(
+						'min' => 1,
+						'max' => 3,
+					),
+				),
+				array(
+					'name' => __("Columns", 'lang_custom_lists')." (".__("Mobile", 'lang_custom_lists').")",
+					'id' => $this->meta_prefix.'columns_mobile',
+					'type' => 'number',
+					'attributes' => array(
+						'min' => 1,
+						'max' => 2,
+					),
+				),
+			)
+		);
+
+		$default_list_id = '';
+
+		if($default_list_id == '')
+		{
+			$default_list_id = check_var('list_id', 'int');
+		}
+
+		if($default_list_id == '')
+		{
+			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", $this->meta_prefix.'list_id'));
+		}
+
+		if($default_list_id == '')
+		{
+			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", 'mf_custom_lists', 'publish'));
+		}
+
+		$meta_boxes[] = array(
+			'id' => 'settings',
+			'title' => __("Settings", 'lang_custom_lists'),
+			'post_types' => array('mf_custom_item'),
+			'context' => 'side',
+			'priority' => 'low',
+			'fields' => array(
+				array(
+					'name' => __("List", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'list_id',
+					'type' => 'select',
+					'options' => get_posts_for_select(array('post_type' => "mf_custom_lists")),
+					'std' => $default_list_id,
+				),
+				array(
+					'name' => __("Image", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'image',
+					'type' => 'file_advanced',
+				),
+				array(
+					'name' => __("Page", 'lang_custom_lists')." <a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>",
+					'id' => $this->meta_prefix.'page',
+					'type' => 'page',
+					'attributes' => array(
+						'condition_type' => 'show_if',
+						'condition_field' => $this->meta_prefix.'link',
+					),
+				),
+				array(
+					'name' => __("External Link", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'link',
+					'type' => 'url',
+					'attributes' => array(
+						'condition_type' => 'show_if',
+						'condition_field' => $this->meta_prefix.'page',
+					),
+				),
+			)
+		);
+
+		return $meta_boxes;
 	}
 
 	function delete_post($post_id)
@@ -52,6 +214,7 @@ class mf_custom_list
 			$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
 			$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
 			$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
+			$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
 			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
 			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
 			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
@@ -194,6 +357,11 @@ class mf_custom_list
 			if($parent_style != '')
 			{
 				$parent_class .= " custom_list_style_".$parent_style;
+			}
+
+			if($parent_read_more == 'yes')
+			{
+				$parent_class .= " custom_list_read_more";
 			}
 
 			if($parent_columns_desktop > 0)
