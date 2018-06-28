@@ -123,19 +123,19 @@
 				overflow: hidden;
 			}
 
-				.custom_list_style_horizontal .image
+				.custom_list_style_horizontal.custom_list_has_image .image
 				{
 					float: left;
 					width: 30%;
 				}
 
-				.custom_list_style_horizontal h2, .custom_list_style_horizontal h3, .custom_list_style_horizontal p
+				.custom_list_style_horizontal.custom_list_has_image h2, .custom_list_style_horizontal.custom_list_has_image h3, .custom_list_style_horizontal.custom_list_has_image p
 				{
 					float: right;
 					width: 65%;
 				}
 
-				.is_mobile .custom_list_style_horizontal li > *
+				.is_mobile .custom_list_style_horizontal.custom_list_has_image li > *
 				{
 					float: none;
 					width: 100%;

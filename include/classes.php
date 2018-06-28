@@ -20,8 +20,6 @@ class mf_custom_list
 	{
 		global $wpdb;
 
-		//$meta_prefix = "mf_custom_lists_";
-
 		$meta_boxes[] = array(
 			'id' => 'structure',
 			'title' => __("Structure", 'lang_custom_lists'),
@@ -191,7 +189,7 @@ class mf_custom_list
 
 	function render_shortcode($atts)
 	{
-		global $wpdb;
+		global $wpdb, $has_image;
 
 		extract(shortcode_atts(array(
 			'id' => '',
@@ -200,6 +198,7 @@ class mf_custom_list
 		), $atts));
 
 		$out = "";
+		$has_image = false;
 
 		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
 
@@ -278,59 +277,63 @@ class mf_custom_list
 						"/\[(.*?)\]/i",
 						function($match) use ($child_id)
 						{
-							global $wpdb;
+							global $wpdb, $has_image;
 
 							$out = "";
 
-							if($match[1] == "list_title")
+							switch($match[1])
 							{
-								$child_title = get_the_title($child_id);
+								case 'list_id':
+									$out .= $child_id;
+								break;
 
-								$out .= $child_title;
-							}
+								case 'list_title':
+									$child_title = get_the_title($child_id);
 
-							else if($match[1] == "list_text")
-							{
-								$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
+									$out .= $child_title;
+								break;
 
-								$out .= apply_filters('the_content', $child_text);
-							}
+								case 'list_text':
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
 
-							else if($match[1] == "list_image")
-							{
-								$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
+									$out .= apply_filters('the_content', $child_text);
+								break;
 
-								if($child_image_id > 0)
-								{
-									$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
-								}
-							}
+								case 'list_image':
+									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
-							else if($match[1] == "list_link")
-							{
-								$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
-
-								if(intval($child_page) > 0)
-								{
-									$out .= get_permalink($child_page);
-								}
-
-								else
-								{
-									$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
-
-									if($child_link == '')
+									if($child_image_id > 0)
 									{
-										$child_link = "#";
+										$has_image = true;
+
+										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
+									}
+								break;
+
+								case 'list_link':
+									$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
+
+									if(intval($child_page) > 0)
+									{
+										$out .= get_permalink($child_page);
 									}
 
-									$out .= $child_link;
-								}
-							}
+									else
+									{
+										$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
 
-							else
-							{
-								$out .= get_post_meta($child_id, $match[1], true);
+										if($child_link == '')
+										{
+											$child_link = "#";
+										}
+
+										$out .= $child_link;
+									}
+								break;
+
+								default:
+									$out .= get_post_meta($child_id, $match[1], true);
+								break;
 							}
 
 							return $out;
@@ -357,6 +360,11 @@ class mf_custom_list
 			if($parent_style != '')
 			{
 				$parent_class .= " custom_list_style_".$parent_style;
+			}
+
+			if($has_image == true)
+			{
+				$parent_class .= " custom_list_has_image";
 			}
 
 			if($parent_read_more == 'yes')
