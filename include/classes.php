@@ -308,6 +308,11 @@ class mf_custom_list
 
 										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
 									}
+
+									else if(function_exists('get_image_fallback'))
+									{
+										$out .= "<div class='image'>".get_image_fallback()."</div>";
+									}
 								break;
 
 								case 'list_link':

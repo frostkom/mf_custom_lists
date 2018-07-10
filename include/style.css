@@ -53,11 +53,17 @@
 
 			.custom_list .image
 			{
+				display: none;
 				/*height: 0;*/
 				margin-bottom: .5em;
 				/*padding-bottom: 100%;
 				overflow: hidden;*/
 			}
+
+				.custom_list.custom_list_has_image .image
+				{
+					display: block;
+				}
 
 				/*.custom_list img
 				{
