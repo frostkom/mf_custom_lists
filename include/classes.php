@@ -306,7 +306,7 @@ class mf_custom_list
 									{
 										$has_image = true;
 
-										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id))."</div>";
+										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id, 'size' => 'large'))."</div>";
 									}
 
 									else if(function_exists('get_image_fallback'))
