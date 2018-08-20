@@ -7,13 +7,95 @@ class mf_custom_list
 		$this->meta_prefix = "mf_custom_lists_";
 	}
 
-	function wp_head()
+	function get_order_for_select()
 	{
-		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
+		return array(
+			'numerical' => __("Numerical", 'lang_custom_lists'),
+			'alphabetic' => __("Alphabetical", 'lang_custom_lists'),
+			'random' => __("Random", 'lang_custom_lists'),
+		);
+	}
+	
+	function get_styles_for_select()
+	{
+		return array(
+			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
+			'about_us' => __("About Us", 'lang_custom_lists'),
+			'flags' => __("Flags", 'lang_custom_lists'),
+			'horizontal' => __("Horizontal", 'lang_custom_lists'),
+			'logos' => __("Logos", 'lang_custom_lists'),
+			'one_col' => __("One Column", 'lang_custom_lists'),
+			'people' => __("People", 'lang_custom_lists'),
+			'screenshots' => __("Screenshots", 'lang_custom_lists'),
+			'vertical' => __("Vertical", 'lang_custom_lists'),
+		);
+	}
 
-		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css", $plugin_version);
-		mf_enqueue_script('script_custom_lists', $plugin_include_url."script.js", $plugin_version);
+	function init()
+	{
+		$labels = array(
+			'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
+			'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
+			'menu_name' => __("Custom Lists", 'lang_custom_lists')
+		);
+
+		$args = array(
+			'labels' => $labels,
+			'public' => true,
+			'show_ui' => true,
+			'show_in_menu' => false,
+			'show_in_nav_menus' => false,
+			'exclude_from_search' => true,
+			'supports' => array('title'),
+			'hierarchical' => false,
+			'has_archive' => false,
+		);
+
+		register_post_type('mf_custom_lists', $args);
+
+		$labels = array(
+			'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
+			'singular_name' => _x(__("Item", 'lang_custom_lists'), 'post type singular name'),
+			'menu_name' => __("Items", 'lang_custom_lists')
+		);
+
+		$args = array(
+			'labels' => $labels,
+			'public' => false,
+			'show_ui' => true,
+			'show_in_menu' => false,
+			'show_in_nav_menus' => false,
+			'exclude_from_search' => true,
+			'supports' => array('title', 'editor', 'custom-fields'),
+			'hierarchical' => true,
+			'has_archive' => false,
+		);
+
+		register_post_type('mf_custom_item', $args);
+	}
+
+	function admin_menu()
+	{
+		$menu_start = "edit.php?post_type=mf_custom_lists";
+		$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
+
+		$menu_title = __("Custom Lists", 'lang_custom_lists');
+		add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view', 21);
+
+		$menu_title = __("Lists", 'lang_custom_lists');
+		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
+
+		$arr_data = array();
+		get_post_children(array('post_type' => 'mf_custom_lists'), $arr_data);
+
+		if(count($arr_data) > 0)
+		{
+			$menu_title = __("Items", 'lang_custom_lists');
+			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
+
+			$menu_title = __("Add New", 'lang_custom_lists');
+			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=mf_custom_item");
+		}
 	}
 
 	function meta_boxes($meta_boxes)
@@ -40,6 +122,12 @@ class mf_custom_list
 					'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
 				),
 				array(
+					'name' => __("Style", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'style',
+					'type' => 'select',
+					'options' => $this->get_styles_for_select(),
+				),
+				array(
 					'name' => __("Custom Style", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'custom_style',
 					'type' => 'textarea',
@@ -59,21 +147,8 @@ class mf_custom_list
 					'name' => __("Order", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'order',
 					'type' => 'select',
-					'options' => get_order_for_select(),
+					'options' => $this->get_order_for_select(),
 					'std' => 'numerical',
-				),
-				array(
-					'name' => __("Style", 'lang_custom_lists'),
-					'id' => $this->meta_prefix.'style',
-					'type' => 'select',
-					'options' => array(
-						'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
-						//'about_us' => __("About Us", 'lang_custom_lists'),
-						'horizontal' => __("Horizontal", 'lang_custom_lists'),
-						//'logos' => __("Logos", 'lang_custom_lists'),
-						//'screenshots' => __("Screenshots", 'lang_custom_lists'),
-						'vertical' => __("Vertical", 'lang_custom_lists'),
-					),
 				),
 				array(
 					'name' => __("Read More", 'lang_custom_lists'),
@@ -172,6 +247,196 @@ class mf_custom_list
 		return $meta_boxes;
 	}
 
+	function restrict_manage_posts()
+	{
+		global $post_type, $wpdb;
+
+		if($post_type == 'mf_custom_item')
+		{
+			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList', 'save' => true));
+			$strFilterCustomList = check_var('strFilterCustomList');
+
+			$arr_data = array();
+			get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true), $arr_data);
+
+			if(count($arr_data) > 2)
+			{
+				echo show_select(array('data' => $arr_data, 'name' => 'strFilterCustomList', 'value' => $strFilterCustomList));
+			}
+		}
+	}
+
+	function pre_get_posts($wp_query)
+	{
+		global $post_type, $pagenow;
+
+		if($pagenow == 'edit.php' && $post_type == 'mf_custom_item')
+		{
+			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList'));
+			$strFilterCustomList = check_var('strFilterCustomList');
+
+			if($strFilterCustomList != '')
+			{
+				$wp_query->query_vars['meta_query'] = array(
+					array(
+						'key' => $this->meta_prefix.'list_id',
+						'value' => $strFilterCustomList,
+						'compare' => '=',
+					),
+				);
+			}
+		}
+	}
+
+	function column_header($cols)
+	{
+		unset($cols['date']);
+
+		$cols['items'] = __("Items", 'lang_custom_lists');
+		$cols['style'] = __("Style", 'lang_custom_lists');
+		$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
+		$cols['date'] = __("Date", 'lang_custom_lists');
+
+		return $cols;
+	}
+
+	function column_cell($col, $id)
+	{
+		global $wpdb;
+
+		switch($col)
+		{
+			case 'items':
+				$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'list_id', $id));
+
+				echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilterCustomList=".$id)."'>".$item_amount."</a>
+				<div class='row-actions'>
+					<a href='".admin_url("post-new.php?post_type=mf_custom_item&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
+				</div>";
+			break;
+
+			case 'style':
+				$post_meta = get_post_meta($id, $this->meta_prefix.$col, true);
+
+				if($post_meta != '')
+				{
+					echo $this->get_styles_for_select()[$post_meta];
+				}
+			break;
+
+			case 'shortcode':
+				$shortcode = "[mf_custom_list id=".$id."]";
+
+				echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly onclick='this.select()'"))
+				."<div class='row-actions'>
+					<a href='".admin_url("post-new.php?content=".$shortcode)."'>".__("Add New Post", 'lang_custom_lists')."</a> | <a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
+				</div>";
+			break;
+		}
+	}
+
+	function column_header_item($cols)
+	{
+		unset($cols['date']);
+
+		$cols['list_id'] = __("List", 'lang_custom_lists');
+		$cols['date'] = __("Date", 'lang_custom_lists');
+
+		return $cols;
+	}
+
+	function column_cell_item($col, $id)
+	{
+		switch($col)
+		{
+			case 'list_id':
+				$parent_id = get_post_meta($id, $this->meta_prefix.$col, true);
+				$parent_title = get_the_title($parent_id);
+
+				$edit_url = "post.php?post=".$parent_id."&action=edit";
+
+				echo "<a href='".$edit_url."'>".$parent_title."</a>
+				<div class='row-actions'>
+					<span class='edit'><a href='".$edit_url."'>".__("Edit", 'lang_custom_lists')."</a></span>
+				</div>";
+			break;
+		}
+	}
+
+	function count_shortcode_button($count)
+	{
+		if($count == 0)
+		{
+			$templates = get_posts(array(
+				'post_type' => 'mf_custom_lists',
+				'posts_per_page' => 1,
+				'post_status' => 'publish'
+			));
+
+			if(count($templates) > 0)
+			{
+				$count++;
+			}
+		}
+
+		return $count;
+	}
+
+	function get_shortcode_output($out)
+	{
+		$arr_data = array();
+		get_post_children(array('add_choose_here' => true, 'post_type' => 'mf_custom_lists'), $arr_data);
+
+		if(count($arr_data) > 1)
+		{
+			$out .= "<h3>".__("Choose a List", 'lang_custom_lists')."</h3>"
+			.show_select(array('data' => $arr_data, 'xtra' => "rel='mf_custom_list'"));
+		}
+
+		return $out;
+	}
+
+	function get_shortcode_list($data)
+	{
+		global $wpdb;
+
+		$post_id = $data[0];
+		$content_list = $data[1];
+
+		if($post_id > 0)
+		{
+			$post_content = mf_get_post_content($post_id);
+
+			$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
+
+			foreach($arr_list_id[0] as $list_id)
+			{
+				if($list_id > 0)
+				{
+					$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+
+					$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'list_id', $list_id));
+
+					if($wpdb->num_rows > 0)
+					{
+						$content_list .= "<ul>";
+
+							foreach($result as $r)
+							{
+								$object_id = $r->post_id;
+
+								$content_list .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
+							}
+
+						$content_list .= "</ul>";
+					}
+				}
+			}
+		}
+
+		return array($post_id, $content_list);
+	}
+
 	function delete_post($post_id)
 	{
 		global $wpdb, $post_type;
@@ -185,6 +450,15 @@ class mf_custom_list
 				wp_trash_post($r->ID);
 			}
 		}
+	}
+
+	function wp_head()
+	{
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_script('script_custom_lists', $plugin_include_url."script.js", $plugin_version);
 	}
 
 	function render_shortcode($atts)
@@ -407,6 +681,11 @@ class mf_custom_list
 
 		return $out;
 	}
+
+	function widgets_init()
+	{
+		register_widget('widget_custom_lists');
+	}
 }
 
 class widget_custom_lists extends WP_Widget
@@ -477,7 +756,7 @@ class widget_custom_lists extends WP_Widget
 			.show_select(array('data' => get_posts_for_select(array('post_type' => "mf_custom_lists")), 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $instance['list_id']))
 			."<div class='flex_flow'>"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $instance['list_amount']))
-				.show_select(array('data' => get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $instance['list_order']))
+				.show_select(array('data' => $this->get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $instance['list_order']))
 			."</div>
 		</div>";
 	}
