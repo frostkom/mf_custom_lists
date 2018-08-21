@@ -751,12 +751,14 @@ class widget_custom_lists extends WP_Widget
 	{
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
+		$obj_custom_list = new mf_custom_list();
+
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading'], 'xtra' => " id='list-title'"))
 			.show_select(array('data' => get_posts_for_select(array('post_type' => "mf_custom_lists")), 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $instance['list_id']))
 			."<div class='flex_flow'>"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $instance['list_amount']))
-				.show_select(array('data' => $this->get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $instance['list_order']))
+				.show_select(array('data' => $obj_custom_list->get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $instance['list_order']))
 			."</div>
 		</div>";
 	}
