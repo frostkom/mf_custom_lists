@@ -42,9 +42,14 @@
 	{
 		margin: 0 !important;
 		overflow: hidden;
-		padding: 0 0 .5em !important;
+		/*padding: 0 0 .5em !important;*/ /* This messes up widget heading styles in aside */
 		text-overflow: ellipsis;
 	}
+
+		.custom_list h2
+		{
+			padding: 0 0 .5em !important;
+		}
 
 	.custom_list .image
 	{

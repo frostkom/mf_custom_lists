@@ -15,7 +15,7 @@ class mf_custom_list
 			'random' => __("Random", 'lang_custom_lists'),
 		);
 	}
-	
+
 	function get_styles_for_select()
 	{
 		return array(
