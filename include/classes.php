@@ -98,7 +98,7 @@ class mf_custom_list
 		}
 	}
 
-	function meta_boxes($meta_boxes)
+	function rwmb_meta_boxes($meta_boxes)
 	{
 		global $wpdb;
 
