@@ -224,7 +224,7 @@ class mf_custom_list
 					'type' => 'file_advanced',
 				),
 				array(
-					'name' => __("Page", 'lang_custom_lists')." <a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-lg fa-plus'></i></a>",
+					'name' => __("Page", 'lang_custom_lists')." <a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-plus fa-lg'></i></a>",
 					'id' => $this->meta_prefix.'page',
 					'type' => 'page',
 					'attributes' => array(
