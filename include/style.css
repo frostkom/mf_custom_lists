@@ -84,7 +84,7 @@
 	}
 
 	/* Style-Specific */
-	.custom_list_style_vertical, .custom_list_style_horizontal
+	article .custom_list_style_vertical, article .custom_list_style_horizontal, article .custom_list_style_about_us, article .custom_list_style_logos, article .custom_list_style_screenshots
 	{
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -96,60 +96,74 @@
 		flex-wrap: wrap;
 	}
 
-		.custom_list_style_vertical li, .custom_list_style_horizontal li
+		article .custom_list_style_vertical li, article .custom_list_style_horizontal li, article .custom_list_style_about_us li, article .custom_list_style_logos li, article .custom_list_style_screenshots li
 		{
 			-webkit-box-flex: 0 1 auto;
 			-webkit-flex: 0 1 auto;
 			-ms-flex: 0 1 auto;
 			flex: 0 1 auto;
-			margin: 0 .5% 2em .5%;
+			margin: 0 .5% .5em .5%;
 		}
 
-			.custom_list_style_vertical li
+	/* Vertical */
+	.custom_list_style_vertical li
+	{
+		text-align: center;
+	}
+
+	/* Horizontal */
+	.custom_list_style_horizontal li
+	{
+		overflow: hidden;
+	}
+
+		.custom_list_style_horizontal.custom_list_has_image .image
+		{
+			float: left;
+			width: 30%;
+		}
+
+		.custom_list_style_horizontal.custom_list_has_image h2, .custom_list_style_horizontal.custom_list_has_image h3, .custom_list_style_horizontal.custom_list_has_image p
+		{
+			float: right;
+			width: 65%;
+		}
+
+		.is_mobile .custom_list_style_horizontal.custom_list_has_image li > *
+		{
+			float: none;
+			width: 100%;
+		}
+
+			.is_mobile .custom_list_style_horizontal .image
 			{
 				text-align: center;
 			}
 
-			.custom_list_style_horizontal li
-			{
-				overflow: hidden;
-			}
-
-				.custom_list_style_horizontal.custom_list_has_image .image
+				.is_mobile .custom_list_style_horizontal .image img
 				{
-					float: left;
-					width: 30%;
+					max-width: 75%;
 				}
 
-				.custom_list_style_horizontal.custom_list_has_image h2, .custom_list_style_horizontal.custom_list_has_image h3, .custom_list_style_horizontal.custom_list_has_image p
-				{
-					float: right;
-					width: 65%;
-				}
-
-				.is_mobile .custom_list_style_horizontal.custom_list_has_image li > *
-				{
-					float: none;
-					width: 100%;
-				}
-
-					.is_mobile .custom_list_style_horizontal .image
-					{
-						text-align: center;
-					}
-
-						.is_mobile .custom_list_style_horizontal .image img
-						{
-							max-width: 75%;
-						}
-
+	/* About Us */
 	.custom_list_style_about_us li
 	{
 		border: 0;
+		border-radius: .5em;
+		overflow: hidden;
 		position: relative;
 		text-align: center;
-		/*width: 23%;*/
 	}
+
+		article .custom_list_style_about_us li
+		{
+			width: 23%;
+		}
+
+			.is_mobile article .custom_list_style_about_us li
+			{
+				width: 48%;
+			}
 
 		.custom_list_style_about_us li:before
 		{
@@ -174,7 +188,8 @@
 
 		.custom_list_style_about_us li img
 		{
-			margin-bottom: 1em;
+			display: block;
+			margin: 0 auto 1em;
 			border-radius: 87% 91% 100% 98%;
 			transition: all 1s;
 		}
@@ -256,11 +271,7 @@
 				transform: rotate(3deg);
 			}
 
-		/*.is_mobile #mf-content .custom_list_style_about_us li
-		{
-			width: 31%;
-		}*/
-
+	/* Flags */
 	header .custom_list_style_flags
 	{
 		float: right;
@@ -277,14 +288,31 @@
 			display: inline-block;
 		}
 
+	/* Logos */
 	.custom_list_style_logos li
 	{
+		border: .3em solid #999;
+		border-radius: .5em;
+		margin: 0 1% 1.2em 1%;
+		overflow: hidden;
 		padding: 1em;
 	}
 
+		article .custom_list_style_logos li
+		{
+			width: 31%;
+		}
+
+			.is_mobile article .custom_list_style_logos li
+			{
+				width: 48%;
+			}
+
 		.custom_list_style_logos li a
 		{
+			border-bottom: 0;
 			display: block;
+			text-decoration: none;
 		}
 
 			.custom_list_style_logos li .image
@@ -294,9 +322,11 @@
 
 				.custom_list_style_logos img
 				{
+					display: block;
 					filter: gray;
 					-webkit-filter: grayscale(1);
 					filter: grayscale(1);
+					margin: 0 auto;
 				}
 
 					.custom_list_style_logos img:hover
@@ -306,6 +336,7 @@
 						filter: grayscale(0);
 					}
 
+	/* One Column */
 	/*.custom_list_style_one_col
 	{
 		list-style: none;
@@ -328,61 +359,68 @@
 				width: 65%;
 			}
 
-	/*.custom_list_style_people
+	/* People */
+	/*.custom_list_style_people li
 	{
-		display: -webkit-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
-		display: flex;
-		-webkit-box-flex-wrap: wrap;
-		-webkit-flex-wrap: wrap;
-		-ms-flex-wrap: wrap;
-		flex-wrap: wrap;
+		-webkit-box-flex: 0 1 auto;
+		-webkit-flex: 0 1 auto;
+		-ms-flex: 0 1 auto;
+		flex: 0 1 auto;
+		margin: 0 .5% 1em .5%;
+		text-align: center;
 	}
 
-		.custom_list_style_people li
+		article .custom_list_style_people li
 		{
-			-webkit-box-flex: 0 1 auto;
-			-webkit-flex: 0 1 auto;
-			-ms-flex: 0 1 auto;
-			flex: 0 1 auto;
-			margin: 0 .5% 1em .5%;
-			text-align: center;
 			width: 24%;
 		}
 
-		.is_tablet .custom_list_style_people li
+			.is_tablet article .custom_list_style_people li
+			{
+				width: 32%;
+			}
+
+			.is_mobile article .custom_list_style_people li
+			{
+				width: 99%;
+			}*/
+
+		.custom_list_style_people h2
 		{
-			width: 32%;
+			font-size: 1em;
 		}
 
-		.is_mobile .custom_list_style_people li
+		.custom_list_style_people .image
 		{
-			width: 99%;
-		}*/
+			height: 0;
+			padding-bottom: 100%;
+			overflow: hidden;
+		}
 
-			.custom_list_style_people h2
-			{
-				font-size: 1em;
-			}
+		.custom_list_style_people p
+		{
+			font-size: .7em;
+		}
 
-			.custom_list_style_people .image
-			{
-				height: 0;
-				margin-bottom: .5em;
-				padding-bottom: 100%;
-				overflow: hidden;
-			}
-
-			.custom_list_style_people p
-			{
-				font-size: .7em;
-			}
-
+	/* Screenshots */
 	.custom_list_style_screenshots li
 	{
+		border: .3em solid #999;
+		border-radius: .5em;
+		margin: 0 1% 1.2em 1%;
+		overflow: hidden;
 		position: relative;
 	}
+	
+		article .custom_list_style_screenshots li
+		{
+			width: 48%;
+		}
+
+			.is_mobile article .custom_list_style_screenshots li
+			{
+				width: 98%;
+			}
 
 		.custom_list_style_screenshots li:before
 		{
@@ -447,4 +485,10 @@
 		{
 			margin-bottom: 0;
 		}
+
+			.custom_list_style_screenshots li .image img
+			{
+				display: block;
+				margin: 0 auto;
+			}
 }
