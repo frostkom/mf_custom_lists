@@ -461,7 +461,7 @@ class mf_custom_list
 		mf_enqueue_script('script_custom_lists', $plugin_include_url."script.js", $plugin_version);
 	}
 
-	function render_shortcode($atts)
+	function shortcode_custom_list($atts)
 	{
 		global $wpdb, $has_image;
 
