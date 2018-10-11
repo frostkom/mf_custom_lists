@@ -727,7 +727,7 @@ class widget_custom_lists extends WP_Widget
 				$obj_custom_list = new mf_custom_list();
 
 				echo "<div class='section'>"
-					.$obj_custom_list->render_shortcode(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
+					.$obj_custom_list->shortcode_custom_list(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
 				."</div>"
 			.$after_widget;
 		}
