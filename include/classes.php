@@ -249,7 +249,7 @@ class mf_custom_list
 
 	function restrict_manage_posts()
 	{
-		global $post_type, $wpdb;
+		global $post_type;
 
 		if($post_type == 'mf_custom_item')
 		{
