@@ -4,7 +4,8 @@ class mf_custom_list
 {
 	function __construct()
 	{
-		$this->meta_prefix = "mf_custom_lists_";
+		$this->post_type = "mf_custom_lists";
+		$this->meta_prefix = $this->post_type."_";
 	}
 
 	function get_order_for_select()
@@ -51,7 +52,7 @@ class mf_custom_list
 			'has_archive' => false,
 		);
 
-		register_post_type('mf_custom_lists', $args);
+		register_post_type($this->post_type, $args);
 
 		$labels = array(
 			'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
@@ -76,7 +77,7 @@ class mf_custom_list
 
 	function admin_menu()
 	{
-		$menu_start = "edit.php?post_type=mf_custom_lists";
+		$menu_start = "edit.php?post_type=".$this->post_type;
 		$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
 
 		$menu_title = __("Custom Lists", 'lang_custom_lists');
@@ -86,7 +87,7 @@ class mf_custom_list
 		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
 
 		$arr_data = array();
-		get_post_children(array('post_type' => 'mf_custom_lists'), $arr_data);
+		get_post_children(array('post_type' => $this->post_type), $arr_data);
 
 		if(count($arr_data) > 0)
 		{
@@ -105,7 +106,7 @@ class mf_custom_list
 		$meta_boxes[] = array(
 			'id' => 'structure',
 			'title' => __("Structure", 'lang_custom_lists'),
-			'post_types' => array('mf_custom_lists'),
+			'post_types' => array($this->post_type),
 			//'context' => 'side',
 			'priority' => 'low',
 			'fields' => array(
@@ -139,7 +140,7 @@ class mf_custom_list
 		$meta_boxes[] = array(
 			'id' => 'settings',
 			'title' => __("Settings", 'lang_custom_lists'),
-			'post_types' => array('mf_custom_lists'),
+			'post_types' => array($this->post_type),
 			'context' => 'side',
 			'priority' => 'low',
 			'fields' => array(
@@ -201,7 +202,7 @@ class mf_custom_list
 
 		if($default_list_id == '')
 		{
-			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", 'mf_custom_lists', 'publish'));
+			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", $this->post_type, 'publish'));
 		}
 
 		$meta_boxes[] = array(
@@ -215,7 +216,7 @@ class mf_custom_list
 					'name' => __("List", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'list_id',
 					'type' => 'select',
-					'options' => get_posts_for_select(array('post_type' => "mf_custom_lists")),
+					'options' => get_posts_for_select(array('post_type' => $this->post_type)),
 					'std' => $default_list_id,
 				),
 				array(
@@ -257,7 +258,7 @@ class mf_custom_list
 			$strFilterCustomList = check_var('strFilterCustomList');
 
 			$arr_data = array();
-			get_post_children(array('post_type' => 'mf_custom_lists', 'post_status' => '', 'add_choose_here' => true), $arr_data);
+			get_post_children(array('post_type' => $this->post_type, 'post_status' => '', 'add_choose_here' => true), $arr_data);
 
 			if(count($arr_data) > 2)
 			{
@@ -368,7 +369,7 @@ class mf_custom_list
 		if($count == 0)
 		{
 			$templates = get_posts(array(
-				'post_type' => 'mf_custom_lists',
+				'post_type' => $this->post_type,
 				'posts_per_page' => 1,
 				'post_status' => 'publish'
 			));
@@ -385,7 +386,7 @@ class mf_custom_list
 	function get_shortcode_output($out)
 	{
 		$arr_data = array();
-		get_post_children(array('add_choose_here' => true, 'post_type' => 'mf_custom_lists'), $arr_data);
+		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
 
 		if(count($arr_data) > 1)
 		{
@@ -437,13 +438,13 @@ class mf_custom_list
 		return array($post_id, $content_list);
 	}
 
-	function delete_post($post_id)
+	function wp_trash_post($post_id)
 	{
-		global $wpdb, $post_type;
+		global $wpdb;
 
-		if($post_type == 'mf_custom_lists')
+		if(get_post_type($post_id) == $this->post_type)
 		{
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = 'mf_custom_item' AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", $post_id));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", 'mf_custom_item', $post_id));
 
 			foreach($result as $r)
 			{
@@ -474,7 +475,7 @@ class mf_custom_list
 		$out = "";
 		$has_image = false;
 
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = 'mf_custom_lists' AND post_status = 'publish' AND ID = '%d'", $id));
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID = '%d'", $this->post_type, 'publish', $id));
 
 		foreach($result as $r)
 		{

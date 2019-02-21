@@ -41,7 +41,8 @@ if(is_admin())
 	add_filter('get_shortcode_output', array($obj_custom_list, 'get_shortcode_output'));
 	add_filter('get_shortcode_list', array($obj_custom_list, 'get_shortcode_list'));
 
-	add_action('delete_post', array($obj_custom_list, 'delete_post'));
+	add_action('wp_trash_post', array($obj_custom_list, 'wp_trash_post'));
+	add_action('delete_post', array($obj_custom_list, 'wp_trash_post')); // Needs to be here until trash is emptied
 }
 
 else
