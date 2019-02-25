@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.5.11
+Version: 3.5.12
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se

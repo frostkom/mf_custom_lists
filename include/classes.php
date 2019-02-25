@@ -223,6 +223,8 @@ class mf_custom_list
 					'name' => __("Image", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'image',
 					'type' => 'file_advanced',
+					'max_file_uploads' => 1,
+					'mime_type' => 'image',
 				),
 				array(
 					'name' => __("Page", 'lang_custom_lists')." <a href='".admin_url("post-new.php?post_type=page")."'><i class='fa fa-plus-circle fa-lg'></i></a>",
