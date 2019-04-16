@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-02 05:11+0100\n"
+"POT-Creation-Date: 2019-03-22 09:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -54,6 +54,9 @@ msgstr "Bilde"
 msgid "Page"
 msgstr "Side"
 
+msgid "External Link"
+msgstr "Ekstern Lenke"
+
 msgid "Date"
 msgstr "Dato"
 
@@ -65,4 +68,7 @@ msgstr "Legg Til Ny Side"
 
 msgid "Edit"
 msgstr "Redigere"
+
+msgid "Heading"
+msgstr "Overskriften"
 

@@ -4,8 +4,8 @@ class mf_custom_list
 {
 	function __construct()
 	{
-		$this->post_type = "mf_custom_lists";
-		$this->meta_prefix = $this->post_type."_";
+		$this->post_type = 'mf_custom_lists';
+		$this->meta_prefix = $this->post_type.'_';
 	}
 
 	function get_order_for_select()
