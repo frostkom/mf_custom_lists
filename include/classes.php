@@ -713,7 +713,6 @@ class widget_custom_lists extends WP_Widget
 	function widget($args, $instance)
 	{
 		extract($args);
-
 		$instance = wp_parse_args((array)$instance, $this->arr_default);
 
 		if($instance['list_id'] > 0)
@@ -722,6 +721,8 @@ class widget_custom_lists extends WP_Widget
 
 				if($instance['list_heading'] != '')
 				{
+					$instance['list_heading'] = apply_filters('widget_title', $instance['list_heading'], $instance, $this->id_base);
+
 					echo $before_title
 						.$instance['list_heading']
 					.$after_title;
@@ -739,7 +740,6 @@ class widget_custom_lists extends WP_Widget
 	function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['list_heading'] = sanitize_text_field($new_instance['list_heading']);
