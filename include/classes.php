@@ -310,7 +310,7 @@ class mf_custom_list
 		switch($col)
 		{
 			case 'items':
-				$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'list_id', $id));
+				$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $id));
 
 				echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilterCustomList=".$id)."'>".$item_amount."</a>
 				<div class='row-actions'>
