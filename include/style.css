@@ -40,7 +40,7 @@
 	/* Style */
 	.custom_list h2, .custom_list h3
 	{
-		margin: 0 !important;
+		/*margin: 0 !important;*/ /* This messes up widget heading styles in aside */
 		overflow: hidden;
 		/*padding: 0 0 .5em !important;*/ /* This messes up widget heading styles in aside */
 		text-overflow: ellipsis;
