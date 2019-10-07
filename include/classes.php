@@ -115,12 +115,14 @@ class mf_custom_list
 					'id' => $this->meta_prefix.'container',
 					'type' => 'text',
 					'std' => "<ul[parent_class]>[children]</ul>",
+					'sanitize_callback' => 'none',
 				),
 				array(
 					'name' => __("Items", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'items',
 					'type' => 'textarea',
 					'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
+					'sanitize_callback' => 'none',
 				),
 				array(
 					'name' => __("Style", 'lang_custom_lists'),
