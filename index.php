@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.5.18
+Version: 3.5.19
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -42,7 +42,6 @@ if(is_admin())
 	add_filter('get_shortcode_list', array($obj_custom_list, 'get_shortcode_list'));
 
 	add_action('wp_trash_post', array($obj_custom_list, 'wp_trash_post'));
-	add_action('delete_post', array($obj_custom_list, 'wp_trash_post')); // Needs to be here until trash is emptied
 }
 
 else
