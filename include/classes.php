@@ -192,19 +192,24 @@ class mf_custom_list
 
 		$default_list_id = '';
 
-		if($default_list_id == '')
-		{
-			$default_list_id = check_var('list_id', 'int');
-		}
+		$post_id = check_var('post');
 
-		if($default_list_id == '')
+		if(!($post_id > 0))
 		{
-			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", $this->meta_prefix.'list_id'));
-		}
+			if($default_list_id == '')
+			{
+				$default_list_id = check_var('list_id', 'int');
+			}
 
-		if($default_list_id == '')
-		{
-			$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", $this->post_type, 'publish'));
+			if($default_list_id == '')
+			{
+				$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT meta_value FROM ".$wpdb->postmeta." WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 0, 1", $this->meta_prefix.'list_id'));
+			}
+
+			if($default_list_id == '')
+			{
+				$default_list_id = $wpdb->get_var($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s ORDER BY post_modified DESC LIMIT 0, 1", $this->post_type, 'publish'));
+			}
 		}
 
 		$meta_boxes[] = array(
