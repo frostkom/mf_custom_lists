@@ -5,6 +5,7 @@ class mf_custom_list
 	function __construct()
 	{
 		$this->post_type = 'mf_custom_lists';
+		$this->post_type_item = 'mf_custom_item';
 		$this->meta_prefix = $this->post_type.'_';
 	}
 
@@ -72,7 +73,7 @@ class mf_custom_list
 			'has_archive' => false,
 		);
 
-		register_post_type('mf_custom_item', $args);
+		register_post_type($this->post_type_item, $args);
 	}
 
 	function admin_menu()
@@ -92,10 +93,10 @@ class mf_custom_list
 		if(count($arr_data) > 0)
 		{
 			$menu_title = __("Items", 'lang_custom_lists');
-			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=mf_custom_item");
+			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
 
 			$menu_title = __("Add New", 'lang_custom_lists');
-			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=mf_custom_item");
+			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type_item);
 		}
 	}
 
@@ -215,7 +216,7 @@ class mf_custom_list
 		$meta_boxes[] = array(
 			'id' => 'settings',
 			'title' => __("Settings", 'lang_custom_lists'),
-			'post_types' => array('mf_custom_item'),
+			'post_types' => array($this->post_type_item),
 			'context' => 'side',
 			'priority' => 'low',
 			'fields' => array(
@@ -261,7 +262,7 @@ class mf_custom_list
 	{
 		global $post_type;
 
-		if($post_type == 'mf_custom_item')
+		if($post_type == $this->post_type_item)
 		{
 			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList', 'save' => true));
 			$strFilterCustomList = check_var('strFilterCustomList');
@@ -280,7 +281,7 @@ class mf_custom_list
 	{
 		global $post_type, $pagenow;
 
-		if($pagenow == 'edit.php' && $post_type == 'mf_custom_item')
+		if($pagenow == 'edit.php' && $post_type == $this->post_type_item)
 		{
 			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList'));
 			$strFilterCustomList = check_var('strFilterCustomList');
@@ -300,75 +301,81 @@ class mf_custom_list
 
 	function column_header($cols)
 	{
+		global $post_type;
+		
 		unset($cols['date']);
 
-		$cols['items'] = __("Items", 'lang_custom_lists');
-		$cols['style'] = __("Style", 'lang_custom_lists');
-		$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
-		$cols['date'] = __("Date", 'lang_custom_lists');
+		switch($post_type)
+		{
+			case $this->post_type:
+				$cols['items'] = __("Items", 'lang_custom_lists');
+				$cols['style'] = __("Style", 'lang_custom_lists');
+				$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
+				$cols['date'] = __("Date", 'lang_custom_lists');
+			break;
+			
+			case $this->post_type_item:
+				$cols['list_id'] = __("List", 'lang_custom_lists');
+				$cols['date'] = __("Date", 'lang_custom_lists');
+			break;
+		}
 
 		return $cols;
 	}
 
 	function column_cell($col, $id)
 	{
-		global $wpdb;
+		global $wpdb, $post;
 
-		switch($col)
+		switch($post->post_type)
 		{
-			case 'items':
-				$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $id));
-
-				echo "<a href='".admin_url("edit.php?post_type=mf_custom_item&strFilterCustomList=".$id)."'>".$item_amount."</a>
-				<div class='row-actions'>
-					<a href='".admin_url("post-new.php?post_type=mf_custom_item&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
-				</div>";
-			break;
-
-			case 'style':
-				$post_meta = get_post_meta($id, $this->meta_prefix.$col, true);
-
-				if($post_meta != '')
+			case $this->post_type:
+				switch($col)
 				{
-					echo $this->get_styles_for_select()[$post_meta];
+					case 'items':
+						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $id));
+
+						echo "<a href='".admin_url("edit.php?post_type=".$this->post_type_item."&strFilterCustomList=".$id)."'>".$item_amount."</a>
+						<div class='row-actions'>
+							<a href='".admin_url("post-new.php?post_type=".$this->post_type_item."&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
+						</div>";
+					break;
+
+					case 'style':
+						$post_meta = get_post_meta($id, $this->meta_prefix.$col, true);
+
+						if($post_meta != '')
+						{
+							echo $this->get_styles_for_select()[$post_meta];
+						}
+					break;
+
+					case 'shortcode':
+						$shortcode = "[mf_custom_list id=".$id."]";
+
+						echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly onclick='this.select()'"))
+						."<div class='row-actions'>
+							<a href='".admin_url("post-new.php?content=".$shortcode)."'>".__("Add New Post", 'lang_custom_lists')."</a> | <a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
+						</div>";
+					break;
 				}
 			break;
 
-			case 'shortcode':
-				$shortcode = "[mf_custom_list id=".$id."]";
+			case $this->post_type_item:
+				switch($col)
+				{
+					case 'list_id':
+						$parent_id = get_post_meta($id, $this->meta_prefix.$col, true);
+						$parent_title = get_the_title($parent_id);
 
-				echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly onclick='this.select()'"))
-				."<div class='row-actions'>
-					<a href='".admin_url("post-new.php?content=".$shortcode)."'>".__("Add New Post", 'lang_custom_lists')."</a> | <a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
-				</div>";
-			break;
-		}
-	}
+						$edit_url = "post.php?post=".$parent_id."&action=edit";
 
-	function column_header_item($cols)
-	{
-		unset($cols['date']);
-
-		$cols['list_id'] = __("List", 'lang_custom_lists');
-		$cols['date'] = __("Date", 'lang_custom_lists');
-
-		return $cols;
-	}
-
-	function column_cell_item($col, $id)
-	{
-		switch($col)
-		{
-			case 'list_id':
-				$parent_id = get_post_meta($id, $this->meta_prefix.$col, true);
-				$parent_title = get_the_title($parent_id);
-
-				$edit_url = "post.php?post=".$parent_id."&action=edit";
-
-				echo "<a href='".$edit_url."'>".$parent_title."</a>
-				<div class='row-actions'>
-					<span class='edit'><a href='".$edit_url."'>".__("Edit", 'lang_custom_lists')."</a></span>
-				</div>";
+						echo "<a href='".$edit_url."'>".$parent_title."</a>
+						<div class='row-actions'>
+							<span class='edit'><a href='".$edit_url."'>".__("Edit", 'lang_custom_lists')."</a></span>
+						</div>";
+					break;
+				}
 			break;
 		}
 	}
@@ -453,7 +460,7 @@ class mf_custom_list
 
 		if(get_post_type($post_id) == $this->post_type)
 		{
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", 'mf_custom_item', $post_id));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", $this->post_type_item, $post_id));
 
 			foreach($result as $r)
 			{
@@ -539,7 +546,7 @@ class mf_custom_list
 					break;
 				}
 
-				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = 'mf_custom_item' AND post_status = 'publish' AND meta_value = '%d'".$query_order." LIMIT 0, %d", $parent_id, ($amount > 0 ? $amount : 100)));
+				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d'".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($amount > 0 ? $amount : 100)));
 
 				foreach($result2 as $r)
 				{

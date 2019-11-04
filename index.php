@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.5.20
+Version: 3.5.21
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -31,11 +31,11 @@ if(is_admin())
 	add_action('restrict_manage_posts', array($obj_custom_list, 'restrict_manage_posts'));
 	add_action('pre_get_posts', array($obj_custom_list, 'pre_get_posts'));
 
-	add_filter('manage_mf_custom_lists_posts_columns', array($obj_custom_list, 'column_header'), 5);
-	add_action('manage_mf_custom_lists_posts_custom_column', array($obj_custom_list, 'column_cell'), 5, 2);
+	add_filter('manage_'.$obj_custom_list->post_type.'_posts_columns', array($obj_custom_list, 'column_header'), 5);
+	add_action('manage_'.$obj_custom_list->post_type.'_posts_custom_column', array($obj_custom_list, 'column_cell'), 5, 2);
 
-	add_filter('manage_mf_custom_item_posts_columns', array($obj_custom_list, 'column_header_item'), 5);
-	add_action('manage_mf_custom_item_posts_custom_column', array($obj_custom_list, 'column_cell_item'), 5, 2);
+	add_filter('manage_'.$obj_custom_list->post_type_item.'_posts_columns', array($obj_custom_list, 'column_header'), 5);
+	add_action('manage_'.$obj_custom_list->post_type_item.'_posts_custom_column', array($obj_custom_list, 'column_cell'), 5, 2);
 
 	add_filter('count_shortcode_button', array($obj_custom_list, 'count_shortcode_button'));
 	add_filter('get_shortcode_output', array($obj_custom_list, 'get_shortcode_output'));
@@ -62,7 +62,9 @@ function activate_custom_lists()
 
 function uninstall_custom_lists()
 {
+	global $obj_custom_list;
+
 	mf_uninstall_plugin(array(
-		'post_types' => array('mf_custom_lists', 'mf_custom_item'),
+		'post_types' => array($obj_custom_list->post_type, $obj_custom_list->post_type_item),
 	));
 }
