@@ -87,6 +87,9 @@ class mf_custom_list
 		$menu_title = __("Lists", 'lang_custom_lists');
 		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
 
+		$menu_title = " - ".__("Add New", 'lang_custom_lists');
+		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
+
 		$arr_data = array();
 		get_post_children(array('post_type' => $this->post_type), $arr_data);
 
@@ -95,7 +98,7 @@ class mf_custom_list
 			$menu_title = __("Items", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
 
-			$menu_title = __("Add New", 'lang_custom_lists');
+			$menu_title = " - ".__("Add New", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type_item);
 		}
 	}
@@ -302,7 +305,7 @@ class mf_custom_list
 	function column_header($cols)
 	{
 		global $post_type;
-		
+
 		unset($cols['date']);
 
 		switch($post_type)
@@ -313,7 +316,7 @@ class mf_custom_list
 				$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
 				$cols['date'] = __("Date", 'lang_custom_lists');
 			break;
-			
+
 			case $this->post_type_item:
 				$cols['list_id'] = __("List", 'lang_custom_lists');
 				$cols['date'] = __("Date", 'lang_custom_lists');
