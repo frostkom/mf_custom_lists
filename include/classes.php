@@ -108,7 +108,7 @@ class mf_custom_list
 		global $wpdb;
 
 		$meta_boxes[] = array(
-			'id' => 'structure',
+			'id' => $this->meta_prefix.'structure',
 			'title' => __("Structure", 'lang_custom_lists'),
 			'post_types' => array($this->post_type),
 			//'context' => 'side',
@@ -144,7 +144,7 @@ class mf_custom_list
 		);
 
 		$meta_boxes[] = array(
-			'id' => 'settings',
+			'id' => $this->meta_prefix.'settings',
 			'title' => __("Settings", 'lang_custom_lists'),
 			'post_types' => array($this->post_type),
 			'context' => 'side',
@@ -217,7 +217,7 @@ class mf_custom_list
 		}
 
 		$meta_boxes[] = array(
-			'id' => 'settings',
+			'id' => $this->meta_prefix.'settings',
 			'title' => __("Settings", 'lang_custom_lists'),
 			'post_types' => array($this->post_type_item),
 			'context' => 'side',
