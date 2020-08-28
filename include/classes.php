@@ -737,7 +737,7 @@ class widget_custom_lists extends WP_Widget
 {
 	function __construct()
 	{
-		$widget_ops = array(
+		$this->widget_ops = array(
 			'classname' => 'custom_list',
 			'description' => __("Display a custom list that you have created", 'lang_custom_lists')
 		);
@@ -749,7 +749,7 @@ class widget_custom_lists extends WP_Widget
 			'list_order' => 'numerical',
 		);
 
-		parent::__construct('custom-list-widget', __("Custom List", 'lang_custom_lists'), $widget_ops);
+		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Custom List", 'lang_custom_lists'), $this->widget_ops);
 	}
 
 	function widget($args, $instance)
@@ -799,7 +799,7 @@ class widget_custom_lists extends WP_Widget
 		$obj_custom_list = new mf_custom_list();
 
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading'], 'xtra' => " id='list-title'"))
+			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
 			.show_select(array('data' => get_posts_for_select(array('post_type' => "mf_custom_lists")), 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $instance['list_id']))
 			."<div class='flex_flow'>"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $instance['list_amount']))
