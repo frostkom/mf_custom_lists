@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: 
-Version: 3.5.25
+Version: 3.5.26
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -25,6 +25,7 @@ if(is_admin())
 	register_activation_hook(__FILE__, 'activate_custom_lists');
 	register_uninstall_hook(__FILE__, 'uninstall_custom_lists');
 
+	add_action('admin_init', array($obj_custom_list, 'admin_init'), 0);
 	add_action('admin_menu', array($obj_custom_list, 'admin_menu'));
 	add_action('rwmb_meta_boxes', array($obj_custom_list, 'rwmb_meta_boxes'));
 
@@ -55,7 +56,7 @@ add_filter('filter_is_file_used', array($obj_custom_list, 'filter_is_file_used')
 
 add_action('widgets_init', array($obj_custom_list, 'widgets_init'));
 
-load_plugin_textdomain('lang_custom_lists', false, dirname(plugin_basename(__FILE__)).'/lang/');
+load_plugin_textdomain('lang_custom_lists', false, dirname(plugin_basename(__FILE__))."/lang/");
 
 function activate_custom_lists()
 {

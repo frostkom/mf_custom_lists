@@ -76,6 +76,14 @@ class mf_custom_list
 		register_post_type($this->post_type_item, $args);
 	}
 
+	function admin_init()
+	{
+		if(!is_plugin_active("mf_base/index.php"))
+		{
+			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
+		}
+	}
+
 	function admin_menu()
 	{
 		$menu_start = "edit.php?post_type=".$this->post_type;
