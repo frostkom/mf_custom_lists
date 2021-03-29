@@ -76,14 +76,6 @@ class mf_custom_list
 		register_post_type($this->post_type_item, $args);
 	}
 
-	function admin_init()
-	{
-		if(!is_plugin_active("mf_base/index.php"))
-		{
-			deactivate_plugins(str_replace("include/classes.php", "index.php", plugin_basename(__FILE__)));
-		}
-	}
-
 	function admin_menu()
 	{
 		$menu_start = "edit.php?post_type=".$this->post_type;
@@ -95,8 +87,8 @@ class mf_custom_list
 		$menu_title = __("Lists", 'lang_custom_lists');
 		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, $menu_start);
 
-		$menu_title = " - ".__("Add New", 'lang_custom_lists');
-		add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
+		$menu_title = __("Add New", 'lang_custom_lists');
+		add_submenu_page($menu_start, $menu_title, " - ".$menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
 
 		$arr_data = array();
 		get_post_children(array('post_type' => $this->post_type), $arr_data);
@@ -106,8 +98,8 @@ class mf_custom_list
 			$menu_title = __("Items", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
 
-			$menu_title = " - ".__("Add New", 'lang_custom_lists');
-			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type_item);
+			$menu_title = __("Add New", 'lang_custom_lists');
+			add_submenu_page($menu_start, $menu_title, " - ".$menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type_item);
 		}
 	}
 
@@ -205,6 +197,9 @@ class mf_custom_list
 		$default_list_id = '';
 
 		$post_id = check_var('post');
+		/*$post_id = get_rwmb_post_id(array(
+			'meta_key' => 'meta_custom_lists_',
+		));*/
 
 		if(!($post_id > 0))
 		{
@@ -364,7 +359,7 @@ class mf_custom_list
 					case 'shortcode':
 						$shortcode = "[mf_custom_list id=".$id."]";
 
-						echo show_textfield(array('value' => $shortcode, 'xtra' => "readonly onclick='this.select()'"))
+						echo show_textfield(array('value' => $shortcode, 'readonly' => true, 'xtra' => "onclick='this.select()'"))
 						."<div class='row-actions'>
 							<a href='".admin_url("post-new.php?content=".$shortcode)."'>".__("Add New Post", 'lang_custom_lists')."</a> | <a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
 						</div>";
