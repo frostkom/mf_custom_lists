@@ -29,6 +29,7 @@ class mf_custom_list
 			'one_col' => __("One Column", 'lang_custom_lists'),
 			'people' => __("People", 'lang_custom_lists'),
 			'screenshots' => __("Screenshots", 'lang_custom_lists'),
+			'slider' => __("Slider", 'lang_custom_lists'),
 			'vertical' => __("Vertical", 'lang_custom_lists'),
 		);
 	}
@@ -644,61 +645,67 @@ class mf_custom_list
 					);
 				}
 
-				$out .= str_replace("[children]", $out_children, $parent_container);
+				if($out_children != '')
+				{
+					$out .= str_replace("[children]", $out_children, $parent_container);
+				}
 			}
 
-			else
+			else if($parent_container != '')
 			{
 				$out .= $parent_container;
 			}
 
-			$parent_class = "custom_list";
-
-			if($post_name != '')
+			if($out != '')
 			{
-				$parent_class .= " custom_list_".$post_name;
-			}
+				$parent_class = "custom_list";
 
-			if($parent_style != '')
-			{
-				$parent_class .= " custom_list_style_".$parent_style;
-			}
+				if($post_name != '')
+				{
+					$parent_class .= " custom_list_".$post_name;
+				}
 
-			if($has_image == true)
-			{
-				$parent_class .= " custom_list_has_image";
-			}
+				if($parent_style != '')
+				{
+					$parent_class .= " custom_list_style_".$parent_style;
+				}
 
-			if($parent_read_more == 'yes')
-			{
-				$parent_class .= " custom_list_read_more";
-			}
+				if($has_image == true)
+				{
+					$parent_class .= " custom_list_has_image";
+				}
 
-			if($parent_columns_desktop > 0)
-			{
-				$parent_class .= " custom_list_columns_desktop_".$parent_columns_desktop;
-			}
+				if($parent_read_more == 'yes')
+				{
+					$parent_class .= " custom_list_read_more";
+				}
 
-			if($parent_columns_tablet > 0)
-			{
-				$parent_class .= " custom_list_columns_tablet_".$parent_columns_tablet;
-			}
+				if($parent_columns_desktop > 0)
+				{
+					$parent_class .= " custom_list_columns_desktop_".$parent_columns_desktop;
+				}
 
-			if($parent_columns_mobile > 0)
-			{
-				$parent_class .= " custom_list_columns_mobile_".$parent_columns_mobile;
-			}
+				if($parent_columns_tablet > 0)
+				{
+					$parent_class .= " custom_list_columns_tablet_".$parent_columns_tablet;
+				}
 
-			$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
+				if($parent_columns_mobile > 0)
+				{
+					$parent_class .= " custom_list_columns_mobile_".$parent_columns_mobile;
+				}
 
-			if($parent_custom_style != '')
-			{
-				$out .= "<style>
-					@media all
-					{"
-						.$parent_custom_style
-					."}
-				</style>";
+				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
+
+				if($parent_custom_style != '')
+				{
+					$out .= "<style>
+						@media all
+						{"
+							.$parent_custom_style
+						."}
+					</style>";
+				}
 			}
 		}
 
@@ -762,23 +769,28 @@ class widget_custom_lists extends WP_Widget
 
 		if($instance['list_id'] > 0)
 		{
-			echo $before_widget;
+			$obj_custom_list = new mf_custom_list();
 
-				if($instance['list_heading'] != '')
-				{
-					$instance['list_heading'] = apply_filters('widget_title', $instance['list_heading'], $instance, $this->id_base);
+			$out_temp = $obj_custom_list->shortcode_custom_list(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']));
 
-					echo $before_title
-						.$instance['list_heading']
-					.$after_title;
-				}
+			if($out_temp != '')
+			{
+				echo $before_widget;
 
-				$obj_custom_list = new mf_custom_list();
+					if($instance['list_heading'] != '')
+					{
+						$instance['list_heading'] = apply_filters('widget_title', $instance['list_heading'], $instance, $this->id_base);
 
-				echo "<div class='section'>"
-					.$obj_custom_list->shortcode_custom_list(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']))
-				."</div>"
-			.$after_widget;
+						echo $before_title
+							.$instance['list_heading']
+						.$after_title;
+					}
+
+					echo "<div class='section'>"
+						.$out_temp
+					."</div>"
+				.$after_widget;
+			}
 		}
 	}
 

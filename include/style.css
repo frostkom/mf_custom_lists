@@ -518,4 +518,22 @@
 				display: block;
 				margin: 0 auto;
 			}
+
+	/* Slider */
+	.custom_list_style_slider
+	{
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		text-align: center;
+	}
+
+		.custom_list_style_slider li
+		{
+			-webkit-box-flex: 1 1 auto;
+			-webkit-flex: 1 1 auto;
+			-ms-flex: 1 1 auto;
+			flex: 1 1 auto;
+		}
 }
