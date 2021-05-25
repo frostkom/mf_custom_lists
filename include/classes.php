@@ -91,10 +91,11 @@ class mf_custom_list
 		$menu_title = __("Add New", 'lang_custom_lists');
 		add_submenu_page($menu_start, $menu_title, " - ".$menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
 
-		$arr_data = array();
+		/*$arr_data = array();
 		get_post_children(array('post_type' => $this->post_type), $arr_data);
 
-		if(count($arr_data) > 0)
+		if(count($arr_data) > 0)*/
+		if(does_post_exists(array('post_type' => $this->post_type)))
 		{
 			$menu_title = __("Items", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
@@ -106,7 +107,12 @@ class mf_custom_list
 
 	function rwmb_meta_boxes($meta_boxes)
 	{
-		global $wpdb;
+		global $wpdb, $obj_base;
+
+		if(!isset($obj_base))
+		{
+			$obj_base = new mf_base();
+		}
 
 		$meta_boxes[] = array(
 			'id' => $this->meta_prefix.'structure',
@@ -126,7 +132,7 @@ class mf_custom_list
 					'name' => __("Items", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'items',
 					'type' => 'textarea',
-					'std' => "<li><h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
+					'std' => "<li>[list_icon]<h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
 					'sanitize_callback' => 'none',
 				),
 				array(
@@ -233,6 +239,12 @@ class mf_custom_list
 					'type' => 'select',
 					'options' => get_posts_for_select(array('post_type' => $this->post_type)),
 					'std' => $default_list_id,
+				),
+				array(
+					'name' => __("Icon", 'lang_custom_lists'),
+					'id' => $this->meta_prefix.'icon',
+					'type' => 'select',
+					'options' => $obj_base->get_icons_for_select(),
 				),
 				array(
 					'name' => __("Image", 'lang_custom_lists'),
@@ -583,6 +595,15 @@ class mf_custom_list
 							{
 								case 'list_id':
 									$out .= $child_id;
+								break;
+
+								case 'list_icon':
+									$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
+
+									if($child_icon != '')
+									{
+										$out .= "<i class='".$child_icon."'></i>";
+									}
 								break;
 
 								case 'list_title':
