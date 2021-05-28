@@ -488,6 +488,17 @@ class mf_custom_list
 		}
 	}
 
+	function filter_last_updated_post_types($array, $type)
+	{
+		if($type == 'auto')
+		{
+			$array[] = $this->post_type;
+			$array[] = $this->post_type_item;
+		}
+
+		return $array;
+	}
+
 	function wp_head()
 	{
 		$plugin_include_url = plugin_dir_url(__FILE__);

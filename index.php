@@ -44,6 +44,8 @@ if(is_plugin_active("mf_base/index.php"))
 		add_filter('get_shortcode_list', array($obj_custom_list, 'get_shortcode_list'));
 
 		add_action('wp_trash_post', array($obj_custom_list, 'wp_trash_post'));
+
+		add_filter('filter_last_updated_post_types', array($obj_custom_list, 'filter_last_updated_post_types'), 10, 2);
 	}
 
 	else
