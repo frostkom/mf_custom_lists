@@ -786,6 +786,7 @@ class widget_custom_lists extends WP_Widget
 
 		$this->arr_default = array(
 			'list_heading' => '',
+			'list_content' => '',
 			'list_id' => '',
 			'list_amount' => 0,
 			'list_order' => 'numerical',
@@ -818,8 +819,14 @@ class widget_custom_lists extends WP_Widget
 						.$after_title;
 					}
 
-					echo "<div class='section'>"
-						.$out_temp
+					echo "<div class='section'>";
+					
+						if($instance['list_content'] != '')
+						{
+							echo apply_filters('the_content', $instance['list_content']);
+						}
+
+						echo $out_temp
 					."</div>"
 				.$after_widget;
 			}
@@ -832,6 +839,7 @@ class widget_custom_lists extends WP_Widget
 		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
 
 		$instance['list_heading'] = sanitize_text_field($new_instance['list_heading']);
+		$instance['list_content'] = sanitize_text_field($new_instance['list_content']);
 		$instance['list_id'] = sanitize_text_field($new_instance['list_id']);
 		$instance['list_amount'] = sanitize_text_field($new_instance['list_amount']);
 		$instance['list_order'] = sanitize_text_field($new_instance['list_order']);
@@ -847,6 +855,7 @@ class widget_custom_lists extends WP_Widget
 
 		echo "<div class='mf_form'>"
 			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textarea(array('name' => $this->get_field_name('list_content'), 'text' => __("Content", 'lang_custom_lists'), 'value' => $instance['list_content']))
 			.show_select(array('data' => get_posts_for_select(array('post_type' => "mf_custom_lists")), 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $instance['list_id']))
 			."<div class='flex_flow'>"
 				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $instance['list_amount']))
