@@ -30,6 +30,7 @@ class mf_custom_list
 			'people' => __("People", 'lang_custom_lists'),
 			'screenshots' => __("Screenshots", 'lang_custom_lists'),
 			'slider' => __("Slider", 'lang_custom_lists'),
+			'testimonials' => __("Testimonials", 'lang_custom_lists'),
 			'vertical' => __("Vertical", 'lang_custom_lists'),
 		);
 	}
@@ -69,7 +70,7 @@ class mf_custom_list
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
 			'exclude_from_search' => true,
-			'supports' => array('title', 'editor', 'custom-fields'),
+			'supports' => array('title', 'editor', 'excerpt', 'custom-fields'),
 			'hierarchical' => true,
 			'has_archive' => false,
 		);
@@ -132,7 +133,7 @@ class mf_custom_list
 					'name' => __("Items", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'items',
 					'type' => 'textarea',
-					'std' => "<li>[list_icon]<h2><a href='[list_link]'>[list_title]</a></h2>[list_image][list_text]</li>",
+					'std' => "<li>[list_icon]<h4><a href='[list_link]'>[list_title]</a></h4>[list_excerpt][list_image][list_text]</li>",
 					'sanitize_callback' => 'none',
 				),
 				array(
@@ -204,9 +205,6 @@ class mf_custom_list
 		$default_list_id = '';
 
 		$post_id = check_var('post');
-		/*$post_id = get_rwmb_post_id(array(
-			'meta_key' => 'meta_custom_lists_',
-		));*/
 
 		if(!($post_id > 0))
 		{
@@ -629,6 +627,12 @@ class mf_custom_list
 									$out .= apply_filters('the_content', $child_text);
 								break;
 
+								case 'list_excerpt':
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
+
+									$out .= apply_filters('the_content', $child_text);
+								break;
+
 								case 'list_image':
 									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
@@ -820,7 +824,7 @@ class widget_custom_lists extends WP_Widget
 					}
 
 					echo "<div class='section'>";
-					
+
 						if($instance['list_content'] != '')
 						{
 							echo apply_filters('the_content', $instance['list_content']);
