@@ -518,7 +518,7 @@
 		width: 24%;
 		transition: all 4s ease;
 	}
-	
+
 		.custom_list_style_testimonials li:hover
 		{
 			box-shadow: 0 2em 2em rgba(0, 0, 0, .3);
