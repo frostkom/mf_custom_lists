@@ -24,6 +24,7 @@ class mf_custom_list
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
 			'about_us' => __("About Us", 'lang_custom_lists'),
 			'flags' => __("Flags", 'lang_custom_lists'),
+			'flex' => __("Flex", 'lang_custom_lists'),
 			'horizontal' => __("Horizontal", 'lang_custom_lists'),
 			'logos' => __("Logos", 'lang_custom_lists'),
 			'one_col' => __("One Column", 'lang_custom_lists'),
@@ -327,13 +328,14 @@ class mf_custom_list
 			case $this->post_type:
 				$cols['items'] = __("Items", 'lang_custom_lists');
 				$cols['style'] = __("Style", 'lang_custom_lists');
+				$cols['columns'] = __("Columns", 'lang_custom_lists');
 				$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
-				$cols['date'] = __("Date", 'lang_custom_lists');
+				//$cols['date'] = __("Date", 'lang_custom_lists');
 			break;
 
 			case $this->post_type_item:
 				$cols['list_id'] = __("List", 'lang_custom_lists');
-				$cols['date'] = __("Date", 'lang_custom_lists');
+				//$cols['date'] = __("Date", 'lang_custom_lists');
 			break;
 		}
 
@@ -364,6 +366,37 @@ class mf_custom_list
 						if($post_meta != '')
 						{
 							echo $this->get_styles_for_select()[$post_meta];
+						}
+					break;
+
+					case 'columns':
+						$post_meta_columns_desktop = get_post_meta($id, $this->meta_prefix.'columns_desktop', true);
+						$post_meta_columns_tablet = get_post_meta($id, $this->meta_prefix.'columns_tablet', true);
+						$post_meta_columns_mobile = get_post_meta($id, $this->meta_prefix.'columns_mobile', true);
+
+						if($post_meta_columns_desktop > 0)
+						{
+							echo "<span title='".__("Desktop", 'lang_custom_lists')."'>".$post_meta_columns_desktop."</span>";
+						}
+
+						if($post_meta_columns_tablet > 0)
+						{
+							if($post_meta_columns_desktop > 0)
+							{
+								echo " / ";
+							}
+
+							echo "<span title='".__("Tablet", 'lang_custom_lists')."'>".$post_meta_columns_tablet."</span>";
+						}
+
+						if($post_meta_columns_mobile > 0)
+						{
+							if($post_meta_columns_desktop > 0 || $post_meta_columns_tablet > 0)
+							{
+								echo " / ";
+							}
+
+							echo "<span title='".__("Mobile", 'lang_custom_lists')."'>".$post_meta_columns_mobile."</span>";
 						}
 					break;
 

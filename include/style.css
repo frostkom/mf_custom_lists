@@ -83,7 +83,7 @@
 	}
 
 	/* Style-Specific */
-	article .custom_list_style_vertical, article .custom_list_style_horizontal, article .custom_list_style_about_us, article .custom_list_style_logos, article .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
+	article .custom_list_style_vertical, article .custom_list_style_horizontal, article .custom_list_style_about_us, article .custom_list_style_flex, article .custom_list_style_logos, article .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 	{
 		display: -webkit-box;
 		display: -ms-flexbox;
@@ -95,7 +95,7 @@
 		flex-wrap: wrap;
 	}
 
-		article .custom_list_style_vertical li, article .custom_list_style_horizontal li, article .custom_list_style_about_us li, article .custom_list_style_logos li, article .custom_list_style_screenshots li, .custom_list_style_people li, .custom_list_style_testimonials li
+		article .custom_list_style_vertical > li, article .custom_list_style_horizontal > li, article .custom_list_style_about_us > li, article .custom_list_style_flex > li, article .custom_list_style_logos > li, article .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
 		{
 			-webkit-box-flex: 0 1 auto;
 			-webkit-flex: 0 1 auto;
@@ -105,13 +105,13 @@
 		}
 
 	/* Vertical */
-	.custom_list_style_vertical li
+	.custom_list_style_vertical > li
 	{
 		text-align: center;
 	}
 
 	/* Horizontal */
-	.custom_list_style_horizontal li
+	.custom_list_style_horizontal > li
 	{
 		overflow: hidden;
 	}
@@ -145,7 +145,7 @@
 				}
 
 	/* About Us */
-	.custom_list_style_about_us li
+	.custom_list_style_about_us > li
 	{
 		border: 0;
 		border-radius: .5em;
@@ -154,17 +154,17 @@
 		text-align: center;
 	}
 
-		article .custom_list_style_about_us li
+		article .custom_list_style_about_us > li
 		{
 			width: 23%;
 		}
 
-			.is_mobile article .custom_list_style_about_us li
+			.is_mobile article .custom_list_style_about_us > li
 			{
 				width: 48%;
 			}
 
-		.custom_list_style_about_us li:before
+		.custom_list_style_about_us > li:before
 		{
 			position: absolute;
 			top: 0;
@@ -179,13 +179,13 @@
 			z-index: 1;
 		}
 
-			.custom_list_style_about_us li:hover:before
+			.custom_list_style_about_us > li:hover:before
 			{
 				-webkit-transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
 				transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
 			}
 
-		.custom_list_style_about_us li img
+		.custom_list_style_about_us > li img
 		{
 			display: block;
 			margin: 0 auto 1em;
@@ -193,77 +193,77 @@
 			transition: all 1s;
 		}
 
-			.custom_list_style_about_us li img:hover
+			.custom_list_style_about_us > li img:hover
 			{
 				border-radius: 95% 70% 80% 100%;
 				-webkit-transform: rotate(-2deg);
 				transform: rotate(-2deg);
 			}
 
-		.custom_list_style_about_us li:nth-child(2n+1) img
+		.custom_list_style_about_us > li:nth-child(2n+1) img
 		{
 			border-radius: 59% 52% 59% 56%;
 			-webkit-transform: rotate(-6deg);
 			transform: rotate(-6deg);
 		}
 
-			.custom_list_style_about_us li:nth-child(2n+1) img:hover
+			.custom_list_style_about_us > li:nth-child(2n+1) img:hover
 			{
 				border-radius: 51% 67% 64% 56%;
 				-webkit-transform: rotate(-4deg);
 				transform: rotate(-4deg);
 			}
 
-		.custom_list_style_about_us li:nth-child(3n+2) img
+		.custom_list_style_about_us > li:nth-child(3n+2) img
 		{
 			border-radius: 84% 94% 72% 83%;
 			-webkit-transform: rotate(5deg);
 			transform: rotate(5deg);
 		}
 
-			.custom_list_style_about_us li:nth-child(3n+2) img:hover
+			.custom_list_style_about_us > li:nth-child(3n+2) img:hover
 			{
 				border-radius: 69% 64% 70% 53%;
 				-webkit-transform: rotate(1deg);
 				transform: rotate(1deg);
 			}
 
-		.custom_list_style_about_us li:nth-child(5n+3) img
+		.custom_list_style_about_us > li:nth-child(5n+3) img
 		{
 			border-radius: 73% 100% 100% 82%;
 			-webkit-transform: rotate(7deg);
 			transform: rotate(7deg);
 		}
 
-			.custom_list_style_about_us li:nth-child(5n+3) img:hover
+			.custom_list_style_about_us > li:nth-child(5n+3) img:hover
 			{
 				border-radius: 73% 70% 80% 82%;
 				-webkit-transform: rotate(6deg);
 				transform: rotate(6deg);
 			}
 
-		.custom_list_style_about_us li:nth-child(7n+5) img
+		.custom_list_style_about_us > li:nth-child(7n+5) img
 		{
 			border-radius: 93% 90% 78% 85%;
 			-webkit-transform: rotate(-2deg);
 			transform: rotate(-2deg);
 		}
 
-			.custom_list_style_about_us li:nth-child(7n+5) img:hover
+			.custom_list_style_about_us > li:nth-child(7n+5) img:hover
 			{
 				border-radius: 53% 70% 68% 85%;
 				-webkit-transform: rotate(-2deg);
 				transform: rotate(-2deg);
 			}
 
-		.custom_list_style_about_us li:nth-child(11n+7) img
+		.custom_list_style_about_us > li:nth-child(11n+7) img
 		{
 			border-radius: 68% 68% 53% 83%;
 			-webkit-transform: rotate(-5deg);
 			transform: rotate(-5deg);
 		}
 
-			.custom_list_style_about_us li:nth-child(11n+7) img:hover
+			.custom_list_style_about_us > li:nth-child(11n+7) img:hover
 			{
 				border-radius: 58% 98% 83% 78%;
 				-webkit-transform: rotate(3deg);
@@ -282,13 +282,19 @@
 			display: none;
 		}
 
-		header .custom_list_style_flags li
+		header .custom_list_style_flags > li
 		{
 			display: inline-block;
 		}
 
+	/* Flex */
+	.custom_list_style_flex > li
+	{
+		text-align: center;
+	}
+
 	/* Logos */
-	.custom_list_style_logos li
+	.custom_list_style_logos > li
 	{
 		border: .3em solid #999;
 		border-radius: .5em;
@@ -297,12 +303,12 @@
 		padding: 1em;
 	}
 
-		article .custom_list_style_logos li
+		article .custom_list_style_logos > li
 		{
 			width: 31%;
 		}
 
-			.is_mobile article .custom_list_style_logos li
+			.is_mobile article .custom_list_style_logos > li
 			{
 				width: 48%;
 			}
@@ -336,7 +342,7 @@
 					}
 
 	/* One Column */
-	.custom_list_style_one_col li
+	.custom_list_style_one_col > li
 	{
 		overflow: hidden;
 	}
@@ -354,22 +360,22 @@
 		}
 
 	/* People */
-	.custom_list_style_people li
+	.custom_list_style_people > li
 	{
 		text-align: center;
 	}
 
-		article .custom_list_style_people li
+		article .custom_list_style_people > li
 		{
 			width: 24%;
 		}
 
-			.is_tablet article .custom_list_style_people li
+			.is_tablet article .custom_list_style_people > li
 			{
 				width: 32%;
 			}
 
-			.is_mobile article .custom_list_style_people li
+			.is_mobile article .custom_list_style_people > li
 			{
 				width: 99%;
 			}
@@ -402,7 +408,7 @@
 				}
 
 	/* Screenshots */
-	.custom_list_style_screenshots li
+	.custom_list_style_screenshots > li
 	{
 		border: .3em solid #999;
 		border-radius: .5em;
@@ -411,17 +417,17 @@
 		position: relative;
 	}
 
-		article .custom_list_style_screenshots li
+		article .custom_list_style_screenshots > li
 		{
 			width: 48%;
 		}
 
-			.is_mobile article .custom_list_style_screenshots li
+			.is_mobile article .custom_list_style_screenshots > li
 			{
 				width: 98%;
 			}
 
-		.custom_list_style_screenshots li:before
+		.custom_list_style_screenshots > li:before
 		{
 			position: absolute;
 			top: 0;
@@ -435,7 +441,7 @@
 			transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, -100%, 0);
 		}
 
-			.custom_list_style_screenshots li:hover:before
+			.custom_list_style_screenshots > li:hover:before
 			{
 				-webkit-transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
 				transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
@@ -501,7 +507,7 @@
 		text-align: center;
 	}
 
-		.custom_list_style_slider li
+		.custom_list_style_slider > li
 		{
 			-webkit-box-flex: 1 1 auto;
 			-webkit-flex: 1 1 auto;
@@ -510,7 +516,7 @@
 		}
 
 	/* Testimonials */
-	.custom_list_style_testimonials li
+	.custom_list_style_testimonials > li
 	{
 		box-shadow: none;
 		border-radius: .5em;
@@ -519,17 +525,17 @@
 		transition: all 4s ease;
 	}
 
-		.custom_list_style_testimonials li:hover
+		.custom_list_style_testimonials > li:hover
 		{
 			box-shadow: 0 2em 2em rgba(0, 0, 0, .3);
 		}
 
-		.is_tablet article .custom_list_style_testimonials li
+		.is_tablet article .custom_list_style_testimonials > li
 		{
 			width: 32%;
 		}
 
-		.is_mobile article .custom_list_style_testimonials li
+		.is_mobile article .custom_list_style_testimonials > li
 		{
 			width: 99%;
 		}
