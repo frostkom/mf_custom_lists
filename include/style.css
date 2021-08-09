@@ -82,6 +82,11 @@
 		width: 99%;
 	}
 
+		.is_mobile .custom_list_columns_mobile_1 > li + li
+		{
+			margin-top: 3em;
+		}
+
 	/* Style-Specific */
 	article .custom_list_style_vertical, article .custom_list_style_horizontal, article .custom_list_style_about_us, article .custom_list_style_flex, article .custom_list_style_logos, article .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 	{
