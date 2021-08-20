@@ -330,12 +330,10 @@ class mf_custom_list
 				$cols['style'] = __("Style", 'lang_custom_lists');
 				$cols['columns'] = __("Columns", 'lang_custom_lists');
 				$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
-				//$cols['date'] = __("Date", 'lang_custom_lists');
 			break;
 
 			case $this->post_type_item:
 				$cols['list_id'] = __("List", 'lang_custom_lists');
-				//$cols['date'] = __("Date", 'lang_custom_lists');
 			break;
 		}
 
