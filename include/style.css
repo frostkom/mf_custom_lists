@@ -535,12 +535,12 @@
 			box-shadow: 0 2em 2em rgba(0, 0, 0, .3);
 		}
 
-		.is_tablet article .custom_list_style_testimonials > li
+		.is_tablet .custom_list_style_testimonials > li
 		{
 			width: 32%;
 		}
 
-		.is_mobile article .custom_list_style_testimonials > li
+		.is_mobile .custom_list_style_testimonials > li
 		{
 			width: 99%;
 		}
