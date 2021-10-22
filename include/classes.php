@@ -653,13 +653,13 @@ class mf_custom_list
 								break;
 
 								case 'list_text':
-									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
 
 									$out .= apply_filters('the_content', $child_text);
 								break;
 
 								case 'list_excerpt':
-									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = 'publish' AND ID = '%d'", $child_id));
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
 
 									$out .= apply_filters('the_content', $child_text);
 								break;
