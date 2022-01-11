@@ -93,10 +93,6 @@ class mf_custom_list
 		$menu_title = __("Add New", 'lang_custom_lists');
 		add_submenu_page($menu_start, $menu_title, " - ".$menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
 
-		/*$arr_data = array();
-		get_post_children(array('post_type' => $this->post_type), $arr_data);
-
-		if(count($arr_data) > 0)*/
 		if(does_post_exists(array('post_type' => $this->post_type)))
 		{
 			$menu_title = __("Items", 'lang_custom_lists');
