@@ -2,8 +2,8 @@
 /*
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
-Description: 
-Version: 3.6.19
+Description:
+Version: 3.6.20
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -68,7 +68,9 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	function uninstall_custom_lists()
 	{
-		global $obj_custom_list;
+		include_once("include/classes.php");
+
+		$obj_custom_list = new mf_custom_list();
 
 		mf_uninstall_plugin(array(
 			'post_types' => array($obj_custom_list->post_type, $obj_custom_list->post_type_item), //'mf_custom_lists', 'mf_custom_item'
