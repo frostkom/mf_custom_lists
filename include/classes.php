@@ -144,6 +144,7 @@ class mf_custom_list
 					'id' => $this->meta_prefix.'custom_style',
 					'type' => 'textarea',
 					'std' => "",
+					'placeholder' => "[parent_class] li",
 				),
 			)
 		);
@@ -722,10 +723,12 @@ class mf_custom_list
 			if($out != '')
 			{
 				$parent_class = "custom_list";
+				$parent_class_selector = "";
 
 				if($post_name != '')
 				{
 					$parent_class .= " custom_list_".$post_name;
+					$parent_class_selector .= ".custom_list_".$post_name;
 				}
 
 				if($parent_style != '')
@@ -762,6 +765,8 @@ class mf_custom_list
 
 				if($parent_custom_style != '')
 				{
+					$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
+
 					$out .= "<style>
 						@media all
 						{"
