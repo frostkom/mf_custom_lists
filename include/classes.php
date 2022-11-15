@@ -27,6 +27,7 @@ class mf_custom_list
 			'flex' => __("Flex", 'lang_custom_lists'),
 			'horizontal' => __("Horizontal", 'lang_custom_lists'),
 			'logos' => __("Logos", 'lang_custom_lists'),
+			'logos_v2' => __("Logos", 'lang_custom_lists')." v2",
 			'one_col' => __("One Column", 'lang_custom_lists'),
 			'people' => __("People", 'lang_custom_lists'),
 			'screenshots' => __("Screenshots", 'lang_custom_lists'),
@@ -176,7 +177,7 @@ class mf_custom_list
 					'type' => 'number',
 					'attributes' => array(
 						'min' => 1,
-						'max' => 4,
+						'max' => 5,
 					),
 				),
 				array(
