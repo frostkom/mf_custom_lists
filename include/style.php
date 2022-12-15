@@ -1,11 +1,55 @@
-@media all
+<?php
+
+if(!defined('ABSPATH'))
+{
+	header("Content-Type: text/css; charset=utf-8");
+
+	$folder = str_replace("/wp-content/plugins/mf_custom_lists/include", "/", dirname(__FILE__));
+
+	require_once($folder."wp-load.php");
+}
+
+echo "@media all
 {
 	.custom_list
 	{
 		list-style: none;
-	}
+	}";
 
-		.list_alternate li
+		if(IS_EDITOR)
+		{
+			echo ".custom_list li
+			{
+				position: relative;	
+			}
+			
+				.custom_list li .edit_item
+				{
+					display: none;
+				}
+
+				.custom_list li:hover .edit_item
+				{
+					background: #000;
+					border-radius: .3rem;
+					color: #fff;
+					display: block;
+					font-size: 2rem;
+					opacity: .2;
+					padding: .4rem .8rem;
+					position: absolute;
+					left: 2rem;
+					top: .5rem;
+					z-index: 1000;
+				}
+
+					.custom_list li .edit_item:hover
+					{
+						opacity: .7;
+					}";
+		}
+
+		echo ".list_alternate li
 		{
 			display: -webkit-box;
 			display: -ms-flexbox;
@@ -609,4 +653,4 @@
 				margin-right: 5%;
 				width: 25%;
 			}
-}
+}";
