@@ -20,9 +20,9 @@ echo "@media all
 		{
 			echo ".custom_list li
 			{
-				position: relative;	
+				position: relative;
 			}
-			
+
 				.custom_list li .edit_item
 				{
 					display: none;
@@ -110,7 +110,7 @@ echo "@media all
 	{
 		width: 19%;
 	}
-	
+
 	.custom_list_columns_desktop_4 li
 	{
 		width: 24%;
