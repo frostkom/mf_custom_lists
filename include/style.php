@@ -35,6 +35,7 @@ echo "@media all
 					color: #fff;
 					display: block;
 					font-size: 2rem;
+					height: auto !important;
 					opacity: .2;
 					padding: .4rem .8rem;
 					position: absolute;
@@ -534,13 +535,13 @@ echo "@media all
 				transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
 			}
 
-		.custom_list_style_screenshots li h2, .custom_list_style_screenshots li h4
+		#wrapper .custom_list_style_screenshots li h2, #wrapper.custom_list_style_screenshots li h4
 		{
 			bottom: 0;
 			background: #fff;
 			left: 0;
 			margin-bottom: 0;
-			padding: .3em 1em !important;
+			padding: .8em 1em .3em;
 			position: absolute;
 			right: 0;
 			text-align: left;
@@ -549,7 +550,7 @@ echo "@media all
 			transform: translate3d(0, 100%, 0);
 		}
 
-			.custom_list_style_screenshots li:hover h2, .custom_list_style_screenshots li:hover h4
+			#wrapper .custom_list_style_screenshots li:hover h2, #wrapper .custom_list_style_screenshots li:hover h4
 			{
 				-webkit-transform: translate3d(0, 0, 0);
 				transform: translate3d(0, 0, 0);
