@@ -104,6 +104,13 @@ class mf_custom_list
 		}
 	}
 
+	function meta_items()
+	{
+		global $post_id;
+
+		return $this->get_list_items(array('display_container' => false, 'class' => 'meta_list', 'list_id' => $post_id));
+	}
+
 	function rwmb_meta_boxes($meta_boxes)
 	{
 		global $wpdb, $obj_base;
@@ -205,7 +212,25 @@ class mf_custom_list
 
 		$post_id = check_var('post');
 
-		if(!($post_id > 0))
+		if($post_id > 0)
+		{
+			$meta_boxes[] = array(
+				'id' => $this->meta_prefix.'items',
+				'title' => __("Items", 'lang_custom_lists'),
+				'post_types' => array($this->post_type),
+				//'context' => 'side',
+				'priority' => 'low',
+				'fields' => array(
+					array(
+						'id' => $this->meta_prefix.'items',
+						'type' => 'custom_html',
+						'callback' => array($this, 'meta_items'),
+					),
+				)
+			);
+		}
+
+		else
 		{
 			if($default_list_id == '')
 			{
@@ -459,6 +484,49 @@ class mf_custom_list
 		return $out;
 	}
 
+	function get_list_items($data)
+	{
+		global $wpdb;
+
+		if(!isset($data['display_container'])){		$data['display_container'] = true;}
+		if(!isset($data['class'])){					$data['class'] = "";}
+
+		$out = "";
+
+		$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'list_id', $data['list_id']));
+
+		if($wpdb->num_rows > 0)
+		{
+			$out .= "<ul".($data['class'] != '' ? " class='".$data['class']."'" : "").">";
+
+				foreach($result as $r)
+				{
+					$object_id = $r->post_id;
+
+					$out .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
+				}
+
+			$out .= "</ul>";
+		}
+
+		else
+		{
+			if($data['display_container'] == true)
+			{
+				$out .= "<li>";
+			}
+
+				$out .= "<a href='".admin_url("post-new.php?post_type=".$this->post_type_item)."'>".__("Add New", 'lang_custom_lists')."</a>";
+
+			if($data['display_container'] == true)
+			{
+				$out .= "</li>";
+			}
+		}
+
+		return $out;
+	}
+
 	function get_shortcode_list($data)
 	{
 		global $wpdb;
@@ -478,21 +546,7 @@ class mf_custom_list
 				{
 					$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
 
-					$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'list_id', $list_id));
-
-					if($wpdb->num_rows > 0)
-					{
-						$content_list .= "<ul>";
-
-							foreach($result as $r)
-							{
-								$object_id = $r->post_id;
-
-								$content_list .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
-							}
-
-						$content_list .= "</ul>";
-					}
+					$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
 				}
 			}
 		}

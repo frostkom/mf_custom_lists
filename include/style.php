@@ -107,32 +107,32 @@ echo "@media all
 		}
 
 	/* Columns */
-	.custom_list_columns_desktop_5 li
+	#wrapper .custom_list_columns_desktop_5 li
 	{
 		width: 19%;
 	}
 
-	.custom_list_columns_desktop_4 li
+	#wrapper .custom_list_columns_desktop_4 li
 	{
 		width: 24%;
 	}
 
-	.custom_list_columns_desktop_3 li, .is_tablet .custom_list_columns_tablet_3 li
+	#wrapper .custom_list_columns_desktop_3 li, .is_tablet #wrapper .custom_list_columns_tablet_3 li
 	{
 		width: 32%;
 	}
 
-	.custom_list_columns_desktop_2 li, .is_tablet .custom_list_columns_tablet_2 li, .is_mobile .custom_list_columns_mobile_2 li
+	#wrapper .custom_list_columns_desktop_2 li, .is_tablet #wrapper .custom_list_columns_tablet_2 li, .is_mobile #wrapper .custom_list_columns_mobile_2 li
 	{
 		width: 49%;
 	}
 
-	.custom_list_columns_desktop_1 li, .is_tablet .custom_list_columns_tablet_1 li, .is_mobile .custom_list_columns_mobile_1 li
+	#wrapper .custom_list_columns_desktop_1 li, .is_tablet #wrapper .custom_list_columns_tablet_1 li, .is_mobile #wrapper .custom_list_columns_mobile_1 li
 	{
 		width: 99%;
 	}
 
-		.is_mobile .custom_list_columns_mobile_1 > li + li
+		.is_mobile #wrapper .custom_list_columns_mobile_1 > li + li
 		{
 			margin-top: 3em;
 		}
@@ -468,7 +468,7 @@ echo "@media all
 				width: 99%;
 			}
 
-				.custom_list_style_people h2, .custom_list_style_people h4
+				#wrapper .custom_list_style_people h2, #wrapper .custom_list_style_people h4
 				{
 					font-size: 1em;
 				}
