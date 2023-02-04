@@ -14,7 +14,13 @@ echo "@media all
 	.custom_list
 	{
 		list-style: none;
-	}";
+	}
+
+		/* Has to be here to hide when cached */
+		.custom_list li .edit_item
+		{
+			display: none !important;
+		}";
 
 		if(IS_EDITOR)
 		{
@@ -23,17 +29,12 @@ echo "@media all
 				position: relative;
 			}
 
-				.custom_list li .edit_item
-				{
-					display: none;
-				}
-
 				.custom_list li:hover .edit_item
 				{
 					background: #000;
 					border-radius: .3rem;
 					color: #fff;
-					display: block;
+					display: block !important;
 					font-size: 2rem;
 					height: auto !important;
 					opacity: .2;
@@ -466,14 +467,20 @@ echo "@media all
 			.is_mobile article .custom_list_style_people > li
 			{
 				width: 99%;
-			}
+			}";
 
-				#wrapper .custom_list_style_people h2, #wrapper .custom_list_style_people h4
+				// Do not override settings set in theme. This has to be a setting in this plugin if to be set individually
+				/*#wrapper .custom_list_style_people h2, #wrapper .custom_list_style_people h4
 				{
 					font-size: 1em;
 				}
+				
+				.custom_list_style_people p
+				{
+					font-size: .7em;
+				}*/
 
-				.custom_list_style_people .image
+				echo ".custom_list_style_people .image
 				{
 					background: #f3f3f3;
 					height: 0;
@@ -489,11 +496,6 @@ echo "@media all
 						object-fit: contain;
 						position: absolute;
 					}
-
-				.custom_list_style_people p
-				{
-					font-size: .7em;
-				}
 
 	/* Screenshots */
 	.custom_list_style_screenshots > li
