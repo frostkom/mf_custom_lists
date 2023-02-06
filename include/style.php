@@ -474,7 +474,7 @@ echo "@media all
 				{
 					font-size: 1em;
 				}
-				
+
 				.custom_list_style_people p
 				{
 					font-size: .7em;

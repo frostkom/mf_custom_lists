@@ -673,7 +673,11 @@ class mf_custom_list
 						$child_content = $r->post_content;
 					}
 
-					$child_content = str_replace("<li>", "<li><a href='".admin_url("post.php?post=".$child_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_custom_lists')."'></i></a>", $child_content);
+					if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode') == 'yes')
+					{
+						$child_content = str_replace("<li>", "<li><a href='".admin_url("post.php?post=".$child_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_custom_lists')."'></i></a>", $child_content);
+					}
+
 					$child_content = str_replace("<p>[list_text]</p>", "[list_text]", $child_content); //When apply_filters() on list_text was added, this had to be corrected
 
 					$out_children .= preg_replace_callback(
