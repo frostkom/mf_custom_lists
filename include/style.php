@@ -16,42 +16,7 @@ echo "@media all
 		list-style: none;
 	}
 
-		/* Has to be here to hide when cached */
-		.custom_list li .edit_item
-		{
-			display: none !important;
-		}";
-
-		if(IS_EDITOR)
-		{
-			echo ".custom_list li
-			{
-				position: relative;
-			}
-
-				.custom_list li:hover .edit_item
-				{
-					background: #000;
-					border-radius: .3rem;
-					color: #fff;
-					display: block !important;
-					font-size: 2rem;
-					height: auto !important;
-					opacity: .2;
-					padding: .4rem .8rem;
-					position: absolute;
-					left: 2rem;
-					top: .5rem;
-					z-index: 1000;
-				}
-
-					.custom_list li .edit_item:hover
-					{
-						opacity: .7;
-					}";
-		}
-
-		echo ".list_alternate li
+		.list_alternate li
 		{
 			display: -webkit-box;
 			display: -ms-flexbox;

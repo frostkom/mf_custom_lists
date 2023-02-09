@@ -673,7 +673,7 @@ class mf_custom_list
 						$child_content = $r->post_content;
 					}
 
-					if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode') == 'yes')
+					if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode', 'yes') == 'yes')
 					{
 						$child_content = str_replace("<li>", "<li><a href='".admin_url("post.php?post=".$child_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_custom_lists')."'></i></a>", $child_content);
 					}
