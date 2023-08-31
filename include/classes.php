@@ -2,10 +2,14 @@
 
 class mf_custom_list
 {
+	var $post_type = 'mf_custom_lists';
+	var $post_type_item = 'mf_custom_item';
+	var $meta_prefix = "";
+
 	function __construct()
 	{
-		$this->post_type = 'mf_custom_lists';
-		$this->post_type_item = 'mf_custom_item';
+		//$this->post_type = 'mf_custom_lists';
+		//$this->post_type_item = 'mf_custom_item';
 		$this->meta_prefix = $this->post_type.'_';
 	}
 
