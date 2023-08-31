@@ -877,20 +877,30 @@ class mf_custom_list
 
 class widget_custom_lists extends WP_Widget
 {
+	var $widget_ops = array();
+
+	var $arr_default = array(
+		'list_heading' => '',
+		'list_content' => '',
+		'list_id' => '',
+		'list_amount' => 0,
+		'list_order' => 'numerical',
+	);
+
 	function __construct()
 	{
 		$this->widget_ops = array(
 			'classname' => 'custom_list',
-			'description' => __("Display a custom list that you have created", 'lang_custom_lists')
+			'description' => __("Display a custom list that you have created", 'lang_custom_lists'),
 		);
 
-		$this->arr_default = array(
+		/*$this->arr_default = array(
 			'list_heading' => '',
 			'list_content' => '',
 			'list_id' => '',
 			'list_amount' => 0,
 			'list_order' => 'numerical',
-		);
+		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Custom List", 'lang_custom_lists'), $this->widget_ops);
 	}
