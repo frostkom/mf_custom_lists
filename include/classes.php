@@ -4,12 +4,10 @@ class mf_custom_list
 {
 	var $post_type = 'mf_custom_lists';
 	var $post_type_item = 'mf_custom_item';
-	var $meta_prefix = "";
+	var $meta_prefix;
 
 	function __construct()
 	{
-		//$this->post_type = 'mf_custom_lists';
-		//$this->post_type_item = 'mf_custom_item';
 		$this->meta_prefix = $this->post_type.'_';
 	}
 
@@ -544,14 +542,22 @@ class mf_custom_list
 
 			$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
 
-			foreach($arr_list_id[0] as $list_id)
+			if(isset($arr_list_id[0]))
 			{
-				if($list_id > 0)
+				foreach($arr_list_id[0] as $list_id)
 				{
-					$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+					if($list_id > 0)
+					{
+						$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
 
-					$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
+						$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
+					}
 				}
+			}
+
+			else
+			{
+				do_log(__FUNCTION__." Error: ".htmlspecialchars($post_content)." -> ".var_export($arr_list_id, true));
 			}
 		}
 
@@ -877,8 +883,7 @@ class mf_custom_list
 
 class widget_custom_lists extends WP_Widget
 {
-	var $widget_ops = array();
-
+	var $widget_ops;
 	var $arr_default = array(
 		'list_heading' => '',
 		'list_content' => '',
@@ -893,14 +898,6 @@ class widget_custom_lists extends WP_Widget
 			'classname' => 'custom_list',
 			'description' => __("Display a custom list that you have created", 'lang_custom_lists'),
 		);
-
-		/*$this->arr_default = array(
-			'list_heading' => '',
-			'list_content' => '',
-			'list_id' => '',
-			'list_amount' => 0,
-			'list_order' => 'numerical',
-		);*/
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Custom List", 'lang_custom_lists'), $this->widget_ops);
 	}
