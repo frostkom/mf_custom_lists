@@ -39,8 +39,47 @@ class mf_custom_list
 		);
 	}
 
+	function block_render_callback($attributes)
+	{
+		$out = "";
+
+		if($attributes['list_id'] > 0)
+		{
+			$out_temp = $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']));
+
+			if($out_temp != '')
+			{
+				$out .= apply_filters('filter_before_widget', $before_widget);
+
+					if($attributes['list_heading'] != '')
+					{
+						$attributes['list_heading'] = apply_filters('widget_title', $attributes['list_heading'], $attributes, $this->id_base);
+
+						$out .= $before_title
+							.$attributes['list_heading']
+						.$after_title;
+					}
+
+					$out .= "<div class='section'>";
+
+						if($attributes['list_content'] != '')
+						{
+							$out .= apply_filters('the_content', $attributes['list_content']);
+						}
+
+						$out .= $out_temp
+					."</div>"
+				.$after_widget;
+			}
+		}
+
+		return $out;
+	}
+
 	function init()
 	{
+		// Post types
+		#######################
 		$labels = array(
 			'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
 			'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
@@ -80,6 +119,27 @@ class mf_custom_list
 		);
 
 		register_post_type($this->post_type_item, $args);
+		#######################
+
+		// Blocks
+		#######################
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		wp_register_script('script_custom_lists_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-i18n', 'wp-element', 'wp-components', 'wp-editor'), $plugin_version);
+
+		$arr_data = array();
+		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
+
+		wp_localize_script('script_custom_lists_block_wp', 'script_custom_lists_block_wp', array('list_id' => $arr_data, 'list_order' => $this->get_order_for_select()));
+
+		register_block_type('mf/customlists', array(
+			'editor_script' => 'script_custom_lists_block_wp',
+			'editor_style' => 'style_base_block_wp',
+			'render_callback' => array($this, 'block_render_callback'),
+			//'style' => 'style_base_block_wp',
+		));
+		#######################
 	}
 
 	function admin_menu()
@@ -250,6 +310,9 @@ class mf_custom_list
 			}
 		}
 
+		$arr_data = array();
+		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
+
 		$meta_boxes[] = array(
 			'id' => $this->meta_prefix.'settings',
 			'title' => __("Settings", 'lang_custom_lists'),
@@ -261,7 +324,7 @@ class mf_custom_list
 					'name' => __("List", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'list_id',
 					'type' => 'select',
-					'options' => get_posts_for_select(array('post_type' => $this->post_type)),
+					'options' => $arr_data,
 					'std' => $default_list_id,
 				),
 				array(
@@ -896,46 +959,46 @@ class widget_custom_lists extends WP_Widget
 	{
 		$this->widget_ops = array(
 			'classname' => 'custom_list',
-			'description' => __("Display a custom list that you have created", 'lang_custom_lists'),
+			'description' => __("Display a Custom List", 'lang_custom_lists'),
 		);
 
 		parent::__construct(str_replace("_", "-", $this->widget_ops['classname']).'-widget', __("Custom List", 'lang_custom_lists'), $this->widget_ops);
 	}
 
-	function widget($args, $instance)
+	function widget($args, $attributes)
 	{
 		global $obj_custom_list;
 
 		extract($args);
-		$instance = wp_parse_args((array)$instance, $this->arr_default);
+		$attributes = wp_parse_args((array)$attributes, $this->arr_default);
 
-		if($instance['list_id'] > 0)
+		if($attributes['list_id'] > 0)
 		{
 			if(!isset($obj_custom_list))
 			{
 				$obj_custom_list = new mf_custom_list();
 			}
 
-			$out_temp = $obj_custom_list->shortcode_custom_list(array('id' => $instance['list_id'], 'amount' => $instance['list_amount'], 'order' => $instance['list_order']));
+			$out_temp = $obj_custom_list->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']));
 
 			if($out_temp != '')
 			{
 				echo apply_filters('filter_before_widget', $before_widget);
 
-					if($instance['list_heading'] != '')
+					if($attributes['list_heading'] != '')
 					{
-						$instance['list_heading'] = apply_filters('widget_title', $instance['list_heading'], $instance, $this->id_base);
+						$attributes['list_heading'] = apply_filters('widget_title', $attributes['list_heading'], $attributes, $this->id_base);
 
 						echo $before_title
-							.$instance['list_heading']
+							.$attributes['list_heading']
 						.$after_title;
 					}
 
 					echo "<div class='section'>";
 
-						if($instance['list_content'] != '')
+						if($attributes['list_content'] != '')
 						{
-							echo apply_filters('the_content', $instance['list_content']);
+							echo apply_filters('the_content', $attributes['list_content']);
 						}
 
 						echo $out_temp
@@ -945,33 +1008,36 @@ class widget_custom_lists extends WP_Widget
 		}
 	}
 
-	function update($new_instance, $old_instance)
+	function update($new_attributes, $old_attributes)
 	{
-		$instance = $old_instance;
-		$new_instance = wp_parse_args((array)$new_instance, $this->arr_default);
+		$attributes = $old_attributes;
+		$new_attributes = wp_parse_args((array)$new_attributes, $this->arr_default);
 
-		$instance['list_heading'] = sanitize_text_field($new_instance['list_heading']);
-		$instance['list_content'] = sanitize_text_field($new_instance['list_content']);
-		$instance['list_id'] = sanitize_text_field($new_instance['list_id']);
-		$instance['list_amount'] = sanitize_text_field($new_instance['list_amount']);
-		$instance['list_order'] = sanitize_text_field($new_instance['list_order']);
+		$attributes['list_heading'] = sanitize_text_field($new_attributes['list_heading']);
+		$attributes['list_content'] = sanitize_text_field($new_attributes['list_content']);
+		$attributes['list_id'] = sanitize_text_field($new_attributes['list_id']);
+		$attributes['list_amount'] = sanitize_text_field($new_attributes['list_amount']);
+		$attributes['list_order'] = sanitize_text_field($new_attributes['list_order']);
 
-		return $instance;
+		return $attributes;
 	}
 
-	function form($instance)
+	function form($attributes)
 	{
-		$instance = wp_parse_args((array)$instance, $this->arr_default);
+		$attributes = wp_parse_args((array)$attributes, $this->arr_default);
 
 		$obj_custom_list = new mf_custom_list();
 
+		$arr_data = array();
+		get_post_children(array('add_choose_here' => true, 'post_type' => $obj_custom_list->post_type), $arr_data);
+
 		echo "<div class='mf_form'>"
-			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $instance['list_heading'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
-			.show_textarea(array('name' => $this->get_field_name('list_content'), 'text' => __("Content", 'lang_custom_lists'), 'value' => $instance['list_content']))
-			.show_select(array('data' => get_posts_for_select(array('post_type' => $obj_custom_list->post_type)), 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $instance['list_id'], 'suffix' => get_option_page_suffix(array('post_type' => $obj_custom_list->post_type, 'value' => $instance['list_id'])), 'allow_hidden_field' => false))
+			.show_textfield(array('name' => $this->get_field_name('list_heading'), 'text' => __("Heading", 'lang_custom_lists'), 'value' => $attributes['list_heading'], 'xtra' => " id='".$this->widget_ops['classname']."-title'"))
+			.show_textarea(array('name' => $this->get_field_name('list_content'), 'text' => __("Content", 'lang_custom_lists'), 'value' => $attributes['list_content']))
+			.show_select(array('data' => $arr_data, 'name' => $this->get_field_name('list_id'), 'text' => __("List", 'lang_custom_lists'), 'value' => $attributes['list_id'], 'suffix' => get_option_page_suffix(array('post_type' => $obj_custom_list->post_type, 'value' => $attributes['list_id'])), 'allow_hidden_field' => false))
 			."<div class='flex_flow'>"
-				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $instance['list_amount']))
-				.show_select(array('data' => $obj_custom_list->get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $instance['list_order']))
+				.show_textfield(array('type' => 'number', 'name' => $this->get_field_name('list_amount'), 'text' => __("Amount", 'lang_custom_lists'), 'value' => $attributes['list_amount']))
+				.show_select(array('data' => $obj_custom_list->get_order_for_select(), 'name' => $this->get_field_name('list_order'), 'text' => __("Order", 'lang_custom_lists'), 'value' => $attributes['list_order']))
 			."</div>
 		</div>";
 	}
