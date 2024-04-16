@@ -101,7 +101,7 @@
 				el(
 					TextControl,
 					{
-						label: __("Heading", 'lang_custom_lists'),
+						label: __("Content", 'lang_custom_lists'),
 						type: 'text',
 						value: props.attributes.list_content,
 						/*help: __("Description...", 'lang_custom_lists'),*/

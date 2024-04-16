@@ -41,36 +41,33 @@ class mf_custom_list
 
 	function block_render_callback($attributes)
 	{
+		if(!isset($attributes['list_heading'])){	$attributes['list_heading'] = "";}
+		if(!isset($attributes['list_content'])){	$attributes['list_content'] = "";}
+		if(!isset($attributes['list_id'])){			$attributes['list_id'] = 0;}
+		if(!isset($attributes['list_amount'])){		$attributes['list_amount'] = 0;}
+		if(!isset($attributes['list_order'])){		$attributes['list_order'] = "";}
+
 		$out = "";
 
 		if($attributes['list_id'] > 0)
 		{
-			$out_temp = $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']));
+			$out .= "<div class='widget custom_list'>";
 
-			if($out_temp != '')
-			{
-				$out .= apply_filters('filter_before_widget', $before_widget);
+				if($attributes['list_heading'] != '')
+				{
+					$out .= "<h3>".$attributes['list_heading']."</h3>";
+				}
 
-					if($attributes['list_heading'] != '')
+				$out .= "<div class='section'>";
+
+					if($attributes['list_content'] != '')
 					{
-						$attributes['list_heading'] = apply_filters('widget_title', $attributes['list_heading'], $attributes, $this->id_base);
-
-						$out .= $before_title
-							.$attributes['list_heading']
-						.$after_title;
+						$out .= apply_filters('the_content', $attributes['list_content']);
 					}
 
-					$out .= "<div class='section'>";
-
-						if($attributes['list_content'] != '')
-						{
-							$out .= apply_filters('the_content', $attributes['list_content']);
-						}
-
-						$out .= $out_temp
-					."</div>"
-				.$after_widget;
-			}
+					$out .= $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']))
+				."</div>
+			</div>";
 		}
 
 		return $out;
