@@ -600,24 +600,27 @@ class mf_custom_list
 		{
 			$post_content = mf_get_post_content($post_id);
 
-			$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
-
-			if(isset($arr_list_id[0]))
+			if($post_content != '')
 			{
-				foreach($arr_list_id[0] as $list_id)
-				{
-					if($list_id > 0)
-					{
-						$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+				$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
 
-						$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
+				if(isset($arr_list_id[0]))
+				{
+					foreach($arr_list_id[0] as $list_id)
+					{
+						if($list_id > 0)
+						{
+							$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+
+							$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
+						}
 					}
 				}
-			}
 
-			else
-			{
-				do_log(__FUNCTION__." Error: ".htmlspecialchars($post_content)." -> ".var_export($arr_list_id, true));
+				else
+				{
+					do_log(__FUNCTION__." Error: ".htmlspecialchars($post_content)." -> ".var_export($arr_list_id, true));
+				}
 			}
 		}
 
