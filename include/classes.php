@@ -414,7 +414,7 @@ class mf_custom_list
 				$cols['items'] = __("Items", 'lang_custom_lists');
 				$cols['style'] = __("Style", 'lang_custom_lists');
 				$cols['columns'] = __("Columns", 'lang_custom_lists');
-				$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
+				//$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
 			break;
 
 			case $this->post_type_item:
@@ -483,14 +483,14 @@ class mf_custom_list
 						}
 					break;
 
-					case 'shortcode':
+					/*case 'shortcode':
 						$shortcode = "[mf_custom_list id=".$id."]";
 
 						echo show_textfield(array('value' => $shortcode, 'readonly' => true, 'xtra' => "onclick='this.select()'"))
 						."<div class='row-actions'>
 							<a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
 						</div>";
-					break;
+					break;*/
 				}
 			break;
 
