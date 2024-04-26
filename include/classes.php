@@ -163,6 +163,16 @@ class mf_custom_list
 		}
 	}
 
+	function filter_sites_table_pages($arr_pages)
+	{
+		$arr_pages[$this->post_type] = array(
+			'icon' => "fas fa-list",
+			'title' => __("Lists", 'lang_custom_lists'),
+		);
+
+		return $arr_pages;
+	}
+
 	function meta_items()
 	{
 		global $post_id;
