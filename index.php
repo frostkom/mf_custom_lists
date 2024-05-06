@@ -31,6 +31,8 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		add_filter('filter_sites_table_pages', array($obj_custom_list, 'filter_sites_table_pages'));
 
+		add_filter('display_post_states', array($obj_custom_list, 'display_post_states'), 10, 2);
+
 		add_action('rwmb_meta_boxes', array($obj_custom_list, 'rwmb_meta_boxes'));
 
 		add_action('restrict_manage_posts', array($obj_custom_list, 'restrict_manage_posts'));

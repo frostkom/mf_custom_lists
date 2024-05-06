@@ -180,6 +180,27 @@ class mf_custom_list
 		return $this->get_list_items(array('display_container' => false, 'class' => 'meta_list', 'list_id' => $post_id));
 	}
 
+	function display_post_states($post_states, $post)
+	{
+		global $wpdb;
+
+		$result = $wpdb->get_results($wpdb->prepare("SELECT post_title FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'page', $post->ID));
+
+		if($wpdb->num_rows > 0)
+		{
+			$post_titles = "";
+
+			foreach($result as $r)
+			{
+				$post_titles .= ($post_titles != '' ? ", " : "").$r->post_title;
+			}
+
+			$post_states[$this->meta_prefix.'page'] = sprintf(__("Link from %s", 'lang_custom_lists'), $post_titles);
+		}
+
+		return $post_states;
+	}
+
 	function rwmb_meta_boxes($meta_boxes)
 	{
 		global $wpdb, $obj_base;
