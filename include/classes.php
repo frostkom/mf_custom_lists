@@ -948,7 +948,7 @@ class mf_custom_list
 	{
 		global $wpdb;
 
-		$result = $wpdb->get_results($wpdb->prepare("SELECT post_id FROM ".$wpdb->postmeta." WHERE meta_key = %s AND meta_value = %s", $this->meta_prefix.'image', $arr_used['id']));
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status = %s AND meta_key = %s AND meta_value = %s", $this->meta_prefix.'image', $arr_used['id']));
 		$rows = $wpdb->num_rows;
 
 		if($rows > 0)
@@ -962,7 +962,7 @@ class mf_custom_list
 					break;
 				}
 
-				$arr_used['example'] = admin_url("post.php?action=edit&post=".$r->post_id);
+				$arr_used['example'] = admin_url("post.php?action=edit&post=".$r->ID);
 			}
 		}
 
