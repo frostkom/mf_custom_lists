@@ -73,32 +73,32 @@ echo "@media all
 		}
 
 	/* Columns */
-	#wrapper .custom_list_columns_desktop_5 li
+	.custom_list_columns_desktop_5 li
 	{
 		width: 19%;
 	}
 
-	#wrapper .custom_list_columns_desktop_4 li
+	.custom_list_columns_desktop_4 li
 	{
 		width: 24%;
 	}
 
-	#wrapper .custom_list_columns_desktop_3 li, .is_tablet #wrapper .custom_list_columns_tablet_3 li
+	.custom_list_columns_desktop_3 li, .is_tablet .custom_list_columns_tablet_3 li
 	{
 		width: 32%;
 	}
 
-	#wrapper .custom_list_columns_desktop_2 li, .is_tablet #wrapper .custom_list_columns_tablet_2 li, .is_mobile #wrapper .custom_list_columns_mobile_2 li
+	.custom_list_columns_desktop_2 li, .is_tablet .custom_list_columns_tablet_2 li, .is_mobile .custom_list_columns_mobile_2 li
 	{
 		width: 49%;
 	}
 
-	#wrapper .custom_list_columns_desktop_1 li, .is_tablet #wrapper .custom_list_columns_tablet_1 li, .is_mobile #wrapper .custom_list_columns_mobile_1 li
+	.custom_list_columns_desktop_1 li, .is_tablet .custom_list_columns_tablet_1 li, .is_mobile .custom_list_columns_mobile_1 li
 	{
 		width: 99%;
 	}
 
-		.is_mobile #wrapper .custom_list_columns_mobile_1 > li + li
+		.is_mobile .custom_list_columns_mobile_1 > li + li
 		{
 			margin-top: 3em;
 		}
@@ -432,22 +432,12 @@ echo "@media all
 			.is_mobile article .custom_list_style_people > li
 			{
 				width: 99%;
-			}";
+			}
 
-				// Do not override settings set in theme. This has to be a setting in this plugin if to be set individually
-				/*#wrapper .custom_list_style_people h2, #wrapper .custom_list_style_people h4
-				{
-					font-size: 1em;
-				}
-
-				.custom_list_style_people p
-				{
-					font-size: .7em;
-				}*/
-
-				echo ".custom_list_style_people .image
+				.custom_list_style_people .image
 				{
 					background: #f3f3f3;
+					/*border-radius: 50%;*/
 					height: 0;
 					padding-bottom: 100%;
 					position: relative;
@@ -458,8 +448,10 @@ echo "@media all
 					{
 						height: 100%;
 						left: 0;
+						margin: 0 auto;
 						object-fit: contain;
 						position: absolute;
+						width: 100%;
 					}
 
 	/* Screenshots */
