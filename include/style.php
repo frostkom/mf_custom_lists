@@ -14,6 +14,7 @@ echo "@media all
 	.custom_list
 	{
 		list-style: none;
+		padding-left: 0;
 	}
 
 		.list_alternate li

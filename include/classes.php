@@ -51,7 +51,7 @@ class mf_custom_list
 
 		if($attributes['list_id'] > 0)
 		{
-			$out .= "<div class='widget custom_list'>";
+			$out .= "<div class='widget custom_list".(isset($attributes['className']) && $attributes['className'] != '' ? " ".$attributes['className'] : "")."'>";
 
 				if($attributes['list_heading'] != '')
 				{
@@ -339,7 +339,7 @@ class mf_custom_list
 		}
 
 		$arr_data = array();
-		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
+		get_post_children(array('add_choose_here' => false, 'post_type' => $this->post_type), $arr_data);
 
 		$meta_boxes[] = array(
 			'id' => $this->meta_prefix.'settings',
@@ -353,6 +353,11 @@ class mf_custom_list
 					'id' => $this->meta_prefix.'list_id',
 					'type' => 'select',
 					'options' => $arr_data,
+					'multiple' => true,
+					'attributes' => array(
+						'required' => 'true',
+						'size' => get_select_size(array('count' => count($arr_data))),
+					),
 					'std' => $default_list_id,
 				),
 				array(
@@ -529,15 +534,20 @@ class mf_custom_list
 				switch($col)
 				{
 					case 'list_id':
-						$parent_id = get_post_meta($id, $this->meta_prefix.$col, true);
-						$parent_title = get_the_title($parent_id);
+						$out = "";
 
-						$edit_url = "post.php?post=".$parent_id."&action=edit";
+						$arr_parent_id = get_post_meta($id, $this->meta_prefix.$col, false);
 
-						echo "<a href='".$edit_url."'>".$parent_title."</a>
-						<div class='row-actions'>
-							<span class='edit'><a href='".$edit_url."'>".__("Edit", 'lang_custom_lists')."</a></span>
-						</div>";
+						foreach($arr_parent_id as $parent_id)
+						{
+							$parent_title = get_the_title($parent_id);
+
+							$edit_url = "post.php?post=".$parent_id."&action=edit";
+
+							$out .= ($out != '' ? ", " : "")."<a href='".$edit_url."'>".$parent_title."</a>";
+						}
+
+						echo $out;
 					break;
 				}
 			break;
