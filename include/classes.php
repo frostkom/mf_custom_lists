@@ -538,13 +538,16 @@ class mf_custom_list
 
 						$arr_parent_id = get_post_meta($id, $this->meta_prefix.$col, false);
 
-						foreach($arr_parent_id as $parent_id)
+						if(is_array($arr_parent_id))
 						{
-							$parent_title = get_the_title($parent_id);
+							foreach($arr_parent_id as $parent_id)
+							{
+								$parent_title = get_the_title($parent_id);
 
-							$edit_url = "post.php?post=".$parent_id."&action=edit";
+								$edit_url = "post.php?post=".$parent_id."&action=edit";
 
-							$out .= ($out != '' ? ", " : "")."<a href='".$edit_url."'>".$parent_title."</a>";
+								$out .= ($out != '' ? ", " : "")."<a href='".$edit_url."'>".$parent_title."</a>";
+							}
 						}
 
 						echo $out;
