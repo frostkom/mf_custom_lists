@@ -283,7 +283,7 @@ class mf_custom_list
 					'type' => 'number',
 					'attributes' => array(
 						'min' => 1,
-						'max' => 3,
+						'max' => 5,
 					),
 				),
 				array(
@@ -292,7 +292,7 @@ class mf_custom_list
 					'type' => 'number',
 					'attributes' => array(
 						'min' => 1,
-						'max' => 2,
+						'max' => 5,
 					),
 				),
 			)

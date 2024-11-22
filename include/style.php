@@ -74,29 +74,29 @@ echo "@media all
 		}
 
 	/* Columns */
-	.custom_list_columns_desktop_5 li
+	.custom_list_columns_desktop_5 li, .is_tablet .custom_list_columns_tablet_5 li, .is_mobile .custom_list_columns_mobile_5 li
 	{
-		width: 19%;
+		width: 18%;
 	}
 
-	.custom_list_columns_desktop_4 li
+	.custom_list_columns_desktop_4 li, .is_tablet .custom_list_columns_tablet_5 li, .is_mobile .custom_list_columns_mobile_4 li
 	{
-		width: 24%;
+		width: 23%;
 	}
 
-	.custom_list_columns_desktop_3 li, .is_tablet .custom_list_columns_tablet_3 li
+	.custom_list_columns_desktop_3 li, .is_tablet .custom_list_columns_tablet_3 li, .is_mobile .custom_list_columns_mobile_3 li
 	{
-		width: 32%;
+		width: 31%;
 	}
 
 	.custom_list_columns_desktop_2 li, .is_tablet .custom_list_columns_tablet_2 li, .is_mobile .custom_list_columns_mobile_2 li
 	{
-		width: 49%;
+		width: 48%;
 	}
 
 	.custom_list_columns_desktop_1 li, .is_tablet .custom_list_columns_tablet_1 li, .is_mobile .custom_list_columns_mobile_1 li
 	{
-		width: 99%;
+		width: 100%;
 	}
 
 		.is_mobile .custom_list_columns_mobile_1 > li + li
@@ -115,6 +115,7 @@ echo "@media all
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
+		gap: 2%;
 	}
 
 		article .custom_list_style_vertical > li, article .custom_list_style_horizontal > li, article .custom_list_style_about_us > li, article .custom_list_style_flex > li, article .custom_list_style_logos > li, article .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
@@ -123,7 +124,6 @@ echo "@media all
 			-webkit-flex: 0 1 auto;
 			-ms-flex: 0 1 auto;
 			flex: 0 1 auto;
-			margin: 0 .5% .5em;
 		}
 
 	/* Vertical */
@@ -420,40 +420,24 @@ echo "@media all
 		text-align: center;
 	}
 
-		article .custom_list_style_people > li
+		.custom_list_style_people .image
 		{
-			width: 24%;
+			background: #f3f3f3;
+			height: 0;
+			padding-bottom: 100%;
+			position: relative;
+			overflow: hidden;
 		}
 
-			.is_tablet article .custom_list_style_people > li
+			.custom_list_style_people .image img
 			{
-				width: 32%;
+				height: 100%;
+				left: 0;
+				margin: 0 auto;
+				object-fit: contain;
+				position: absolute;
+				width: 100%;
 			}
-
-			.is_mobile article .custom_list_style_people > li
-			{
-				width: 99%;
-			}
-
-				.custom_list_style_people .image
-				{
-					background: #f3f3f3;
-					/*border-radius: 50%;*/
-					height: 0;
-					padding-bottom: 100%;
-					position: relative;
-					overflow: hidden;
-				}
-
-					.custom_list_style_people .image img
-					{
-						height: 100%;
-						left: 0;
-						margin: 0 auto;
-						object-fit: contain;
-						position: absolute;
-						width: 100%;
-					}
 
 	/* Screenshots */
 	.custom_list_style_screenshots > li
@@ -464,16 +448,6 @@ echo "@media all
 		overflow: hidden;
 		position: relative;
 	}
-
-		article .custom_list_style_screenshots > li
-		{
-			width: 48%;
-		}
-
-			.is_mobile article .custom_list_style_screenshots > li
-			{
-				width: 98%;
-			}
 
 		.custom_list_style_screenshots > li:before
 		{
@@ -564,28 +538,39 @@ echo "@media all
 		}
 
 	/* Testimonials */
-	.custom_list_style_testimonials > li
+	.custom_list_style_testimonials > li{}
+
+		.custom_list_style_testimonials .image
+		{
+			background: #f3f3f3;
+			border-radius: 50%;
+			height: 0;
+			padding-bottom: 100%;
+			position: relative;
+			overflow: hidden;
+		}
+
+			.custom_list_style_testimonials .image img
+			{
+				height: 100%;
+				left: 0;
+				margin: 0 auto;
+				object-fit: contain;
+				position: absolute;
+				width: 100%;
+			}
+
+	/*.custom_list_style_testimonials > li
 	{
 		box-shadow: none;
 		border-radius: .5em;
 		padding: 0 2em 2em;
-		width: 24%;
 		transition: all 4s ease;
 	}
 
 		.custom_list_style_testimonials > li:hover
 		{
 			box-shadow: 0 2em 2em rgba(0, 0, 0, .3);
-		}
-
-		.is_tablet .custom_list_style_testimonials > li
-		{
-			width: 32%;
-		}
-
-		.is_mobile .custom_list_style_testimonials > li
-		{
-			width: 99%;
 		}
 
 			.custom_list_style_testimonials li > p
@@ -613,5 +598,5 @@ echo "@media all
 				float: left;
 				margin-right: 5%;
 				width: 25%;
-			}
+			}*/
 }";
