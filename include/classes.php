@@ -795,7 +795,7 @@ class mf_custom_list
 						$child_content = str_replace("<li>", "<li><a href='".admin_url("post.php?post=".$child_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_custom_lists')."'></i></a>", $child_content);
 					}
 
-					$child_content = str_replace("<p>[list_text]</p>", "[list_text]", $child_content); //When apply_filters() on list_text was added, this had to be corrected
+					//$child_content = str_replace("<p>[list_text]</p>", "<div class='replaced'>[list_text]</div>", $child_content); //When apply_filters() on list_text was added, this had to be corrected
 
 					$out_children .= preg_replace_callback(
 						"/\[(.*?)\]/i",
@@ -829,7 +829,14 @@ class mf_custom_list
 								case 'list_text':
 									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
 
-									$out .= apply_filters('the_content', $child_text);
+									$child_text = apply_filters('the_content', $child_text);
+
+									if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
+									{
+										$child_text = "<p>".$child_text."</p>";
+									}
+
+									$out .= $child_text;
 								break;
 
 								case 'list_excerpt':
