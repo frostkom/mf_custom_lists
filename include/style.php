@@ -9,6 +9,8 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
+$column_gap = 5;
+
 echo "@media all
 {
 	.custom_list
@@ -74,32 +76,20 @@ echo "@media all
 		}
 
 	/* Columns */
-	.custom_list_columns_desktop_5 li, .is_tablet .custom_list_columns_tablet_5 li, .is_mobile .custom_list_columns_mobile_5 li
-	{
-		width: 18%;
-	}
-
-	.custom_list_columns_desktop_4 li, .is_tablet .custom_list_columns_tablet_5 li, .is_mobile .custom_list_columns_mobile_4 li
-	{
-		width: 23%;
-	}
-
-	.custom_list_columns_desktop_3 li, .is_tablet .custom_list_columns_tablet_3 li, .is_mobile .custom_list_columns_mobile_3 li
-	{
-		width: 31%;
-	}
-
-	.custom_list_columns_desktop_2 li, .is_tablet .custom_list_columns_tablet_2 li, .is_mobile .custom_list_columns_mobile_2 li
-	{
-		width: 48%;
-	}
-
 	.custom_list_columns_desktop_1 li, .is_tablet .custom_list_columns_tablet_1 li, .is_mobile .custom_list_columns_mobile_1 li
 	{
 		width: 100%;
+	}";
+
+	for($i = 2; $i <= 5; $i++)
+	{
+		echo ".custom_list_columns_desktop_".$i." li, .is_tablet .custom_list_columns_tablet_".$i." li, .is_mobile .custom_list_columns_mobile_".$i." li
+		{
+			width: ".((100 / $i) - $column_gap)."%;
+		}";
 	}
 
-		.is_mobile .custom_list_columns_mobile_1 > li + li
+		echo ".is_mobile .custom_list_columns_mobile_1 > li + li
 		{
 			margin-top: 3em;
 		}
@@ -115,7 +105,7 @@ echo "@media all
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
-		gap: 2%;
+		gap: ".$column_gap."%;
 	}
 
 		article .custom_list_style_vertical > li, article .custom_list_style_horizontal > li, article .custom_list_style_about_us > li, article .custom_list_style_flex > li, article .custom_list_style_logos > li, article .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
