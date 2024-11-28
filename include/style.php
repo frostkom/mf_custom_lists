@@ -58,12 +58,6 @@ echo "@media all
 		text-overflow: ellipsis;
 	}
 
-		/* This messes up widget heading styles in aside */
-		/*.custom_list h2
-		{
-			padding: 0 0 .5em !important;
-		}*/
-
 	.custom_list .image
 	{
 		display: none;
@@ -73,28 +67,14 @@ echo "@media all
 		.custom_list.custom_list_has_image .image
 		{
 			display: block;
-		}
-
-	/* Columns */
-	.custom_list_columns_desktop_1 li, .is_tablet .custom_list_columns_tablet_1 li, .is_mobile .custom_list_columns_mobile_1 li
-	{
-		width: 100%;
-	}";
-
-	for($i = 2; $i <= 5; $i++)
-	{
-		echo ".custom_list_columns_desktop_".$i." li, .is_tablet .custom_list_columns_tablet_".$i." li, .is_mobile .custom_list_columns_mobile_".$i." li
-		{
-			width: ".((100 / $i) - $column_gap)."%;
 		}";
-	}
 
-		echo ".is_mobile .custom_list_columns_mobile_1 > li + li
-		{
-			margin-top: 3em;
-		}
+	/*.is_mobile .custom_list_columns_mobile_1 > li + li
+	{
+		margin-top: 3em;
+	}*/
 
-	/* Style-Specific */
+	echo "/* Style-Specific */
 	article .custom_list_style_vertical, article .custom_list_style_horizontal, article .custom_list_style_about_us, article .custom_list_style_flex, article .custom_list_style_logos, article .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 	{
 		display: -webkit-box;
@@ -105,7 +85,6 @@ echo "@media all
 		-webkit-flex-wrap: wrap;
 		-ms-flex-wrap: wrap;
 		flex-wrap: wrap;
-		gap: ".$column_gap."%;
 	}
 
 		article .custom_list_style_vertical > li, article .custom_list_style_horizontal > li, article .custom_list_style_about_us > li, article .custom_list_style_flex > li, article .custom_list_style_logos > li, article .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
@@ -528,65 +507,23 @@ echo "@media all
 		}
 
 	/* Testimonials */
-	.custom_list_style_testimonials > li{}
-
-		.custom_list_style_testimonials .image
-		{
-			background: #f3f3f3;
-			border-radius: 50%;
-			height: 0;
-			padding-bottom: 100%;
-			position: relative;
-			overflow: hidden;
-		}
-
-			.custom_list_style_testimonials .image img
-			{
-				height: 100%;
-				left: 0;
-				margin: 0 auto;
-				object-fit: contain;
-				position: absolute;
-				width: 100%;
-			}
-
-	/*.custom_list_style_testimonials > li
+	.custom_list_style_testimonials .image
 	{
-		box-shadow: none;
-		border-radius: .5em;
-		padding: 0 2em 2em;
-		transition: all 4s ease;
+		background: #f3f3f3;
+		border-radius: 50%;
+		height: 0;
+		padding-bottom: 100%;
+		position: relative;
+		overflow: hidden;
 	}
 
-		.custom_list_style_testimonials > li:hover
+		.custom_list_style_testimonials .image img
 		{
-			box-shadow: 0 2em 2em rgba(0, 0, 0, .3);
+			height: 100%;
+			left: 0;
+			margin: 0 auto;
+			object-fit: contain;
+			position: absolute;
+			width: 100%;
 		}
-
-			.custom_list_style_testimonials li > p
-			{
-				margin: 2em 0;
-			}
-
-			.custom_list_style_testimonials h4
-			{
-				float: right;
-				margin: .2em 0 0;
-				width: 70%;
-			}
-
-			.custom_list_style_testimonials h4 + p
-			{
-				clear: right;
-				float: right;
-				margin: 0;
-				width: 70%;
-			}
-
-			.custom_list_style_testimonials .image
-			{
-				float: left;
-				margin-right: 5%;
-				width: 25%;
-			}*/
 }";

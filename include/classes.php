@@ -295,6 +295,16 @@ class mf_custom_list
 						'max' => 5,
 					),
 				),
+				array(
+					'name' => __("Gap", 'lang_custom_lists')." (%)",
+					'id' => $this->meta_prefix.'columns_gap',
+					'type' => 'number',
+					'std' => 5,
+					'attributes' => array(
+						'min' => 1,
+						'max' => 20,
+					),
+				),
 			)
 		);
 
@@ -736,6 +746,7 @@ class mf_custom_list
 			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
 			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
 			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
+			$parent_columns_gap = get_post_meta($parent_id, $this->meta_prefix.'columns_gap', true);
 
 			if($parent_container == '')
 			{
@@ -930,7 +941,7 @@ class mf_custom_list
 					$parent_class .= " custom_list_read_more";
 				}
 
-				if($parent_columns_desktop > 0)
+				/*if($parent_columns_desktop > 0)
 				{
 					$parent_class .= " custom_list_columns_desktop_".$parent_columns_desktop;
 				}
@@ -943,7 +954,7 @@ class mf_custom_list
 				if($parent_columns_mobile > 0)
 				{
 					$parent_class .= " custom_list_columns_mobile_".$parent_columns_mobile;
-				}
+				}*/
 
 				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
 
@@ -953,7 +964,36 @@ class mf_custom_list
 
 					$out .= "<style>
 						@media all
-						{"
+						{";
+
+							if($parent_columns_desktop > 0)
+							{
+								$out .= "ul.custom_list li
+								{
+									width: ".((100 / $parent_columns_desktop) - $parent_columns_gap)."%;
+								}";
+							}
+
+							if($parent_columns_tablet > 0)
+							{
+								$out .= ".is_tablet ul.custom_list li
+								{
+									width: ".((100 / $parent_columns_tablet) - $parent_columns_gap)."%;
+								}";
+							}
+
+							if($parent_columns_mobile > 0)
+							{
+								$out .= ".is_mobile ul.custom_list li
+								{
+									width: ".((100 / $parent_columns_mobile) - $parent_columns_gap)."%;
+								}";
+							}
+
+							$out .= $parent_class_selector."
+							{
+								gap: ".$parent_columns_gap."%;
+							}"
 							.$parent_custom_style
 						."}
 					</style>";
