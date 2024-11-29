@@ -951,9 +951,9 @@ class mf_custom_list
 
 						if($parent_columns_desktop > 0)
 						{
-							$out .= "".$parent_class_selector." li
+							$out .= $parent_class_selector." li
 							{
-								width: ".((100 / $parent_columns_desktop) - $parent_columns_gap)."%;
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
 							}";
 						}
 
@@ -961,7 +961,7 @@ class mf_custom_list
 						{
 							$out .= ".is_tablet ".$parent_class_selector." li
 							{
-								width: ".((100 / $parent_columns_tablet) - $parent_columns_gap)."%;
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
 							}";
 						}
 
@@ -969,7 +969,7 @@ class mf_custom_list
 						{
 							$out .= ".is_mobile ".$parent_class_selector." li
 							{
-								width: ".((100 / $parent_columns_mobile) - $parent_columns_gap)."%;
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
 							}";
 						}
 
