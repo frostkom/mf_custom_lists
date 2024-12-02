@@ -10,8 +10,8 @@
 	{
 		title: __("Custom List", 'lang_custom_lists'),
 		description: __("Display a Custom List", 'lang_custom_lists'),
-		icon: 'format-gallery', /* https://developer.wordpress.org/resource/dashicons/ */
-		category: 'widgets', /* common, formatting, layout, widgets, embed */
+		icon: 'format-gallery',
+		category: 'widgets',
 		'attributes':
 		{
 			'align':
@@ -66,6 +66,10 @@
 			{
 				'fontSize': true,
 				'lineHeight': true
+			},
+			"__experimentalBorder":
+			{
+				"radius": true
 			}
 		},
 		edit: function(props)
