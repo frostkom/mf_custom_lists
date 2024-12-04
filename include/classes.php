@@ -51,7 +51,7 @@ class mf_custom_list
 
 		if($attributes['list_id'] > 0)
 		{
-			$out .= "<div class='widget custom_list".(isset($attributes['className']) && $attributes['className'] != '' ? " ".$attributes['className'] : "")."'>";
+			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">";
 
 				if($attributes['list_heading'] != '')
 				{
@@ -75,6 +75,8 @@ class mf_custom_list
 
 	function init()
 	{
+		load_plugin_textdomain('lang_custom_lists', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
 		// Post types
 		#######################
 		$labels = array(
@@ -746,7 +748,7 @@ class mf_custom_list
 			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
 			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
 			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
-			$parent_columns_gap = get_post_meta($parent_id, $this->meta_prefix.'columns_gap', true);
+			$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);
 
 			if($parent_container == '')
 			{
@@ -945,38 +947,41 @@ class mf_custom_list
 
 				$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
 
+				if($parent_columns_gap > 0)
+				{
+					if($parent_columns_desktop > 0)
+					{
+						$parent_custom_style .= $parent_class_selector." li
+						{
+							width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
+						}";
+					}
+
+					if($parent_columns_tablet > 0)
+					{
+						$parent_custom_style .= ".is_tablet ".$parent_class_selector." li
+						{
+							width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+						}";
+					}
+
+					if($parent_columns_mobile > 0)
+					{
+						$parent_custom_style .= ".is_mobile ".$parent_class_selector." li
+						{
+							width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+						}";
+					}
+
+					$parent_custom_style .= $parent_class_selector."
+					{
+						gap: ".$parent_columns_gap."%;
+					}";
+				}
+
 				$out .= "<style>
 					@media all
-					{";
-
-						if($parent_columns_desktop > 0)
-						{
-							$out .= $parent_class_selector." li
-							{
-								width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
-							}";
-						}
-
-						if($parent_columns_tablet > 0)
-						{
-							$out .= ".is_tablet ".$parent_class_selector." li
-							{
-								width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
-							}";
-						}
-
-						if($parent_columns_mobile > 0)
-						{
-							$out .= ".is_mobile ".$parent_class_selector." li
-							{
-								width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
-							}";
-						}
-
-						$out .= $parent_class_selector."
-						{
-							gap: ".$parent_columns_gap."%;
-						}"
+					{"
 						.$parent_custom_style
 					."}
 				</style>";
