@@ -473,7 +473,7 @@ class mf_custom_list
 		return $cols;
 	}
 
-	function column_cell($col, $id)
+	function column_cell($col, $post_id)
 	{
 		global $wpdb, $post;
 
@@ -483,16 +483,16 @@ class mf_custom_list
 				switch($col)
 				{
 					case 'items':
-						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $id));
+						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $post_id));
 
-						echo "<a href='".admin_url("edit.php?post_type=".$this->post_type_item."&strFilterCustomList=".$id)."'>".$item_amount."</a>
+						echo "<a href='".admin_url("edit.php?post_type=".$this->post_type_item."&strFilterCustomList=".$post_id)."'>".$item_amount."</a>
 						<div class='row-actions'>
-							<a href='".admin_url("post-new.php?post_type=".$this->post_type_item."&list_id=".$id)."'>".__("Add New", 'lang_custom_lists')."</a>
+							<a href='".admin_url("post-new.php?post_type=".$this->post_type_item."&list_id=".$post_id)."'>".__("Add New", 'lang_custom_lists')."</a>
 						</div>";
 					break;
 
 					case 'style':
-						$post_meta = get_post_meta($id, $this->meta_prefix.$col, true);
+						$post_meta = get_post_meta($post_id, $this->meta_prefix.$col, true);
 
 						if($post_meta != '')
 						{
@@ -501,9 +501,9 @@ class mf_custom_list
 					break;
 
 					case 'columns':
-						$post_meta_columns_desktop = get_post_meta($id, $this->meta_prefix.'columns_desktop', true);
-						$post_meta_columns_tablet = get_post_meta($id, $this->meta_prefix.'columns_tablet', true);
-						$post_meta_columns_mobile = get_post_meta($id, $this->meta_prefix.'columns_mobile', true);
+						$post_meta_columns_desktop = get_post_meta($post_id, $this->meta_prefix.'columns_desktop', true);
+						$post_meta_columns_tablet = get_post_meta($post_id, $this->meta_prefix.'columns_tablet', true);
+						$post_meta_columns_mobile = get_post_meta($post_id, $this->meta_prefix.'columns_mobile', true);
 
 						if($post_meta_columns_desktop > 0)
 						{
@@ -532,7 +532,7 @@ class mf_custom_list
 					break;
 
 					/*case 'shortcode':
-						$shortcode = "[mf_custom_list id=".$id."]";
+						$shortcode = "[mf_custom_list id=".$post_id."]";
 
 						echo show_textfield(array('value' => $shortcode, 'readonly' => true, 'xtra' => "onclick='this.select()'"))
 						."<div class='row-actions'>
@@ -548,7 +548,7 @@ class mf_custom_list
 					case 'list_id':
 						$out = "";
 
-						$arr_parent_id = get_post_meta($id, $this->meta_prefix.$col, false);
+						$arr_parent_id = get_post_meta($post_id, $this->meta_prefix.$col, false);
 
 						if(is_array($arr_parent_id))
 						{
