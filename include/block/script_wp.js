@@ -120,18 +120,6 @@
 
 			/* Select */
 			/* ################### */
-			var arr_options = [];
-
-			jQuery.each(script_custom_lists_block_wp.list_id, function(index, value)
-			{
-				if(index == "")
-				{
-					index = 0;
-				}
-
-				arr_options.push({label: value, value: index});
-			});
-
 			arr_out.push(el(
 				'div',
 				{className: "wp_mf_block " + props.className},
@@ -140,7 +128,7 @@
 					{
 						label: __("List", 'lang_custom_lists'),
 						value: props.attributes.list_id,
-						options: arr_options,
+						options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_id),
 						onChange: function(value)
 						{
 							props.setAttributes({list_id: value});
@@ -172,18 +160,6 @@
 
 			/* Select */
 			/* ################### */
-			var arr_options = [];
-
-			jQuery.each(script_custom_lists_block_wp.list_order, function(index, value)
-			{
-				if(index == "")
-				{
-					index = 0;
-				}
-
-				arr_options.push({label: value, value: index});
-			});
-
 			arr_out.push(el(
 				'div',
 				{className: "wp_mf_block " + props.className},
@@ -192,7 +168,7 @@
 					{
 						label: __("Order", 'lang_custom_lists'),
 						value: props.attributes.list_order,
-						options: arr_options,
+						options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_order),
 						onChange: function(value)
 						{
 							props.setAttributes({list_order: value});
