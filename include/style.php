@@ -366,7 +366,7 @@ echo "@media all
 
 		.custom_list_style_people .image
 		{
-			background: #f3f3f3;
+			/*background: #f3f3f3;*/
 			height: 0;
 			padding-bottom: 100%;
 			position: relative;
@@ -375,10 +375,11 @@ echo "@media all
 
 			.custom_list_style_people .image img
 			{
+				border-radius: 50%;
 				height: 100%;
 				left: 0;
 				margin: 0 auto;
-				object-fit: contain;
+				object-fit: cover;
 				position: absolute;
 				width: 100%;
 			}
@@ -496,7 +497,7 @@ echo "@media all
 			height: 100%;
 			left: 0;
 			margin: 0 auto;
-			object-fit: contain;
+			object-fit: cover;
 			position: absolute;
 			width: 100%;
 		}";
