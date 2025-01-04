@@ -284,6 +284,7 @@ class mf_custom_list
 					'name' => __("Columns", 'lang_custom_lists')." (".__("Desktop", 'lang_custom_lists').")",
 					'id' => $this->meta_prefix.'columns_desktop',
 					'type' => 'number',
+					'std' => 4,
 					'attributes' => array(
 						'min' => 1,
 						'max' => 5,
@@ -293,6 +294,7 @@ class mf_custom_list
 					'name' => __("Columns", 'lang_custom_lists')." (".__("Tablet", 'lang_custom_lists').")",
 					'id' => $this->meta_prefix.'columns_tablet',
 					'type' => 'number',
+					'std' => 3,
 					'attributes' => array(
 						'min' => 1,
 						'max' => 5,
@@ -302,6 +304,7 @@ class mf_custom_list
 					'name' => __("Columns", 'lang_custom_lists')." (".__("Mobile", 'lang_custom_lists').")",
 					'id' => $this->meta_prefix.'columns_mobile',
 					'type' => 'number',
+					'std' => 2,
 					'attributes' => array(
 						'min' => 1,
 						'max' => 5,
