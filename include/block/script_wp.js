@@ -19,7 +19,7 @@
 				'type': 'string',
 				'default': ''
 			},
-			'list_heading':
+			/*'list_heading':
 			{
                 'type': 'string',
                 'default': ''
@@ -28,18 +28,18 @@
 			{
                 'type': 'string',
                 'default': ''
-            },
+            },*/
 			'list_id':
 			{
                 'type': 'string',
                 'default': ''
             },
-			'list_amount':
+			'list_order':
 			{
                 'type': 'string',
                 'default': ''
             },
-			'list_order':
+			'list_amount':
 			{
                 'type': 'string',
                 'default': ''
@@ -81,7 +81,7 @@
 					el(
 						InspectorControls,
 						'div',
-						el(
+						/*el(
 							TextControl,
 							{
 								label: script_custom_lists_block_wp.list_heading_label,
@@ -104,7 +104,7 @@
 									props.setAttributes({list_content: value});
 								}
 							}
-						),
+						),*/
 						el(
 							SelectControl,
 							{
@@ -118,18 +118,6 @@
 							}
 						),
 						el(
-							TextControl,
-							{
-								label: script_custom_lists_block_wp.list_amount_label,
-								type: 'number',
-								value: props.attributes.list_amount,
-								onChange: function(value)
-								{
-									props.setAttributes({list_amount: value});
-								}
-							}
-						),
-						el(
 							SelectControl,
 							{
 								label: script_custom_lists_block_wp.list_order_label,
@@ -138,6 +126,18 @@
 								onChange: function(value)
 								{
 									props.setAttributes({list_order: value});
+								}
+							}
+						),
+						el(
+							TextControl,
+							{
+								label: script_custom_lists_block_wp.list_amount_label,
+								type: 'number',
+								value: props.attributes.list_amount,
+								onChange: function(value)
+								{
+									props.setAttributes({list_amount: value});
 								}
 							}
 						)

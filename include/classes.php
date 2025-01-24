@@ -25,6 +25,7 @@ class mf_custom_list
 		return array(
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
 			//'about_us' => __("About Us", 'lang_custom_lists'),
+			'faq' => __("FAQ", 'lang_custom_lists'),
 			//'flags' => __("Flags", 'lang_custom_lists'),
 			//'flex' => __("Flex", 'lang_custom_lists'),
 			//'horizontal' => __("Horizontal", 'lang_custom_lists'),
@@ -41,11 +42,11 @@ class mf_custom_list
 
 	function block_render_callback($attributes)
 	{
-		if(!isset($attributes['list_heading'])){	$attributes['list_heading'] = "";}
-		if(!isset($attributes['list_content'])){	$attributes['list_content'] = "";}
+		//if(!isset($attributes['list_heading'])){	$attributes['list_heading'] = "";}
+		//if(!isset($attributes['list_content'])){	$attributes['list_content'] = "";}
 		if(!isset($attributes['list_id'])){			$attributes['list_id'] = 0;}
-		if(!isset($attributes['list_amount'])){		$attributes['list_amount'] = 0;}
 		if(!isset($attributes['list_order'])){		$attributes['list_order'] = "";}
+		if(!isset($attributes['list_amount'])){		$attributes['list_amount'] = 0;}
 
 		$out = "";
 
@@ -53,19 +54,19 @@ class mf_custom_list
 		{
 			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">";
 
-				if($attributes['list_heading'] != '')
+				/*if($attributes['list_heading'] != '')
 				{
 					$out .= "<h3>".$attributes['list_heading']."</h3>";
-				}
+				}*/
 
 				$out .= "<div class='section'>";
 
-					if($attributes['list_content'] != '')
+					/*if($attributes['list_content'] != '')
 					{
 						$out .= apply_filters('the_content', $attributes['list_content']);
-					}
+					}*/
 
-					$out .= $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']))
+					$out .= $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'order' => $attributes['list_order'], 'amount' => $attributes['list_amount']))
 				."</div>
 			</div>";
 		}
@@ -112,7 +113,7 @@ class mf_custom_list
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
 			'exclude_from_search' => true,
-			'supports' => array('title', 'editor', 'excerpt', 'custom-fields'),
+			'supports' => array('title', 'editor', 'excerpt'), //, 'custom-fields'
 			'hierarchical' => true,
 			'has_archive' => false,
 		);
@@ -725,20 +726,20 @@ class mf_custom_list
 	function wp_head()
 	{
 		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
 
-		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.php", $plugin_version);
-		mf_enqueue_script('script_custom_lists', $plugin_include_url."script.js", $plugin_version);
+		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.php");
 	}
 
 	function shortcode_custom_list($atts)
 	{
 		global $wpdb, $has_image;
 
+		$plugin_include_url = plugin_dir_url(__FILE__);
+
 		extract(shortcode_atts(array(
 			'id' => '',
-			'amount' => 0,
 			'order' => '',
+			'amount' => 0,
 		), $atts));
 
 		$out = "";
@@ -775,11 +776,14 @@ class mf_custom_list
 
 			if(preg_match("/\[children\]/i", $parent_container))
 			{
-				$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
-
 				if($order != '')
 				{
 					$child_order = $order;
+				}
+
+				else
+				{
+					$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
 				}
 
 				$out_children = "";
@@ -815,13 +819,6 @@ class mf_custom_list
 					{
 						$child_content = $r->post_content;
 					}
-
-					if(IS_EDITOR && get_option('setting_theme_core_enable_edit_mode', 'yes') == 'yes')
-					{
-						$child_content = str_replace("<li>", "<li><a href='".admin_url("post.php?post=".$child_id."&action=edit")."' class='edit_item'><i class='fa fa-wrench' title='".__("Edit Item", 'lang_custom_lists')."'></i></a>", $child_content);
-					}
-
-					//$child_content = str_replace("<p>[list_text]</p>", "<div class='replaced'>[list_text]</div>", $child_content); //When apply_filters() on list_text was added, this had to be corrected
 
 					$out_children .= preg_replace_callback(
 						"/\[(.*?)\]/i",
@@ -932,6 +929,13 @@ class mf_custom_list
 
 			if($out != '')
 			{
+				switch($parent_style)
+				{
+					case 'faq':
+						mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
+					break;
+				}
+
 				$parent_class = "custom_list";
 				$parent_class_selector = "";
 
@@ -954,6 +958,8 @@ class mf_custom_list
 				if($parent_read_more == 'yes')
 				{
 					$parent_class .= " custom_list_read_more";
+
+					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js");
 				}
 
 				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
