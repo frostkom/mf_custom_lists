@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description:
-Version: 3.9.0
+Version: 3.9.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -28,6 +28,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		register_uninstall_hook(__FILE__, 'uninstall_custom_lists');
 
 		add_action('admin_menu', array($obj_custom_list, 'admin_menu'));
+		add_action('admin_init', array($obj_custom_list, 'settings_custom_list'));
 
 		add_filter('filter_sites_table_pages', array($obj_custom_list, 'filter_sites_table_pages'));
 
@@ -80,6 +81,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		mf_uninstall_plugin(array(
 			'post_types' => array($obj_custom_list->post_type, $obj_custom_list->post_type_item),
+			'options' => array('setting_custom_list_tablet_breakpoint', 'setting_custom_list_mobile_breakpoint'),
 		));
 	}
 }

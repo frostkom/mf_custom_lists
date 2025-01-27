@@ -176,6 +176,42 @@ class mf_custom_list
 		}
 	}
 
+	function settings_custom_list()
+	{
+		$options_area = __FUNCTION__;
+
+		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+
+		$arr_settings = array();
+		$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_list');
+		$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_list');
+
+		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+	}
+
+	function settings_custom_list_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+
+		echo settings_header($setting_key, __("Custom List", 'lang_custom_list'));
+	}
+
+	function setting_custom_list_tablet_breakpoint_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option_or_default($setting_key, 1100);
+
+		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option));
+	}
+
+	function setting_custom_list_mobile_breakpoint_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option_or_default($setting_key, 900);
+
+		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option));
+	}
+
 	function filter_sites_table_pages($arr_pages)
 	{
 		$arr_pages[$this->post_type] = array(
@@ -707,7 +743,9 @@ class mf_custom_list
 
 			foreach($result as $r)
 			{
-				wp_trash_post($r->ID);
+				do_log("Trash ".$r->ID." if it only is connected to one list");
+
+				//wp_trash_post($r->ID);
 			}
 		}
 	}
@@ -978,17 +1016,27 @@ class mf_custom_list
 
 					if($parent_columns_tablet > 0)
 					{
-						$parent_custom_style .= ".is_tablet ".$parent_class_selector." li
+						$setting_custom_list_tablet_breakpoint = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
+
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_tablet_breakpoint."px)
 						{
-							width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+							".$parent_class_selector." li
+							{
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+							}
 						}";
 					}
 
 					if($parent_columns_mobile > 0)
 					{
-						$parent_custom_style .= ".is_mobile ".$parent_class_selector." li
+						$setting_custom_list_mobile_breakpoint = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
+
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_mobile_breakpoint."px)
 						{
-							width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+							".$parent_class_selector." li
+							{
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+							}
 						}";
 					}
 
