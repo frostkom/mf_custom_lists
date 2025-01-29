@@ -9,8 +9,6 @@ if(!defined('ABSPATH'))
 	require_once($folder."wp-load.php");
 }
 
-$column_gap = 5;
-
 echo "@media all
 {
 	.custom_list
@@ -22,37 +20,10 @@ echo "@media all
 		.custom_list li + li
 		{
 			margin-top: 0;
-		}";
-
-		/*.custom_list.list_alternate li
-		{
-			display: flex;
 		}
 
-			.custom_list.list_alternate li > *
-			{
-				flex: 1 1 auto;
-			}
-
-			.custom_list.list_alternate li:nth-child(2n) > *:first-child, .custom_list.list_alternate li:nth-child(2n + 1) > *:last-child
-			{
-				order: 1;
-			}
-
-			.custom_list.list_alternate li:nth-child(2n + 1) > *:first-child, .custom_list.list_alternate li:nth-child(2n) > *:last-child
-			{
-				order: 2;
-			}*/
-
-	echo "/* Style */";
-
-	/*echo ".custom_list h2, .custom_list h3
-	{
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}";*/
-
-	echo ".custom_list .image
+	/* Style */
+	.custom_list .image
 	{
 		display: none;
 		margin-bottom: .5em;
@@ -61,14 +32,9 @@ echo "@media all
 		.custom_list.custom_list_has_image .image
 		{
 			display: block;
-		}";
+		}
 
-	/*echo ".is_mobile .custom_list_columns_mobile_1 > li + li
-	{
-		margin-top: 3em;
-	}";*/
-
-	echo "/* Style-Specific */
+	/* Style-Specific */
 	.custom_list_style_logos, .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 	{
 		display: flex;
@@ -162,7 +128,6 @@ echo "@media all
 
 		.custom_list_style_people .image
 		{
-			/*background: #f3f3f3;*/
 			height: 0;
 			padding-bottom: 100%;
 			position: relative;

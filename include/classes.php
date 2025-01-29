@@ -76,8 +76,6 @@ class mf_custom_list
 
 	function init()
 	{
-		load_plugin_textdomain('lang_custom_lists', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
-
 		// Post types
 		#######################
 		$labels = array(
@@ -183,8 +181,8 @@ class mf_custom_list
 		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
 		$arr_settings = array();
-		$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_list');
-		$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_list');
+		$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_lists');
+		$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_lists');
 
 		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 	}
@@ -193,7 +191,7 @@ class mf_custom_list
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, __("Custom List", 'lang_custom_list'));
+		echo settings_header($setting_key, __("Custom Lists", 'lang_custom_lists'));
 	}
 
 	function setting_custom_list_tablet_breakpoint_callback()

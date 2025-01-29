@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-28 12:18+0100\n"
+"POT-Creation-Date: 2025-01-27 05:28+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -32,194 +32,199 @@ msgstr "Slumpvis"
 msgid "Choose Here"
 msgstr "Välj här"
 
-#: ../include/classes.php:27
-msgid "About Us"
-msgstr "Om oss"
-
 #: ../include/classes.php:28
-msgid "Flags"
-msgstr "Flaggor"
-
-#: ../include/classes.php:29
-msgid "Flex"
+msgid "FAQ"
 msgstr ""
 
-#: ../include/classes.php:30
-msgid "Horizontal"
-msgstr "Horisontell"
-
-#: ../include/classes.php:31
 #: ../include/classes.php:32
 msgid "Logos"
 msgstr "Loggor"
 
-#: ../include/classes.php:33
-msgid "One Column"
-msgstr "En kolumn"
-
-#: ../include/classes.php:34
+#: ../include/classes.php:35
 msgid "People"
 msgstr "Människor"
 
-#: ../include/classes.php:35
+#: ../include/classes.php:36
 msgid "Screenshots"
 msgstr "Skärmdump"
 
-#: ../include/classes.php:36
-msgid "Slider"
-msgstr ""
-
-#: ../include/classes.php:37
+#: ../include/classes.php:38
 msgid "Testimonials"
 msgstr "Recensioner"
 
-#: ../include/classes.php:38
-msgid "Vertical"
-msgstr "Vertikal"
-
-#: ../include/classes.php:81
-#: ../include/classes.php:83
-#: ../include/classes.php:147
+#: ../include/classes.php:84
+#: ../include/classes.php:86
+#: ../include/classes.php:160
+#: ../include/classes.php:196
 msgid "Custom Lists"
 msgstr "Egna listor"
 
-#: ../include/classes.php:82
-#: ../include/classes.php:1056
+#: ../include/classes.php:85
+#: ../include/classes.php:135
+#: ../include/classes.php:1110
 msgid "Custom List"
 msgstr "Egen lista"
 
-#: ../include/classes.php:101
-#: ../include/classes.php:103
-#: ../include/classes.php:158
-#: ../include/classes.php:228
-#: ../include/classes.php:319
-#: ../include/classes.php:460
+#: ../include/classes.php:104
+#: ../include/classes.php:106
+#: ../include/classes.php:171
+#: ../include/classes.php:277
+#: ../include/classes.php:371
+#: ../include/classes.php:512
 msgid "Items"
 msgstr "Objekt"
 
-#: ../include/classes.php:102
+#: ../include/classes.php:105
 msgid "Item"
 msgstr "Objekt"
 
-#: ../include/classes.php:150
-#: ../include/classes.php:170
+#: ../include/classes.php:136
+#: ../include/classes.php:1107
+msgid "Display a Custom List"
+msgstr "Visa en egen lista"
+
+#: ../include/classes.php:137
+#: ../include/classes.php:1180
+msgid "Heading"
+msgstr "Rubrik"
+
+#: ../include/classes.php:138
+#: ../include/classes.php:1181
+msgid "Content"
+msgstr "Innehåll"
+
+#: ../include/classes.php:139
+#: ../include/classes.php:414
+#: ../include/classes.php:519
+#: ../include/classes.php:1182
+msgid "List"
+msgstr "Lista"
+
+#: ../include/classes.php:141
+#: ../include/classes.php:1184
+msgid "Amount"
+msgstr "Antal"
+
+#: ../include/classes.php:142
+#: ../include/classes.php:307
+#: ../include/classes.php:1185
+msgid "Order"
+msgstr "Sortering"
+
+#: ../include/classes.php:163
+#: ../include/classes.php:219
 msgid "Lists"
 msgstr "Listor"
 
-#: ../include/classes.php:153
-#: ../include/classes.php:161
-#: ../include/classes.php:488
-#: ../include/classes.php:635
+#: ../include/classes.php:166
+#: ../include/classes.php:174
+#: ../include/classes.php:540
+#: ../include/classes.php:687
 msgid "Add New"
 msgstr "Lägg till ny"
 
-#: ../include/classes.php:198
+#: ../include/classes.php:186
+msgid "Tablet Breakpoint"
+msgstr "Brytpunkt för platta"
+
+#: ../include/classes.php:187
+msgid "Mobile Breakpoint"
+msgstr "Brytpunkt för mobil"
+
+#: ../include/classes.php:247
 #, php-format
 msgid "Link from %s"
 msgstr "Länk från %s"
 
-#: ../include/classes.php:215
+#: ../include/classes.php:264
 msgid "Structure"
 msgstr "Struktur"
 
-#: ../include/classes.php:221
+#: ../include/classes.php:270
 msgid "Container"
 msgstr "Behållare"
 
-#: ../include/classes.php:235
-#: ../include/classes.php:461
+#: ../include/classes.php:284
+#: ../include/classes.php:513
 msgid "Style"
 msgstr "Utseende"
 
-#: ../include/classes.php:241
+#: ../include/classes.php:290
 msgid "Custom Style"
 msgstr "Anpassad CSS"
 
-#: ../include/classes.php:252
-#: ../include/classes.php:356
+#: ../include/classes.php:301
+#: ../include/classes.php:408
 msgid "Settings"
 msgstr "Inställningar"
 
-#: ../include/classes.php:258
-#: ../include/classes.php:1131
-msgid "Order"
-msgstr "Sortering"
-
-#: ../include/classes.php:265
+#: ../include/classes.php:314
 msgid "Read More"
 msgstr "Läs mer"
 
-#: ../include/classes.php:272
-#: ../include/classes.php:281
-#: ../include/classes.php:290
-#: ../include/classes.php:462
+#: ../include/classes.php:321
+#: ../include/classes.php:331
+#: ../include/classes.php:341
+#: ../include/classes.php:514
 msgid "Columns"
 msgstr "Kolumner"
 
-#: ../include/classes.php:272
-#: ../include/classes.php:508
+#: ../include/classes.php:321
+#: ../include/classes.php:560
 msgid "Desktop"
 msgstr "Skrivbord"
 
-#: ../include/classes.php:281
-#: ../include/classes.php:518
+#: ../include/classes.php:331
+#: ../include/classes.php:570
 msgid "Tablet"
 msgstr "Platta"
 
-#: ../include/classes.php:290
-#: ../include/classes.php:528
+#: ../include/classes.php:341
+#: ../include/classes.php:580
 msgid "Mobile"
 msgstr "Mobil"
 
-#: ../include/classes.php:299
+#: ../include/classes.php:351
 msgid "Gap"
 msgstr "Mellanrum"
 
-#: ../include/classes.php:362
-#: ../include/classes.php:467
-#: ../include/classes.php:1128
-msgid "List"
-msgstr "Lista"
-
-#: ../include/classes.php:374
+#: ../include/classes.php:426
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../include/classes.php:380
+#: ../include/classes.php:432
 msgid "Image"
 msgstr "Bild"
 
-#: ../include/classes.php:387
+#: ../include/classes.php:439
 msgid "Page"
 msgstr "Sida"
 
-#: ../include/classes.php:396
+#: ../include/classes.php:448
 msgid "External Link"
 msgstr "Extern länk"
 
-#: ../include/classes.php:596
+#: ../include/classes.php:648
 msgid "Choose a List"
 msgstr "Välj en lista"
 
-#: ../include/classes.php:806
-msgid "Edit Item"
-msgstr "Redigera objekt"
+#~ msgid "About Us"
+#~ msgstr "Om oss"
 
-#: ../include/classes.php:1053
-msgid "Display a Custom List"
-msgstr "Visa en egen lista"
+#~ msgid "Flags"
+#~ msgstr "Flaggor"
 
-#: ../include/classes.php:1126
-msgid "Heading"
-msgstr "Rubrik"
+#~ msgid "Horizontal"
+#~ msgstr "Horisontell"
 
-#: ../include/classes.php:1127
-msgid "Content"
-msgstr "Innehåll"
+#~ msgid "One Column"
+#~ msgstr "En kolumn"
 
-#: ../include/classes.php:1130
-msgid "Amount"
-msgstr "Antal"
+#~ msgid "Vertical"
+#~ msgstr "Vertikal"
+
+#~ msgid "Edit Item"
+#~ msgstr "Redigera objekt"
 
 #~ msgid "Edit"
 #~ msgstr "Redigera"
