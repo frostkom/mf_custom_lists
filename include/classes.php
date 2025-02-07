@@ -669,7 +669,7 @@ class mf_custom_list
 				{
 					$object_id = $r->post_id;
 
-					$out .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_post_title($object_id)."</a></li>";
+					$out .= "<li><a href='".admin_url("post.php?post=".$object_id."&action=edit")."'>".get_the_title($object_id)."</a></li>";
 				}
 
 			$out .= "</ul>";
@@ -714,7 +714,7 @@ class mf_custom_list
 					{
 						if($list_id > 0)
 						{
-							$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_post_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
+							$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_the_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
 
 							$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
 						}
