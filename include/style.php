@@ -112,6 +112,7 @@ echo "@media all
 			height: 100%;
 			margin: 0 auto;
 			object-fit: contain;
+			max-width: 100%;
 		}
 
 			.custom_list_style_logos li img:hover
