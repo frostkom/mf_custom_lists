@@ -42,8 +42,6 @@ class mf_custom_list
 
 	function block_render_callback($attributes)
 	{
-		//if(!isset($attributes['list_heading'])){	$attributes['list_heading'] = "";}
-		//if(!isset($attributes['list_content'])){	$attributes['list_content'] = "";}
 		if(!isset($attributes['list_id'])){			$attributes['list_id'] = 0;}
 		if(!isset($attributes['list_order'])){		$attributes['list_order'] = "";}
 		if(!isset($attributes['list_amount'])){		$attributes['list_amount'] = 0;}
@@ -52,21 +50,9 @@ class mf_custom_list
 
 		if($attributes['list_id'] > 0)
 		{
-			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">";
-
-				/*if($attributes['list_heading'] != '')
-				{
-					$out .= "<h3>".$attributes['list_heading']."</h3>";
-				}*/
-
-				$out .= "<div class='section'>";
-
-					/*if($attributes['list_content'] != '')
-					{
-						$out .= apply_filters('the_content', $attributes['list_content']);
-					}*/
-
-					$out .= $this->shortcode_custom_list(array('id' => $attributes['list_id'], 'order' => $attributes['list_order'], 'amount' => $attributes['list_amount']))
+			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">
+				<div class='section'>"
+					.$this->shortcode_custom_list(array('id' => $attributes['list_id'], 'order' => $attributes['list_order'], 'amount' => $attributes['list_amount']))
 				."</div>
 			</div>";
 		}
@@ -132,8 +118,6 @@ class mf_custom_list
 		wp_localize_script('script_custom_lists_block_wp', 'script_custom_lists_block_wp', array(
 			'block_title' => __("Custom List", 'lang_custom_lists'),
 			'block_description' => __("Display a Custom List", 'lang_custom_lists'),
-			'list_heading_label' => __("Heading", 'lang_custom_lists'),
-			'list_content_label' => __("Content", 'lang_custom_lists'),
 			'list_id_label' => __("List", 'lang_custom_lists'),
 			'list_id' => $arr_data,
 			'list_amount_label' => __("Amount", 'lang_custom_lists'),

@@ -19,16 +19,6 @@
 				'type': 'string',
 				'default': ''
 			},
-			/*'list_heading':
-			{
-                'type': 'string',
-                'default': ''
-            },
-			'list_content':
-			{
-                'type': 'string',
-                'default': ''
-            },*/
 			'list_id':
 			{
                 'type': 'string',
@@ -48,7 +38,7 @@
 		'supports':
 		{
 			'html': false,
-			'multiple': false,
+			'multiple': true,
 			'align': true,
 			'spacing':
 			{
@@ -81,30 +71,6 @@
 					el(
 						InspectorControls,
 						'div',
-						/*el(
-							TextControl,
-							{
-								label: script_custom_lists_block_wp.list_heading_label,
-								type: 'text',
-								value: props.attributes.list_heading,
-								onChange: function(value)
-								{
-									props.setAttributes({list_heading: value});
-								}
-							}
-						),
-						el(
-							TextControl,
-							{
-								label: script_custom_lists_block_wp.list_content_label,
-								type: 'text',
-								value: props.attributes.list_content,
-								onChange: function(value)
-								{
-									props.setAttributes({list_content: value});
-								}
-							}
-						),*/
 						el(
 							SelectControl,
 							{
