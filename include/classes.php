@@ -64,14 +64,12 @@ class mf_custom_list
 	{
 		// Post types
 		#######################
-		$labels = array(
-			'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
-			'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
-			'menu_name' => __("Custom Lists", 'lang_custom_lists')
-		);
-
-		$args = array(
-			'labels' => $labels,
+		register_post_type($this->post_type, array(
+			'labels' => array(
+				'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
+				'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
+				'menu_name' => __("Custom Lists", 'lang_custom_lists')
+			),
 			'public' => false, // Previously true but changed to hide in sitemap.xml
 			'show_ui' => true,
 			'show_in_menu' => false,
@@ -80,18 +78,14 @@ class mf_custom_list
 			'supports' => array('title'),
 			'hierarchical' => false,
 			'has_archive' => false,
-		);
+		));
 
-		register_post_type($this->post_type, $args);
-
-		$labels = array(
-			'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
-			'singular_name' => _x(__("Item", 'lang_custom_lists'), 'post type singular name'),
-			'menu_name' => __("Items", 'lang_custom_lists')
-		);
-
-		$args = array(
-			'labels' => $labels,
+		register_post_type($this->post_type_item, array(
+			'labels' => array(
+				'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
+				'singular_name' => _x(__("Item", 'lang_custom_lists'), 'post type singular name'),
+				'menu_name' => __("Items", 'lang_custom_lists')
+			),
 			'public' => false,
 			'show_ui' => true,
 			'show_in_menu' => false,
@@ -100,9 +94,7 @@ class mf_custom_list
 			'supports' => array('title', 'editor', 'excerpt'), //, 'custom-fields'
 			'hierarchical' => true,
 			'has_archive' => false,
-		);
-
-		register_post_type($this->post_type_item, $args);
+		));
 		#######################
 
 		// Blocks
@@ -747,7 +739,7 @@ class mf_custom_list
 	{
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
-		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.php");
+		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
 	}
 
 	function shortcode_custom_list($atts)
