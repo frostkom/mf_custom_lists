@@ -40,6 +40,291 @@ class mf_custom_list
 		);
 	}
 
+	function display_list($data)
+	{
+		global $wpdb, $has_image;
+
+		$out = "";
+
+		$plugin_include_url = plugin_dir_url(__FILE__);
+
+		$has_image = false;
+
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID = '%d'", $this->post_type, 'publish', $data['list_id']));
+
+		foreach($result as $r)
+		{
+			$parent_id = $r->ID;
+			$post_name = $r->post_name;
+			$parent_content = $r->post_content;
+			$parent_excerpt = $r->post_excerpt;
+
+			$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
+			$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
+			$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
+			$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
+			$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
+			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
+			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
+			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
+			$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);
+
+			if($parent_container == '')
+			{
+				$parent_container = $parent_content;
+			}
+
+			if($parent_items == '')
+			{
+				$parent_items = $parent_excerpt;
+			}
+
+			if(preg_match("/\[children\]/i", $parent_container))
+			{
+				if($data['list_order'] != '')
+				{
+					$child_order = $data['list_order'];
+				}
+
+				else
+				{
+					$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
+				}
+
+				$out_children = "";
+
+				switch($child_order)
+				{
+					default:
+					case 'alphabetic':
+						$query_order = " ORDER BY post_title ASC";
+					break;
+
+					case 'numerical':
+						$query_order = " ORDER BY menu_order ASC";
+					break;
+
+					case 'random':
+						$query_order = " ORDER BY RAND()";
+					break;
+				}
+
+				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d'".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($data['list_amount'] > 0 ? $data['list_amount'] : 100)));
+
+				foreach($result2 as $r)
+				{
+					$child_id = $r->ID;
+
+					if($parent_items != '')
+					{
+						$child_content = $parent_items;
+					}
+
+					else
+					{
+						$child_content = $r->post_content;
+					}
+
+					$out_children .= preg_replace_callback(
+						"/\[(.*?)\]/i",
+						function($match) use ($child_id)
+						{
+							global $wpdb, $has_image;
+
+							$out = "";
+
+							switch($match[1])
+							{
+								case 'list_id':
+									$out .= $child_id;
+								break;
+
+								case 'list_icon':
+									$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
+
+									if($child_icon != '')
+									{
+										$out .= "<i class='".$child_icon."'></i>";
+									}
+								break;
+
+								case 'list_title':
+									$child_title = get_the_title($child_id);
+
+									$out .= $child_title;
+								break;
+
+								case 'list_text':
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+									$child_text = apply_filters('the_content', $child_text);
+
+									if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
+									{
+										$child_text = "<p>".$child_text."</p>";
+									}
+
+									$out .= $child_text;
+								break;
+
+								case 'list_excerpt':
+									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+									$out .= apply_filters('the_content', $child_text);
+								break;
+
+								case 'list_image':
+									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
+
+									if($child_image_id > 0)
+									{
+										$has_image = true;
+
+										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id, 'size' => 'large'))."</div>";
+									}
+
+									else if(function_exists('get_image_fallback'))
+									{
+										$out .= "<div class='image'>".get_image_fallback()."</div>";
+									}
+								break;
+
+								case 'list_link':
+									$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
+
+									if(intval($child_page) > 0)
+									{
+										$out .= get_permalink($child_page);
+									}
+
+									else
+									{
+										$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
+
+										if($child_link == '')
+										{
+											$child_link = "#";
+										}
+
+										$out .= $child_link;
+									}
+								break;
+
+								default:
+									$out .= get_post_meta($child_id, $match[1], true);
+								break;
+							}
+
+							return $out;
+						},
+						$child_content
+					);
+				}
+
+				if($out_children != '')
+				{
+					$out .= str_replace("[children]", $out_children, $parent_container);
+				}
+			}
+
+			else if($parent_container != '')
+			{
+				$out .= $parent_container;
+			}
+
+			if($out != '')
+			{
+				switch($parent_style)
+				{
+					case 'faq':
+						mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
+					break;
+				}
+
+				$parent_class = "custom_list";
+				$parent_class_selector = "";
+
+				if($post_name != '')
+				{
+					$parent_class .= " custom_list_".$post_name;
+					$parent_class_selector .= ".custom_list_".$post_name;
+				}
+
+				if($parent_style != '')
+				{
+					$parent_class .= " custom_list_style_".$parent_style;
+				}
+
+				if($has_image == true)
+				{
+					$parent_class .= " custom_list_has_image";
+				}
+
+				if($parent_read_more == 'yes')
+				{
+					$parent_class .= " custom_list_read_more";
+
+					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js");
+				}
+
+				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
+
+				$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
+
+				if($parent_columns_gap > 0)
+				{
+					if($parent_columns_desktop > 0)
+					{
+						$parent_custom_style .= $parent_class_selector." li
+						{
+							width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
+						}";
+					}
+
+					if($parent_columns_tablet > 0)
+					{
+						$setting_custom_list_tablet_breakpoint = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
+
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_tablet_breakpoint."px)
+						{
+							".$parent_class_selector." li
+							{
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+							}
+						}";
+					}
+
+					if($parent_columns_mobile > 0)
+					{
+						$setting_custom_list_mobile_breakpoint = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
+
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_mobile_breakpoint."px)
+						{
+							".$parent_class_selector." li
+							{
+								width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+							}
+						}";
+					}
+
+					$parent_custom_style .= $parent_class_selector."
+					{
+						gap: ".$parent_columns_gap."%;
+					}";
+				}
+
+				$out .= "<style>
+					@media all
+					{"
+						.$parent_custom_style
+					."}
+				</style>";
+			}
+		}
+
+		return $out;
+	}
+
 	function block_render_callback($attributes)
 	{
 		if(!isset($attributes['list_id'])){			$attributes['list_id'] = 0;}
@@ -52,7 +337,7 @@ class mf_custom_list
 		{
 			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">
 				<div class='section'>"
-					.$this->shortcode_custom_list(array('id' => $attributes['list_id'], 'order' => $attributes['list_order'], 'amount' => $attributes['list_amount']))
+					.$this->display_list($attributes)
 				."</div>
 			</div>";
 		}
@@ -744,293 +1029,11 @@ class mf_custom_list
 
 	function shortcode_custom_list($atts)
 	{
-		global $wpdb, $has_image;
+		global $post;
 
 		$out = "";
 
-		/*$plugin_include_url = plugin_dir_url(__FILE__);
-
-		extract(shortcode_atts(array(
-			'id' => '',
-			'order' => '',
-			'amount' => 0,
-		), $atts));
-
-		$has_image = false;
-
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID = '%d'", $this->post_type, 'publish', $id));
-
-		foreach($result as $r)
-		{
-			$parent_id = $r->ID;
-			$post_name = $r->post_name;
-			$parent_content = $r->post_content;
-			$parent_excerpt = $r->post_excerpt;
-
-			$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
-			$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
-			$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
-			$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
-			$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
-			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
-			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
-			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
-			$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);
-
-			if($parent_container == '')
-			{
-				$parent_container = $parent_content;
-			}
-
-			if($parent_items == '')
-			{
-				$parent_items = $parent_excerpt;
-			}
-
-			if(preg_match("/\[children\]/i", $parent_container))
-			{
-				if($order != '')
-				{
-					$child_order = $order;
-				}
-
-				else
-				{
-					$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
-				}
-
-				$out_children = "";
-
-				switch($child_order)
-				{
-					default:
-					case 'alphabetic':
-						$query_order = " ORDER BY post_title ASC";
-					break;
-
-					case 'numerical':
-						$query_order = " ORDER BY menu_order ASC";
-					break;
-
-					case 'random':
-						$query_order = " ORDER BY RAND()";
-					break;
-				}
-
-				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d'".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($amount > 0 ? $amount : 100)));
-
-				foreach($result2 as $r)
-				{
-					$child_id = $r->ID;
-
-					if($parent_items != '')
-					{
-						$child_content = $parent_items;
-					}
-
-					else
-					{
-						$child_content = $r->post_content;
-					}
-
-					$out_children .= preg_replace_callback(
-						"/\[(.*?)\]/i",
-						function($match) use ($child_id)
-						{
-							global $wpdb, $has_image;
-
-							$out = "";
-
-							switch($match[1])
-							{
-								case 'list_id':
-									$out .= $child_id;
-								break;
-
-								case 'list_icon':
-									$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
-
-									if($child_icon != '')
-									{
-										$out .= "<i class='".$child_icon."'></i>";
-									}
-								break;
-
-								case 'list_title':
-									$child_title = get_the_title($child_id);
-
-									$out .= $child_title;
-								break;
-
-								case 'list_text':
-									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-									$child_text = apply_filters('the_content', $child_text);
-
-									if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
-									{
-										$child_text = "<p>".$child_text."</p>";
-									}
-
-									$out .= $child_text;
-								break;
-
-								case 'list_excerpt':
-									$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-									$out .= apply_filters('the_content', $child_text);
-								break;
-
-								case 'list_image':
-									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
-
-									if($child_image_id > 0)
-									{
-										$has_image = true;
-
-										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id, 'size' => 'large'))."</div>";
-									}
-
-									else if(function_exists('get_image_fallback'))
-									{
-										$out .= "<div class='image'>".get_image_fallback()."</div>";
-									}
-								break;
-
-								case 'list_link':
-									$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
-
-									if(intval($child_page) > 0)
-									{
-										$out .= get_permalink($child_page);
-									}
-
-									else
-									{
-										$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
-
-										if($child_link == '')
-										{
-											$child_link = "#";
-										}
-
-										$out .= $child_link;
-									}
-								break;
-
-								default:
-									$out .= get_post_meta($child_id, $match[1], true);
-								break;
-							}
-
-							return $out;
-						},
-						$child_content
-					);
-				}
-
-				if($out_children != '')
-				{
-					$out .= str_replace("[children]", $out_children, $parent_container);
-				}
-			}
-
-			else if($parent_container != '')
-			{
-				$out .= $parent_container;
-			}
-
-			if($out != '')
-			{
-				switch($parent_style)
-				{
-					case 'faq':
-						mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
-					break;
-				}
-
-				$parent_class = "custom_list";
-				$parent_class_selector = "";
-
-				if($post_name != '')
-				{
-					$parent_class .= " custom_list_".$post_name;
-					$parent_class_selector .= ".custom_list_".$post_name;
-				}
-
-				if($parent_style != '')
-				{
-					$parent_class .= " custom_list_style_".$parent_style;
-				}
-
-				if($has_image == true)
-				{
-					$parent_class .= " custom_list_has_image";
-				}
-
-				if($parent_read_more == 'yes')
-				{
-					$parent_class .= " custom_list_read_more";
-
-					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js");
-				}
-
-				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
-
-				$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
-
-				if($parent_columns_gap > 0)
-				{
-					if($parent_columns_desktop > 0)
-					{
-						$parent_custom_style .= $parent_class_selector." li
-						{
-							width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
-						}";
-					}
-
-					if($parent_columns_tablet > 0)
-					{
-						$setting_custom_list_tablet_breakpoint = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
-
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_tablet_breakpoint."px)
-						{
-							".$parent_class_selector." li
-							{
-								width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
-							}
-						}";
-					}
-
-					if($parent_columns_mobile > 0)
-					{
-						$setting_custom_list_mobile_breakpoint = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
-
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_mobile_breakpoint."px)
-						{
-							".$parent_class_selector." li
-							{
-								width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
-							}
-						}";
-					}
-
-					$parent_custom_style .= $parent_class_selector."
-					{
-						gap: ".$parent_columns_gap."%;
-					}";
-				}
-
-				$out .= "<style>
-					@media all
-					{"
-						.$parent_custom_style
-					."}
-				</style>";
-			}
-		}*/
-
-		do_log(__FUNCTION__.": Add a block instead (".var_export($atts, true).")");
+		do_log(__FUNCTION__.": Add a block instead (#".$post->ID.", ".var_export($atts, true).")");
 
 		return $out;
 	}
@@ -1101,7 +1104,7 @@ class widget_custom_lists extends WP_Widget
 				$obj_custom_list = new mf_custom_list();
 			}
 
-			$out_temp = $obj_custom_list->shortcode_custom_list(array('id' => $attributes['list_id'], 'amount' => $attributes['list_amount'], 'order' => $attributes['list_order']));
+			$out_temp = $obj_custom_list->display_list($attributes);
 
 			if($out_temp != '')
 			{
