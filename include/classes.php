@@ -746,7 +746,9 @@ class mf_custom_list
 	{
 		global $wpdb, $has_image;
 
-		$plugin_include_url = plugin_dir_url(__FILE__);
+		$out = "";
+
+		/*$plugin_include_url = plugin_dir_url(__FILE__);
 
 		extract(shortcode_atts(array(
 			'id' => '',
@@ -754,7 +756,6 @@ class mf_custom_list
 			'amount' => 0,
 		), $atts));
 
-		$out = "";
 		$has_image = false;
 
 		$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_name, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s AND ID = '%d'", $this->post_type, 'publish', $id));
@@ -1027,7 +1028,9 @@ class mf_custom_list
 					."}
 				</style>";
 			}
-		}
+		}*/
+
+		do_log(__FUNCTION__.": Add a block instead (".var_export($atts, true).")");
 
 		return $out;
 	}
