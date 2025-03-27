@@ -24,7 +24,7 @@ class mf_custom_list
 	{
 		return array(
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
-			//'about_us' => __("About Us", 'lang_custom_lists'),
+			'about_us' => __("About Us", 'lang_custom_lists'),
 			'faq' => __("FAQ", 'lang_custom_lists'),
 			//'flags' => __("Flags", 'lang_custom_lists'),
 			//'flex' => __("Flex", 'lang_custom_lists'),
