@@ -351,8 +351,8 @@ class mf_custom_list
 		#######################
 		register_post_type($this->post_type, array(
 			'labels' => array(
-				'name' => _x(__("Custom Lists", 'lang_custom_lists'), 'post type general name'),
-				'singular_name' => _x(__("Custom List", 'lang_custom_lists'), 'post type singular name'),
+				'name' => __("Custom Lists", 'lang_custom_lists'),
+				'singular_name' => __("Custom List", 'lang_custom_lists'),
 				'menu_name' => __("Custom Lists", 'lang_custom_lists')
 			),
 			'public' => false, // Previously true but changed to hide in sitemap.xml
@@ -367,8 +367,8 @@ class mf_custom_list
 
 		register_post_type($this->post_type_item, array(
 			'labels' => array(
-				'name' => _x(__("Items", 'lang_custom_lists'), 'post type general name'),
-				'singular_name' => _x(__("Item", 'lang_custom_lists'), 'post type singular name'),
+				'name' => __("Items", 'lang_custom_lists'),
+				'singular_name' => __("Item", 'lang_custom_lists'),
 				'menu_name' => __("Items", 'lang_custom_lists')
 			),
 			'public' => false,
@@ -878,7 +878,7 @@ class mf_custom_list
 		}
 	}
 
-	function count_shortcode_button($count)
+	/*function count_shortcode_button($count)
 	{
 		if($count == 0)
 		{
@@ -895,9 +895,9 @@ class mf_custom_list
 		}
 
 		return $count;
-	}
+	}*/
 
-	function get_shortcode_output($out)
+	/*function get_shortcode_output($out)
 	{
 		$arr_data = array();
 		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
@@ -909,7 +909,7 @@ class mf_custom_list
 		}
 
 		return $out;
-	}
+	}*/
 
 	function get_list_items($data)
 	{
@@ -954,7 +954,7 @@ class mf_custom_list
 		return $out;
 	}
 
-	function get_shortcode_list($data)
+	/*function get_shortcode_list($data)
 	{
 		global $wpdb;
 
@@ -990,7 +990,7 @@ class mf_custom_list
 		}
 
 		return array($post_id, $content_list);
-	}
+	}*/
 
 	function wp_trash_post($post_id)
 	{
