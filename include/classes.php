@@ -176,16 +176,39 @@ class mf_custom_list
 								case 'list_image':
 									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
+									$image_url = $image_tag = "";
+
 									if($child_image_id > 0)
 									{
 										$has_image = true;
 
-										$out .= "<div class='image'>".render_image_tag(array('id' => $child_image_id, 'size' => 'large'))."</div>";
+										$image_url = wp_get_attachment_image_src($child_image_id, 'full')[0];
+
+										$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
 									}
 
 									else if(function_exists('get_image_fallback'))
 									{
-										$out .= "<div class='image'>".get_image_fallback()."</div>";
+										$image_tag = get_image_fallback();
+									}
+
+									if($image_tag != '')
+									{
+										$out .= "<div class='image'>";
+
+											if($image_url != '')
+											{
+												$out .= "<a href='".$image_url."'>";
+											}
+
+												$out .= $image_tag;
+
+											if($image_url != '')
+											{
+												$out .= "</a>";
+											}
+
+										$out .= "</div>";
 									}
 								break;
 
