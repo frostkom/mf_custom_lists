@@ -182,7 +182,12 @@ class mf_custom_list
 									{
 										$has_image = true;
 
-										$image_url = wp_get_attachment_image_src($child_image_id, 'full')[0];
+										$arr_image = wp_get_attachment_image_src($child_image_id, 'full');
+
+										if(is_array($arr_image))
+										{
+											$image_url = $arr_image[0];
+										}
 
 										$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
 									}
