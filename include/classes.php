@@ -1093,7 +1093,10 @@ class mf_custom_list
 
 	function widgets_init()
 	{
-		register_widget('widget_custom_lists');
+		if(wp_is_block_theme() == false)
+		{
+			register_widget('widget_custom_lists');
+		}
 	}
 }
 
