@@ -174,6 +174,7 @@ class mf_custom_list
 								break;
 
 								case 'list_image':
+								case 'list_image_no_link':
 									$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
 									$image_url = $image_tag = "";
@@ -199,16 +200,16 @@ class mf_custom_list
 
 									if($image_tag != '')
 									{
-										$out .= "<div class='image'>";
+										$out .= "<div class='image ".$match[1]."'>";
 
-											if($image_url != '')
+											if($image_url != '' && $match[1] == 'list_image')
 											{
 												$out .= "<a href='".$image_url."'>";
 											}
 
 												$out .= $image_tag;
 
-											if($image_url != '')
+											if($image_url != '' && $match[1] == 'list_image')
 											{
 												$out .= "</a>";
 											}

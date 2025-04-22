@@ -19,17 +19,15 @@
 
 		.custom_list.custom_list_has_image div.image
 		{
-			/*cursor: pointer;
-			overflow: hidden;*/
 			display: block;
 			margin-bottom: .5em;
 			position: relative;
 		}
 
-			.custom_list.custom_list_has_image div.image:hover:before
+			.custom_list.custom_list_has_image div.image.list_image:hover:before
 			{
 				color: rgba(255, 255, 255, .3);
-				content: "\2716"; /* X */
+				content: "\2716";
 				font-family: 'Font Awesome 5 Free';
 				font-size: 5em;
 				right: 50%;
@@ -38,7 +36,6 @@
 				top: 50%;
 				text-shadow: .01em .01em .3em rgba(0, 0, 0, .2);
 				transform: translate(60%, -50%) rotate(45deg);
-				/*transition: all 1s ease;*/
 				z-index: 10;
 			}
 
