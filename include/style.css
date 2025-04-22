@@ -12,16 +12,35 @@
 		}
 
 	/* Style */
-	.custom_list .image
+	.custom_list div.image
 	{
 		display: none;
-		margin-bottom: .5em;
 	}
 
-		.custom_list.custom_list_has_image .image
+		.custom_list.custom_list_has_image div.image
 		{
+			/*cursor: pointer;
+			overflow: hidden;*/
 			display: block;
+			margin-bottom: .5em;
+			position: relative;
 		}
+
+			.custom_list.custom_list_has_image div.image:hover:before
+			{
+				color: rgba(255, 255, 255, .3);
+				content: "\2716"; /* X */
+				font-family: 'Font Awesome 5 Free';
+				font-size: 5em;
+				right: 50%;
+				pointer-events: none;
+				position: absolute;
+				top: 50%;
+				text-shadow: .01em .01em .3em rgba(0, 0, 0, .2);
+				transform: translate(60%, -50%) rotate(45deg);
+				/*transition: all 1s ease;*/
+				z-index: 10;
+			}
 
 	/* Style-Specific */
 	.custom_list_style_about_us, .custom_list_style_logos, .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
@@ -201,7 +220,7 @@
 				}
 
 	/* Logos */
-	.custom_list_style_logos .image
+	.custom_list_style_logos div.image
 	{
 		height: 100%;
 	}
@@ -229,7 +248,7 @@
 		text-align: center;
 	}
 
-		.custom_list_style_people .image
+		.custom_list_style_people div.image
 		{
 			height: 0;
 			padding-bottom: 100%;
@@ -237,7 +256,7 @@
 			overflow: hidden;
 		}
 
-			.custom_list_style_people .image img
+			.custom_list_style_people div.image img
 			{
 				border-radius: 50%;
 				height: 100%;
@@ -310,19 +329,19 @@
 					transform: translate3d(0, 0, 0);
 				}
 
-		.custom_list_style_screenshots li .image
+		.custom_list_style_screenshots li div.image
 		{
 			margin-bottom: 0;
 		}
 
-			.custom_list_style_screenshots li .image img
+			.custom_list_style_screenshots li div.image img
 			{
 				display: block;
 				margin: 0 auto;
 			}
 
 	/* Testimonials */
-	.custom_list_style_testimonials .image
+	.custom_list_style_testimonials div.image
 	{
 		background: #f3f3f3;
 		border-radius: 50%;
@@ -332,7 +351,7 @@
 		overflow: hidden;
 	}
 
-		.custom_list_style_testimonials .image img
+		.custom_list_style_testimonials div.image img
 		{
 			height: 100%;
 			left: 0;
