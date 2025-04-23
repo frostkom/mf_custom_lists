@@ -892,11 +892,19 @@ class mf_custom_list
 						{
 							foreach($arr_parent_id as $parent_id)
 							{
-								$parent_title = get_the_title($parent_id);
+								$out .= ($out != '' ? ", " : "");
 
-								$edit_url = "post.php?post=".$parent_id."&action=edit";
+								if(get_post_status($parent_id) == 'publish')
+								{
+									$out .= "<a href='".admin_url("post.php?post=".$parent_id."&action=edit")."'>";
+								}
+								
+									$out .= get_the_title($parent_id);
 
-								$out .= ($out != '' ? ", " : "")."<a href='".$edit_url."'>".$parent_title."</a>";
+								if(get_post_status($parent_id) == 'publish')
+								{
+									$out .= "</a>";
+								}
 							}
 						}
 
@@ -1031,7 +1039,7 @@ class mf_custom_list
 
 			foreach($result as $r)
 			{
-				do_log("Trash ".$r->ID." if it only is connected to one list");
+				do_log(__FUNCTION__.": Trash <a href='".admin_url("post.php?post=".$r->ID."&action=edit")."'>#".$r->ID."</a> if it only is connected to one list");
 
 				//wp_trash_post($r->ID);
 			}
