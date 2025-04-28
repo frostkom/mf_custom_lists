@@ -898,7 +898,7 @@ class mf_custom_list
 								{
 									$out .= "<a href='".admin_url("post.php?post=".$parent_id."&action=edit")."'>";
 								}
-								
+
 									$out .= get_the_title($parent_id);
 
 								if(get_post_status($parent_id) == 'publish')
@@ -914,39 +914,6 @@ class mf_custom_list
 			break;
 		}
 	}
-
-	/*function count_shortcode_button($count)
-	{
-		if($count == 0)
-		{
-			$templates = get_posts(array(
-				'post_type' => $this->post_type,
-				'posts_per_page' => 1,
-				'post_status' => 'publish'
-			));
-
-			if(count($templates) > 0)
-			{
-				$count++;
-			}
-		}
-
-		return $count;
-	}*/
-
-	/*function get_shortcode_output($out)
-	{
-		$arr_data = array();
-		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
-
-		if(count($arr_data) > 1)
-		{
-			$out .= "<h3>".__("Choose a List", 'lang_custom_lists')."</h3>"
-			.show_select(array('data' => $arr_data, 'xtra' => "rel='mf_custom_list'"));
-		}
-
-		return $out;
-	}*/
 
 	function get_list_items($data)
 	{
@@ -990,44 +957,6 @@ class mf_custom_list
 
 		return $out;
 	}
-
-	/*function get_shortcode_list($data)
-	{
-		global $wpdb;
-
-		$post_id = $data[0];
-		$content_list = $data[1];
-
-		if($post_id > 0)
-		{
-			$post_content = mf_get_post_content($post_id);
-
-			if($post_content != '')
-			{
-				$arr_list_id = get_match_all("/\[mf_custom_list id=(.*?)\]/", $post_content, false);
-
-				if(isset($arr_list_id[0]))
-				{
-					foreach($arr_list_id[0] as $list_id)
-					{
-						if($list_id > 0)
-						{
-							$content_list .= "<li><a href='".admin_url("post.php?post=".$list_id."&action=edit")."'>".get_the_title($list_id)."</a> <span class='grey'>[mf_custom_list id=".$list_id."]</span></li>";
-
-							$content_list .= $this->get_list_items(array('display_container' => true, 'list_id' => $list_id));
-						}
-					}
-				}
-
-				else
-				{
-					do_log(__FUNCTION__." Error: ".htmlspecialchars($post_content)." -> ".var_export($arr_list_id, true));
-				}
-			}
-		}
-
-		return array($post_id, $content_list);
-	}*/
 
 	function wp_trash_post($post_id)
 	{
