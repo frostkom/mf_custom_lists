@@ -443,7 +443,7 @@ class mf_custom_list
 	function admin_menu()
 	{
 		$menu_start = "edit.php?post_type=".$this->post_type;
-		$menu_capability = override_capability(array('page' => $menu_start, 'default' => 'edit_pages'));
+		$menu_capability = 'edit_pages';
 
 		$menu_title = __("Custom Lists", 'lang_custom_lists');
 		add_menu_page("", $menu_title, $menu_capability, $menu_start, '', 'dashicons-list-view', 21);
@@ -753,7 +753,6 @@ class mf_custom_list
 
 		if($post_type == $this->post_type_item)
 		{
-			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList', 'save' => true));
 			$strFilterCustomList = check_var('strFilterCustomList');
 
 			$arr_data = array();
@@ -772,7 +771,6 @@ class mf_custom_list
 
 		if($pagenow == 'edit.php' && $post_type == $this->post_type_item)
 		{
-			//$strFilterCustomList = get_or_set_table_filter(array('key' => 'strFilterCustomList'));
 			$strFilterCustomList = check_var('strFilterCustomList');
 
 			if($strFilterCustomList != '')
