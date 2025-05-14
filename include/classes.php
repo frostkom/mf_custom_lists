@@ -310,11 +310,29 @@ class mf_custom_list
 						}";
 					}
 
+					$setting_breakpoint_tablet = apply_filters('get_styles_content', '', 'max_width');
+
+					if($setting_breakpoint_tablet != '')
+					{
+						preg_match('/^([0-9]*\.?[0-9]+)([a-zA-Z%]+)$/', $setting_breakpoint_tablet, $matches);
+
+						$setting_breakpoint_tablet = $matches[1];
+						$setting_breakpoint_suffix = $matches[2];
+
+						$setting_breakpoint_mobile = ($setting_breakpoint_tablet * .775);
+					}
+
+					else
+					{
+						$setting_breakpoint_tablet = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
+						$setting_breakpoint_mobile = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
+
+						$setting_breakpoint_suffix = "px";
+					}
+
 					if($parent_columns_tablet > 0)
 					{
-						$setting_custom_list_tablet_breakpoint = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
-
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_tablet_breakpoint."px)
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_breakpoint_tablet.$setting_breakpoint_suffix.")
 						{
 							".$parent_class_selector." li
 							{
@@ -325,9 +343,7 @@ class mf_custom_list
 
 					if($parent_columns_mobile > 0)
 					{
-						$setting_custom_list_mobile_breakpoint = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
-
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_custom_list_mobile_breakpoint."px)
+						$parent_custom_style .= "@media screen and (max-width: ".$setting_breakpoint_mobile.$setting_breakpoint_suffix.")
 						{
 							".$parent_class_selector." li
 							{
@@ -466,15 +482,24 @@ class mf_custom_list
 
 	function settings_custom_list()
 	{
-		$options_area = __FUNCTION__;
+		if(apply_filters('get_styles_content', '', 'max_width') == '')
+		{
+			$options_area = __FUNCTION__;
 
-		add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
+			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
-		$arr_settings = array();
-		$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_lists');
-		$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_lists');
+			$arr_settings = array();
+			$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_lists');
+			$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_lists');
 
-		show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
+		}
+
+		else
+		{
+			delete_option('setting_custom_list_tablet_breakpoint');
+			delete_option('setting_custom_list_mobile_breakpoint');
+		}
 	}
 
 	function settings_custom_list_callback()
