@@ -823,7 +823,6 @@ class mf_custom_list
 				$cols['items'] = __("Items", 'lang_custom_lists');
 				$cols['style'] = __("Style", 'lang_custom_lists');
 				$cols['columns'] = __("Columns", 'lang_custom_lists');
-				//$cols['shortcode'] = __("Shortcode", 'lang_custom_lists');
 			break;
 
 			case $this->post_type_item:
@@ -891,15 +890,6 @@ class mf_custom_list
 							echo "<span title='".__("Mobile", 'lang_custom_lists')."'>".$post_meta_columns_mobile."</span>";
 						}
 					break;
-
-					/*case 'shortcode':
-						$shortcode = "[mf_custom_list id=".$post_id."]";
-
-						echo show_textfield(array('value' => $shortcode, 'readonly' => true, 'xtra' => "onclick='this.select()'"))
-						."<div class='row-actions'>
-							<a href='".admin_url("post-new.php?post_type=page&content=".$shortcode)."'>".__("Add New Page", 'lang_custom_lists')."</a>
-						</div>";
-					break;*/
 				}
 			break;
 
@@ -1014,17 +1004,6 @@ class mf_custom_list
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
 		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
-	}
-
-	function shortcode_custom_list($atts)
-	{
-		global $post;
-
-		$out = "";
-
-		do_log(__FUNCTION__.": Add a block instead (#".$post->ID.", ".var_export($atts, true).")", 'publish', false);
-
-		return $out;
 	}
 
 	function filter_is_file_used($arr_used)
