@@ -380,6 +380,10 @@ class mf_custom_list
 
 		if($attributes['list_id'] > 0)
 		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+
+			mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
+
 			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">
 				<div class='section'>"
 					.$this->display_list($attributes)
@@ -999,13 +1003,6 @@ class mf_custom_list
 		return $array;
 	}
 
-	function wp_head()
-	{
-		$plugin_include_url = plugin_dir_url(__FILE__);
-
-		mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
-	}
-
 	function filter_is_file_used($arr_used)
 	{
 		global $wpdb;
@@ -1065,7 +1062,7 @@ class widget_custom_lists extends WP_Widget
 	{
 		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
 
-		global $obj_custom_list;
+		/*global $obj_custom_list;
 
 		extract($args);
 		$attributes = wp_parse_args((array)$attributes, $this->arr_default);
@@ -1103,7 +1100,7 @@ class widget_custom_lists extends WP_Widget
 					."</div>"
 				.$after_widget;
 			}
-		}
+		}*/
 	}
 
 	function update($new_attributes, $old_attributes)
