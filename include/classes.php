@@ -815,36 +815,36 @@ class mf_custom_list
 		}
 	}
 
-	function column_header($cols)
+	function column_header($columns)
 	{
 		global $post_type;
 
-		unset($cols['date']);
+		unset($columns['date']);
 
 		switch($post_type)
 		{
 			case $this->post_type:
-				$cols['items'] = __("Items", 'lang_custom_lists');
-				$cols['style'] = __("Style", 'lang_custom_lists');
-				$cols['columns'] = __("Columns", 'lang_custom_lists');
+				$columns['items'] = __("Items", 'lang_custom_lists');
+				$columns['style'] = __("Style", 'lang_custom_lists');
+				$columns['columns'] = __("Columns", 'lang_custom_lists');
 			break;
 
 			case $this->post_type_item:
-				$cols['list_id'] = __("List", 'lang_custom_lists');
+				$columns['list_id'] = __("List", 'lang_custom_lists');
 			break;
 		}
 
-		return $cols;
+		return $columns;
 	}
 
-	function column_cell($col, $post_id)
+	function column_cell($column, $post_id)
 	{
 		global $wpdb, $post;
 
 		switch($post->post_type)
 		{
 			case $this->post_type:
-				switch($col)
+				switch($column)
 				{
 					case 'items':
 						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $post_id));
@@ -856,7 +856,7 @@ class mf_custom_list
 					break;
 
 					case 'style':
-						$post_meta = get_post_meta($post_id, $this->meta_prefix.$col, true);
+						$post_meta = get_post_meta($post_id, $this->meta_prefix.$column, true);
 
 						if($post_meta != '')
 						{
@@ -898,12 +898,12 @@ class mf_custom_list
 			break;
 
 			case $this->post_type_item:
-				switch($col)
+				switch($column)
 				{
 					case 'list_id':
 						$out = "";
 
-						$arr_parent_id = get_post_meta($post_id, $this->meta_prefix.$col, false);
+						$arr_parent_id = get_post_meta($post_id, $this->meta_prefix.$column, false);
 
 						if(is_array($arr_parent_id))
 						{
