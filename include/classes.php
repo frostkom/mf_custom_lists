@@ -424,6 +424,7 @@ class mf_custom_list
 			'show_ui' => true,
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
+			'show_in_rest' => true,
 			'exclude_from_search' => true,
 			'supports' => array('title', 'editor', 'excerpt'), //, 'custom-fields'
 			'hierarchical' => true,
