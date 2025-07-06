@@ -439,7 +439,7 @@ class mf_custom_list
 
 		wp_register_script('script_custom_lists_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor'), $plugin_version, true);
 
-		$arr_data = array();
+		$arr_data = [];
 		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
 
 		wp_localize_script('script_custom_lists_block_wp', 'script_custom_lists_block_wp', array(
@@ -493,7 +493,7 @@ class mf_custom_list
 
 			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
 
-			$arr_settings = array();
+			$arr_settings = [];
 			$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_lists');
 			$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_lists');
 
@@ -718,7 +718,7 @@ class mf_custom_list
 			}
 		}
 
-		$arr_data = array();
+		$arr_data = [];
 		get_post_children(array('add_choose_here' => false, 'post_type' => $this->post_type), $arr_data);
 
 		$meta_boxes[] = array(
@@ -785,7 +785,7 @@ class mf_custom_list
 		{
 			$strFilterCustomList = check_var('strFilterCustomList');
 
-			$arr_data = array();
+			$arr_data = [];
 			get_post_children(array('post_type' => $this->post_type, 'post_status' => '', 'add_choose_here' => true), $arr_data);
 
 			if(count($arr_data) > 2)
@@ -1062,46 +1062,6 @@ class widget_custom_lists extends WP_Widget
 	function widget($args, $attributes)
 	{
 		do_log(__CLASS__."->".__FUNCTION__."(): Add a block instead", 'publish', false);
-
-		/*global $obj_custom_list;
-
-		extract($args);
-		$attributes = wp_parse_args((array)$attributes, $this->arr_default);
-
-		if($attributes['list_id'] > 0)
-		{
-			if(!isset($obj_custom_list))
-			{
-				$obj_custom_list = new mf_custom_list();
-			}
-
-			$out_temp = $obj_custom_list->display_list($attributes);
-
-			if($out_temp != '')
-			{
-				echo apply_filters('filter_before_widget', $before_widget);
-
-					if($attributes['list_heading'] != '')
-					{
-						$attributes['list_heading'] = apply_filters('widget_title', $attributes['list_heading'], $attributes, $this->id_base);
-
-						echo $before_title
-							.$attributes['list_heading']
-						.$after_title;
-					}
-
-					echo "<div class='section'>";
-
-						if($attributes['list_content'] != '')
-						{
-							echo apply_filters('the_content', $attributes['list_content']);
-						}
-
-						echo $out_temp
-					."</div>"
-				.$after_widget;
-			}
-		}*/
 	}
 
 	function update($new_attributes, $old_attributes)
@@ -1124,7 +1084,7 @@ class widget_custom_lists extends WP_Widget
 
 		$obj_custom_list = new mf_custom_list();
 
-		$arr_data = array();
+		$arr_data = [];
 		get_post_children(array('add_choose_here' => true, 'post_type' => $obj_custom_list->post_type), $arr_data);
 
 		echo "<div class='mf_form'>"
