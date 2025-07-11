@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description:
-Version: 3.9.28
+Version: 3.10.0
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -20,6 +20,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	$obj_custom_list = new mf_custom_list();
 
+	add_action('enqueue_block_editor_assets', array($obj_custom_list, 'enqueue_block_editor_assets'));
 	add_action('init', array($obj_custom_list, 'init'), 1);
 
 	if(is_admin())

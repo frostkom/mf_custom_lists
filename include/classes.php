@@ -394,10 +394,29 @@ class mf_custom_list
 		return $out;
 	}
 
+	function enqueue_block_editor_assets()
+	{
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		wp_register_script('script_custom_lists_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor'), $plugin_version, true);
+
+		$arr_data = [];
+		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
+
+		wp_localize_script('script_custom_lists_block_wp', 'script_custom_lists_block_wp', array(
+			'block_title' => __("Custom List", 'lang_custom_lists'),
+			'block_description' => __("Display a Custom List", 'lang_custom_lists'),
+			'list_id_label' => __("List", 'lang_custom_lists'),
+			'list_id' => $arr_data,
+			'list_amount_label' => __("Amount", 'lang_custom_lists'),
+			'list_order_label' => __("Order", 'lang_custom_lists'),
+			'list_order' => $this->get_order_for_select(),
+		));
+	}
+
 	function init()
 	{
-		// Post types
-		#######################
 		register_post_type($this->post_type, array(
 			'labels' => array(
 				'name' => __("Custom Lists", 'lang_custom_lists'),
@@ -430,27 +449,6 @@ class mf_custom_list
 			'hierarchical' => true,
 			'has_archive' => false,
 		));
-		#######################
-
-		// Blocks
-		#######################
-		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
-
-		wp_register_script('script_custom_lists_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor'), $plugin_version, true);
-
-		$arr_data = [];
-		get_post_children(array('add_choose_here' => true, 'post_type' => $this->post_type), $arr_data);
-
-		wp_localize_script('script_custom_lists_block_wp', 'script_custom_lists_block_wp', array(
-			'block_title' => __("Custom List", 'lang_custom_lists'),
-			'block_description' => __("Display a Custom List", 'lang_custom_lists'),
-			'list_id_label' => __("List", 'lang_custom_lists'),
-			'list_id' => $arr_data,
-			'list_amount_label' => __("Amount", 'lang_custom_lists'),
-			'list_order_label' => __("Order", 'lang_custom_lists'),
-			'list_order' => $this->get_order_for_select(),
-		));
 
 		register_block_type('mf/customlists', array(
 			'editor_script' => 'script_custom_lists_block_wp',
@@ -458,7 +456,6 @@ class mf_custom_list
 			'render_callback' => array($this, 'block_render_callback'),
 			//'style' => 'style_base_block_wp',
 		));
-		#######################
 	}
 
 	function admin_menu()
