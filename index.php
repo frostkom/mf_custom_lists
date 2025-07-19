@@ -3,15 +3,12 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description:
-Version: 3.10.0
+Version: 3.10.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
 Text Domain: lang_custom_lists
 Domain Path: /lang
-
-Depends: Meta Box, MF Base
-GitHub Plugin URI: frostkom/mf_custom_lists
 */
 
 if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
