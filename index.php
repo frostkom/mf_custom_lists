@@ -3,12 +3,14 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description:
-Version: 3.10.1
+Version: 3.10.2
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
 Text Domain: lang_custom_lists
 Domain Path: /lang
+
+Requires Plugins: meta-box
 */
 
 if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
@@ -22,7 +24,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	if(is_admin())
 	{
-		register_activation_hook(__FILE__, 'activate_custom_lists');
 		register_uninstall_hook(__FILE__, 'uninstall_custom_lists');
 
 		add_action('admin_menu', array($obj_custom_list, 'admin_menu'));
@@ -53,11 +54,6 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 	add_action('widgets_init', array($obj_custom_list, 'widgets_init'));
 
 	load_plugin_textdomain('lang_custom_lists', false, dirname(plugin_basename(__FILE__))."/lang/");
-
-	function activate_custom_lists()
-	{
-		require_plugin("meta-box/meta-box.php", "Meta Box");
-	}
 
 	function uninstall_custom_lists()
 	{
