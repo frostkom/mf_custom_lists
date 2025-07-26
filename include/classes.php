@@ -454,7 +454,6 @@ class mf_custom_list
 			'editor_script' => 'script_custom_lists_block_wp',
 			'editor_style' => 'style_base_block_wp',
 			'render_callback' => array($this, 'block_render_callback'),
-			//'style' => 'style_base_block_wp',
 		));
 	}
 

@@ -225,17 +225,16 @@
 		.custom_list_style_logos li img
 		{
 			display: block;
-			filter: gray;
 			filter: grayscale(1);
 			height: 100%;
 			margin: 0 auto;
 			object-fit: contain;
+			transition: filter .5s ease;
 			max-width: 100%;
 		}
 
 			.custom_list_style_logos li img:hover
 			{
-				filter: none;
 				filter: grayscale(0);
 			}
 
