@@ -423,11 +423,10 @@ class mf_custom_list
 				'singular_name' => __("Custom List", 'lang_custom_lists'),
 				'menu_name' => __("Custom Lists", 'lang_custom_lists')
 			),
-			'public' => false, // Previously true but changed to hide in sitemap.xml
+			'public' => false,
 			'show_ui' => true,
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
-			'exclude_from_search' => true,
 			'supports' => array('title'),
 			'hierarchical' => false,
 			'has_archive' => false,
@@ -444,8 +443,7 @@ class mf_custom_list
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
 			'show_in_rest' => true,
-			'exclude_from_search' => true,
-			'supports' => array('title', 'editor', 'excerpt'), //, 'custom-fields'
+			'supports' => array('title', 'editor', 'excerpt'),
 			'hierarchical' => true,
 			'has_archive' => false,
 		));
