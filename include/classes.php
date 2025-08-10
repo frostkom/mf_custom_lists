@@ -457,6 +457,8 @@ class mf_custom_list
 
 	function admin_menu()
 	{
+		global $wpdb;
+
 		$menu_start = "edit.php?post_type=".$this->post_type;
 		$menu_capability = 'edit_pages';
 
@@ -469,7 +471,9 @@ class mf_custom_list
 		$menu_title = __("Add New", 'lang_custom_lists');
 		add_submenu_page($menu_start, $menu_title, " - ".$menu_title, $menu_capability, "post-new.php?post_type=".$this->post_type);
 
-		if(does_post_exists(array('post_type' => $this->post_type)))
+		$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s LIMIT 0, 1", $this->post_type, 'publish'));
+
+		if($wpdb->num_rows > 0) //does_post_exists(array('post_type' => $this->post_type))
 		{
 			$menu_title = __("Items", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
