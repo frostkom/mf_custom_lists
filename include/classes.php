@@ -293,7 +293,9 @@ class mf_custom_list
 				{
 					$parent_class .= " custom_list_read_more";
 
-					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js");
+					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js", array(
+						'read_more' => __("Read More", 'lang_group'),
+					));
 				}
 
 				$out = str_replace("[parent_class]", " class='".$parent_class."'", $out);
