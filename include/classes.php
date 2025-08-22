@@ -387,7 +387,7 @@ class mf_custom_list
 			mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
 
 			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">
-				<div class='section'>"
+				<div>" // class='section'
 					.$this->display_list($attributes)
 				."</div>
 			</div>";
