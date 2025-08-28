@@ -193,9 +193,9 @@ class mf_custom_list
 										$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
 									}
 
-									else if(function_exists('get_image_fallback'))
+									else
 									{
-										$image_tag = get_image_fallback();
+										$image_tag = apply_filters('get_image_fallback', "");
 									}
 
 									if($image_tag != '')
