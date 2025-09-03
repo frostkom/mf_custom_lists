@@ -11,6 +11,21 @@ class mf_custom_list
 		$this->meta_prefix = $this->post_type.'_';
 	}
 
+	function cron_base()
+	{
+		$obj_cron = new mf_cron();
+		$obj_cron->start(__CLASS__);
+
+		if($obj_cron->is_running == false)
+		{
+			mf_uninstall_plugin(array(
+				'options' => array('setting_custom_list_tablet_breakpoint', 'setting_custom_list_mobile_breakpoint'),
+			));
+		}
+
+		$obj_cron->end();
+	}
+
 	function get_order_for_select()
 	{
 		return array(
@@ -24,7 +39,7 @@ class mf_custom_list
 	{
 		return array(
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
-			'about_us' => __("About Us", 'lang_custom_lists'),
+			//'about_us' => __("About Us", 'lang_custom_lists'),
 			'faq' => __("FAQ", 'lang_custom_lists'),
 			//'flags' => __("Flags", 'lang_custom_lists'),
 			//'flex' => __("Flex", 'lang_custom_lists'),
@@ -64,9 +79,9 @@ class mf_custom_list
 			$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
 			$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
 			$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
-			$parent_columns_desktop = get_post_meta($parent_id, $this->meta_prefix.'columns_desktop', true);
-			$parent_columns_tablet = get_post_meta($parent_id, $this->meta_prefix.'columns_tablet', true);
-			$parent_columns_mobile = get_post_meta($parent_id, $this->meta_prefix.'columns_mobile', true);
+			$parent_columns_desktop = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_desktop', true, 4);
+			$parent_columns_tablet = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_tablet', true, 3);
+			$parent_columns_mobile = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_mobile', true, 2);
 			$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);
 
 			if($parent_container == '')
@@ -81,19 +96,9 @@ class mf_custom_list
 
 			if(preg_match("/\[children\]/i", $parent_container))
 			{
-				if($data['list_order'] != '')
-				{
-					$child_order = $data['list_order'];
-				}
-
-				else
-				{
-					$child_order = get_post_meta($parent_id, $this->meta_prefix.'order', true);
-				}
-
 				$out_children = "";
 
-				switch($child_order)
+				switch($data['list_order'])
 				{
 					default:
 					case 'alphabetic':
@@ -164,7 +169,7 @@ class mf_custom_list
 										$child_text = "<p>".$child_text."</p>";
 									}
 
-									$out .= $child_text;
+									$out .= "<div class='text'>".$child_text."</div>";
 								break;
 
 								case 'list_excerpt':
@@ -294,7 +299,7 @@ class mf_custom_list
 					$parent_class .= " custom_list_read_more";
 
 					mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js", array(
-						'read_more' => __("Read More", 'lang_group'),
+						'read_more' => __("Read More", 'lang_custom_lists'),
 					));
 				}
 
@@ -312,29 +317,30 @@ class mf_custom_list
 						}";
 					}
 
-					$setting_breakpoint_tablet = apply_filters('get_styles_content', '', 'max_width');
+					$arr_breakpoints = apply_filters('get_layout_breakpoints', ['tablet' => 1200, 'mobile' => 930, 'suffix' => "px"]);
+					/*$arr_breakpoints['tablet'] = apply_filters('get_styles_content', '', 'max_width');
 
-					if($setting_breakpoint_tablet != '')
+					if($arr_breakpoints['tablet'] != '')
 					{
-						preg_match('/^([0-9]*\.?[0-9]+)([a-zA-Z%]+)$/', $setting_breakpoint_tablet, $matches);
+						preg_match('/^([0-9]*\.?[0-9]+)([a-zA-Z%]+)$/', $arr_breakpoints['tablet'], $matches);
 
-						$setting_breakpoint_tablet = $matches[1];
-						$setting_breakpoint_suffix = $matches[2];
+						$arr_breakpoints['tablet'] = $matches[1];
+						$arr_breakpoints['suffix'] = $matches[2];
 
-						$setting_breakpoint_mobile = ($setting_breakpoint_tablet * .775);
+						$arr_breakpoints['mobile'] = ($arr_breakpoints['tablet'] * .775);
 					}
 
 					else
 					{
-						$setting_breakpoint_tablet = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
-						$setting_breakpoint_mobile = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
+						$arr_breakpoints['tablet'] = get_option_or_default('setting_custom_list_tablet_breakpoint', 1100);
+						$arr_breakpoints['mobile'] = get_option_or_default('setting_custom_list_mobile_breakpoint', 900);
 
-						$setting_breakpoint_suffix = "px";
-					}
+						$arr_breakpoints['suffix'] = "px";
+					}*/
 
 					if($parent_columns_tablet > 0)
 					{
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_breakpoint_tablet.$setting_breakpoint_suffix.")
+						$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['tablet'].$arr_breakpoints['suffix'].")
 						{
 							".$parent_class_selector." li
 							{
@@ -345,7 +351,7 @@ class mf_custom_list
 
 					if($parent_columns_mobile > 0)
 					{
-						$parent_custom_style .= "@media screen and (max-width: ".$setting_breakpoint_mobile.$setting_breakpoint_suffix.")
+						$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['mobile'].$arr_breakpoints['suffix'].")
 						{
 							".$parent_class_selector." li
 							{
@@ -386,11 +392,9 @@ class mf_custom_list
 
 			mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
 
-			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">
-				<div>" // class='section'
-					.$this->display_list($attributes)
-				."</div>
-			</div>";
+			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">"
+				.$this->display_list($attributes)
+			."</div>";
 		}
 
 		return $out;
@@ -485,7 +489,7 @@ class mf_custom_list
 		}
 	}
 
-	function settings_custom_list()
+	/*function settings_custom_list()
 	{
 		if(apply_filters('get_styles_content', '', 'max_width') == '')
 		{
@@ -528,7 +532,7 @@ class mf_custom_list
 		$option = get_option_or_default($setting_key, 900);
 
 		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option));
-	}
+	}*/
 
 	function filter_sites_table_pages($arr_pages)
 	{
@@ -621,13 +625,6 @@ class mf_custom_list
 			'context' => 'side',
 			'priority' => 'low',
 			'fields' => array(
-				array(
-					'name' => __("Order", 'lang_custom_lists'),
-					'id' => $this->meta_prefix.'order',
-					'type' => 'select',
-					'options' => $this->get_order_for_select(),
-					'std' => 'numerical',
-				),
 				array(
 					'name' => __("Read More", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'read_more',
@@ -861,7 +858,17 @@ class mf_custom_list
 
 						if($post_meta != '')
 						{
-							echo $this->get_styles_for_select()[$post_meta];
+							$arr_styles = $this->get_styles_for_select();
+
+							if(isset($arr_styles[$post_meta]))
+							{
+								echo $arr_styles[$post_meta];
+							}
+
+							else
+							{
+								echo "<em>(".$post_meta.")</em>";
+							}
 						}
 					break;
 

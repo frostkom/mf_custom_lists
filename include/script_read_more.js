@@ -17,10 +17,25 @@ jQuery(function($)
 
 			if(text_end.length > 0)
 			{
-				self.addClass('shorten-shortened').html(text_start + "<span class='shorten-clipped hide'>" + text_end + "</span><span class='shorten-ellipsis form_button wp-block-button'>" + settings.ellipsis + "<a href='#' class='shorten-more-link'>" + settings.moreText + settings.ellipsis + "</a></span>");
+				self.addClass('shorten-shortened').html(text_start + "<span class='shorten-clipped hide'>" + text_end + "</span><span class='shorten-ellipsis form_button wp-block-button'>" + settings.ellipsis + "<div><a href='#' class='shorten-more-link wp-block-button__link'>" + settings.moreText + "</a></div></span>");
 			}
 		});
 	};
 
-	$(".custom_list.custom_list_read_more li p:last-of-type").shorten({'showChars': 100});
+	$(".custom_list.custom_list_read_more li .text").shorten({'showChars': 100});
+
+	$(document).on('click', ".shorten-more-link", function(e)
+	{
+		var dom_ellipsis = jQuery(e.currentTarget).parents(".shorten-ellipsis");
+
+		dom_ellipsis.addClass('hide').siblings(".shorten-clipped").removeClass('hide').animate(
+		{
+			opacity: 1
+		}, 500, function()
+		{
+			dom_ellipsis.parent(".shorten-shortened").removeClass('shorten-shortened');
+		});
+
+		return false;
+	});
 });

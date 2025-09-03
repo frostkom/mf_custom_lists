@@ -40,19 +40,20 @@
 			}
 
 	/* Style-Specific */
-	.custom_list_style_about_us, .custom_list_style_logos, .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
+	/*.custom_list_style_about_us, */.custom_list_style_logos, .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 	{
 		display: flex;
 		flex-wrap: wrap;
+		width: 100%;
 	}
 
-		.custom_list_style_about_us > li, .custom_list_style_logos > li, .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
+		/*.custom_list_style_about_us > li, */.custom_list_style_logos > li, .custom_list_style_screenshots > li, .custom_list_style_people > li, .custom_list_style_testimonials > li
 		{
 			flex: 0 1 auto;
 		}
 
 	/* About Us */
-	.custom_list_style_about_us > li
+	/*.custom_list_style_about_us > li
 	{
 		border: 0;
 		border-radius: .5em;
@@ -162,7 +163,7 @@
 			{
 				border-radius: 58% 98% 83% 78%;
 				transform: rotate(3deg);
-			}
+			}*/
 
 	/* FAQ */
 	.custom_list_style_faq
@@ -290,7 +291,7 @@
 				transform: scale3d(1.9, 1.4, 1) rotate3d(0, 0, 1, 45deg) translate3d(0, 100%, 0);
 			}
 
-		#wrapper .custom_list_style_screenshots li h2, #wrapper.custom_list_style_screenshots li h4
+		/*#wrapper .custom_list_style_screenshots li h2, #wrapper.custom_list_style_screenshots li h4
 		{
 			bottom: 0;
 			background: #fff;
@@ -307,7 +308,7 @@
 			#wrapper .custom_list_style_screenshots li:hover h2, #wrapper .custom_list_style_screenshots li:hover h4
 			{
 				transform: translate3d(0, 0, 0);
-			}
+			}*/
 
 			.custom_list_style_screenshots li h2 a, .custom_list_style_screenshots li h4 a
 			{
