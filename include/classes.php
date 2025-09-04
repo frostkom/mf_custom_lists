@@ -489,51 +489,6 @@ class mf_custom_list
 		}
 	}
 
-	/*function settings_custom_list()
-	{
-		if(apply_filters('get_styles_content', '', 'max_width') == '')
-		{
-			$options_area = __FUNCTION__;
-
-			add_settings_section($options_area, "", array($this, $options_area."_callback"), BASE_OPTIONS_PAGE);
-
-			$arr_settings = [];
-			$arr_settings['setting_custom_list_tablet_breakpoint'] = __("Tablet Breakpoint", 'lang_custom_lists');
-			$arr_settings['setting_custom_list_mobile_breakpoint'] = __("Mobile Breakpoint", 'lang_custom_lists');
-
-			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
-		}
-
-		else
-		{
-			delete_option('setting_custom_list_tablet_breakpoint');
-			delete_option('setting_custom_list_mobile_breakpoint');
-		}
-	}
-
-	function settings_custom_list_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-
-		echo settings_header($setting_key, __("Custom Lists", 'lang_custom_lists'));
-	}
-
-	function setting_custom_list_tablet_breakpoint_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 1100);
-
-		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option));
-	}
-
-	function setting_custom_list_mobile_breakpoint_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 900);
-
-		echo show_textfield(array('type' => 'number', 'name' => $setting_key, 'value' => $option));
-	}*/
-
 	function filter_sites_table_pages($arr_pages)
 	{
 		$arr_pages[$this->post_type] = array(

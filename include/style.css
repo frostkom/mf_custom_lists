@@ -62,16 +62,6 @@
 		text-align: center;
 	}
 
-		article .custom_list_style_about_us > li
-		{
-			width: 23%;
-		}
-
-			.is_mobile article .custom_list_style_about_us > li
-			{
-				width: 48%;
-			}
-
 		.custom_list_style_about_us > li:before
 		{
 			position: absolute;
