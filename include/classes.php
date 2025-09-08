@@ -114,7 +114,7 @@ class mf_custom_list
 					break;
 				}
 
-				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d'".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($data['list_amount'] > 0 ? $data['list_amount'] : 100)));
+				$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID, post_content FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($data['list_amount'] > 0 ? $data['list_amount'] : 100)));
 
 				foreach($result2 as $r)
 				{
@@ -479,7 +479,7 @@ class mf_custom_list
 
 		$wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s LIMIT 0, 1", $this->post_type, 'publish'));
 
-		if($wpdb->num_rows > 0) //does_post_exists(array('post_type' => $this->post_type))
+		if($wpdb->num_rows > 0)
 		{
 			$menu_title = __("Items", 'lang_custom_lists');
 			add_submenu_page($menu_start, $menu_title, $menu_title, $menu_capability, "edit.php?post_type=".$this->post_type_item);
@@ -504,27 +504,6 @@ class mf_custom_list
 		global $post_id;
 
 		return $this->get_list_items(array('display_container' => false, 'class' => 'meta_list', 'list_id' => $post_id));
-	}
-
-	function display_post_states($post_states, $post)
-	{
-		global $wpdb;
-
-		$result = $wpdb->get_results($wpdb->prepare("SELECT post_title FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE meta_key = %s AND meta_value = '%d'", $this->meta_prefix.'page', $post->ID));
-
-		if($wpdb->num_rows > 0)
-		{
-			$post_titles = "";
-
-			foreach($result as $r)
-			{
-				$post_titles .= ($post_titles != '' ? ", " : "").$r->post_title;
-			}
-
-			$post_states[$this->meta_prefix.'page'] = sprintf(__("Link from %s", 'lang_custom_lists'), $post_titles);
-		}
-
-		return $post_states;
 	}
 
 	function rwmb_meta_boxes($meta_boxes)
@@ -800,7 +779,7 @@ class mf_custom_list
 				switch($column)
 				{
 					case 'items':
-						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d'", 'trash', $this->meta_prefix.'list_id', $post_id));
+						$item_amount = $wpdb->get_var($wpdb->prepare("SELECT COUNT(meta_value) FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status != %s AND meta_key = %s AND meta_value = '%d' GROUP BY ID", 'trash', $this->meta_prefix.'list_id', $post_id));
 
 						echo "<a href='".admin_url("edit.php?post_type=".$this->post_type_item."&strFilterCustomList=".$post_id)."'>".$item_amount."</a>
 						<div class='row-actions'>
@@ -944,7 +923,7 @@ class mf_custom_list
 
 		if(get_post_type($post_id) == $this->post_type)
 		{
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d'", $this->post_type_item, $post_id));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d' GROUP BY ID", $this->post_type_item, $post_id));
 
 			foreach($result as $r)
 			{
@@ -970,7 +949,7 @@ class mf_custom_list
 	{
 		global $wpdb;
 
-		$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status = %s AND meta_key = %s AND meta_value = %s", 'publish', $this->meta_prefix.'image', $arr_used['id']));
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_status = %s AND meta_key = %s AND meta_value = %s GROUP BY ID", 'publish', $this->meta_prefix.'image', $arr_used['id']));
 		$rows = $wpdb->num_rows;
 
 		if($rows > 0)
