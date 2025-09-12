@@ -427,7 +427,11 @@ class mf_custom_list
 			'labels' => array(
 				'name' => __("Custom Lists", 'lang_custom_lists'),
 				'singular_name' => __("Custom List", 'lang_custom_lists'),
-				'menu_name' => __("Custom Lists", 'lang_custom_lists')
+				'menu_name' => __("Custom Lists", 'lang_custom_lists'),
+				'all_items' => __('List', 'lang_custom_lists'),
+				'edit_item' => __('Edit', 'lang_custom_lists'),
+				'view_item' => __('View', 'lang_custom_lists'),
+				'add_new_item' => __('Add New', 'lang_custom_lists'),
 			),
 			'public' => false,
 			'show_ui' => true,
@@ -442,7 +446,11 @@ class mf_custom_list
 			'labels' => array(
 				'name' => __("Items", 'lang_custom_lists'),
 				'singular_name' => __("Item", 'lang_custom_lists'),
-				'menu_name' => __("Items", 'lang_custom_lists')
+				'menu_name' => __("Items", 'lang_custom_lists'),
+				'all_items' => __('List', 'lang_custom_lists'),
+				'edit_item' => __('Edit', 'lang_custom_lists'),
+				'view_item' => __('View', 'lang_custom_lists'),
+				'add_new_item' => __('Add New', 'lang_custom_lists'),
 			),
 			'public' => false,
 			'show_ui' => true,
