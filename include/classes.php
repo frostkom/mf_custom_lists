@@ -437,7 +437,8 @@ class mf_custom_list
 			'show_ui' => true,
 			'show_in_menu' => false,
 			'show_in_nav_menus' => false,
-			'supports' => array('title'),
+			'show_in_rest' => true,
+			'supports' => array('title', 'editor'),
 			'hierarchical' => false,
 			'has_archive' => false,
 		));
