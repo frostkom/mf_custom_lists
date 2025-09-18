@@ -22,7 +22,7 @@ jQuery(function($)
 		});
 	};
 
-	$(".custom_list.custom_list_read_more li .text").shorten({'showChars': 100});
+	$(".widget.custom_list ul.custom_list_read_more li .text").shorten({'showChars': 100});
 
 	$(document).on('click', ".shorten-more-link", function(e)
 	{

@@ -77,6 +77,7 @@
 								label: script_custom_lists_block_wp.list_id_label,
 								value: props.attributes.list_id,
 								options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_id),
+								multiple: true,
 								onChange: function(value)
 								{
 									props.setAttributes({list_id: value});
