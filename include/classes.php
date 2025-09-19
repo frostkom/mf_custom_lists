@@ -81,18 +81,26 @@ class mf_custom_list
 
 				if(is_array($attributes['list_id']))
 				{
-					$query_where .= " AND ID IN (";
+					if(count($attributes['list_id']) > 0)
+					{
+						$query_where .= " AND ID IN (";
 
-						$i = 0;
+							$i = 0;
 
-						foreach($attributes['list_id'] as $list_id)
-						{
-							$query_where .= ($i > 0 ? ", " : "")."'".esc_sql($list_id)."'";
+							foreach($attributes['list_id'] as $list_id)
+							{
+								$query_where .= ($i > 0 ? ", " : "")."'".esc_sql($list_id)."'";
 
-							$i++;
-						}
+								$i++;
+							}
 
-					$query_where .= ")";
+						$query_where .= ")";
+					}
+
+					else // Why does this even happen?
+					{
+						$query_where .= " AND ID = '0'";
+					}
 				}
 
 				else
@@ -125,8 +133,6 @@ class mf_custom_list
 					$parent_columns_tablet = 3;
 					$parent_columns_mobile = 2;
 					$parent_columns_gap = 5;
-
-					$arr_data[$parent_id] = $parent_title;
 
 					if($parent_container == '')
 					{
@@ -249,159 +255,170 @@ class mf_custom_list
 							$query_select = ", post_content";
 						}
 
-						$result2 = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($attributes['list_amount'] > 0 ? $attributes['list_amount'] : 100)));
+						$result_children = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($attributes['list_amount'] > 0 ? $attributes['list_amount'] : 100)));
 
-						foreach($result2 as $r)
+						if($wpdb->num_rows > 0)
 						{
-							$child_id = $r->ID;
+							$arr_data[$parent_id] = $parent_title;
 
-							if(!in_array($child_id, $arr_children))
+							foreach($result_children as $r)
 							{
-								$arr_children[] = $child_id;
+								$child_id = $r->ID;
 
-								if($parent_items != '')
+								if(!in_array($child_id, $arr_children))
 								{
-									$child_content = $parent_items;
-								}
+									$arr_children[] = $child_id;
 
-								else
-								{
-									$child_content = $r->post_content;
-								}
-
-								if(is_array($attributes['list_id']))
-								{
-									$parent_class = "";
-
-									$parent_class .= ($parent_class != "" ? " " : "")."parent_".$parent_id;
-
-									if($parent_class != "")
+									if($parent_items != '')
 									{
-										$child_content = str_replace("<li>", "<li class='".$parent_class."'>", $child_content);
+										$child_content = $parent_items;
 									}
-								}
 
-								$out_children .= preg_replace_callback(
-									"/\[(.*?)\]/i",
-									function($match) use ($child_id)
+									else
 									{
-										global $wpdb;
+										$child_content = $r->post_content;
+									}
 
-										$out = "";
+									if(is_array($attributes['list_id']))
+									{
+										$parent_class = "";
+										$parent_class .= ($parent_class != "" ? " " : "")."parent_".$parent_id;
 
-										switch($match[1])
+										$result_parents = $wpdb->get_results($wpdb->prepare("SELECT meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND ID = '%d' AND meta_value != '%d' GROUP BY meta_value", $this->post_type_item, 'publish', $child_id, $parent_id));
+
+										foreach($result_parents as $r)
 										{
-											case 'list_id':
-												$out .= $child_id;
-											break;
-
-											case 'list_icon':
-												$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
-
-												if($child_icon != '')
-												{
-													$out .= "<i class='".$child_icon."'></i>";
-												}
-											break;
-
-											case 'list_title':
-												$child_title = get_the_title($child_id);
-
-												$out .= $child_title;
-											break;
-
-											case 'list_text':
-												$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-												$child_text = apply_filters('the_content', $child_text);
-
-												if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
-												{
-													$child_text = "<p>".$child_text."</p>";
-												}
-
-												$out .= "<div class='text'>".$child_text."</div>";
-											break;
-
-											case 'list_excerpt':
-												$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-												$out .= apply_filters('the_content', $child_text);
-											break;
-
-											case 'list_image':
-											case 'list_image_no_link':
-												$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
-
-												$image_url = $image_tag = "";
-
-												if($child_image_id > 0)
-												{
-													$arr_image = wp_get_attachment_image_src($child_image_id, 'full');
-
-													if(is_array($arr_image))
-													{
-														$image_url = $arr_image[0];
-													}
-
-													$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
-												}
-
-												else
-												{
-													$image_tag = apply_filters('get_image_fallback', "");
-												}
-
-												if($image_tag != '')
-												{
-													$out .= "<div class='image ".$match[1]."'>";
-
-														if($image_url != '' && $match[1] == 'list_image')
-														{
-															$out .= "<a href='".$image_url."'>";
-														}
-
-															$out .= $image_tag;
-
-														if($image_url != '' && $match[1] == 'list_image')
-														{
-															$out .= "</a>";
-														}
-
-													$out .= "</div>";
-												}
-											break;
-
-											case 'list_link':
-												$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
-
-												if(intval($child_page) > 0)
-												{
-													$out .= get_permalink($child_page);
-												}
-
-												else
-												{
-													$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
-
-													if($child_link == '')
-													{
-														$child_link = "#";
-													}
-
-													$out .= $child_link;
-												}
-											break;
-
-											default:
-												$out .= get_post_meta($child_id, $match[1], true);
-											break;
+											$parent_class .= ($parent_class != "" ? " " : "")."parent_".$r->meta_value;
 										}
 
-										return $out;
-									},
-									$child_content
-								);
+										if($parent_class != "")
+										{
+											$child_content = str_replace("<li>", "<li class='".$parent_class."'>", $child_content);
+										}
+									}
+
+									$out_children .= preg_replace_callback(
+										"/\[(.*?)\]/i",
+										function($match) use ($child_id)
+										{
+											global $wpdb;
+
+											$out = "";
+
+											switch($match[1])
+											{
+												case 'list_id':
+													$out .= $child_id;
+												break;
+
+												case 'list_icon':
+													$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
+
+													if($child_icon != '')
+													{
+														$out .= "<i class='".$child_icon."'></i>";
+													}
+												break;
+
+												case 'list_title':
+													$child_title = get_the_title($child_id);
+
+													$out .= $child_title;
+												break;
+
+												case 'list_text':
+													$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+													$child_text = apply_filters('the_content', $child_text);
+
+													if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
+													{
+														$child_text = "<p>".$child_text."</p>";
+													}
+
+													$out .= "<div class='text'>".$child_text."</div>";
+												break;
+
+												case 'list_excerpt':
+													$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+													$out .= apply_filters('the_content', $child_text);
+												break;
+
+												case 'list_image':
+												case 'list_image_no_link':
+													$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
+
+													$image_url = $image_tag = "";
+
+													if($child_image_id > 0)
+													{
+														$arr_image = wp_get_attachment_image_src($child_image_id, 'full');
+
+														if(is_array($arr_image))
+														{
+															$image_url = $arr_image[0];
+														}
+
+														$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
+													}
+
+													else
+													{
+														$image_tag = apply_filters('get_image_fallback', "");
+													}
+
+													if($image_tag != '')
+													{
+														$out .= "<div class='image ".$match[1]."'>";
+
+															if($image_url != '' && $match[1] == 'list_image')
+															{
+																$out .= "<a href='".$image_url."'>";
+															}
+
+																$out .= $image_tag;
+
+															if($image_url != '' && $match[1] == 'list_image')
+															{
+																$out .= "</a>";
+															}
+
+														$out .= "</div>";
+													}
+												break;
+
+												case 'list_link':
+													$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
+
+													if(intval($child_page) > 0)
+													{
+														$out .= get_permalink($child_page);
+													}
+
+													else
+													{
+														$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
+
+														if($child_link == '')
+														{
+															$child_link = "#";
+														}
+
+														$out .= $child_link;
+													}
+												break;
+
+												default:
+													$out .= get_post_meta($child_id, $match[1], true);
+												break;
+											}
+
+											return $out;
+										},
+										$child_content
+									);
+								}
 							}
 						}
 					}
