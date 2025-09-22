@@ -61,7 +61,6 @@ class mf_custom_list
 
 		if(!isset($attributes['list_id'])){			$attributes['list_id'] = [];}
 		if(!isset($attributes['list_order'])){		$attributes['list_order'] = "";}
-		if(!isset($attributes['list_amount'])){		$attributes['list_amount'] = 0;}
 
 		$out = "";
 
@@ -255,7 +254,7 @@ class mf_custom_list
 							$query_select = ", post_content";
 						}
 
-						$result_children = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order." LIMIT 0, %d", $this->post_type_item, 'publish', $parent_id, ($attributes['list_amount'] > 0 ? $attributes['list_amount'] : 100)));
+						$result_children = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order, $this->post_type_item, 'publish', $parent_id));
 
 						if($wpdb->num_rows > 0)
 						{
@@ -464,7 +463,6 @@ class mf_custom_list
 			'block_description' => __("Display a Custom List", 'lang_custom_lists'),
 			'list_id_label' => __("List", 'lang_custom_lists'),
 			'list_id' => $arr_data,
-			'list_amount_label' => __("Amount", 'lang_custom_lists'),
 			'list_order_label' => __("Order", 'lang_custom_lists'),
 			'list_order' => $this->get_order_for_select(),
 		));

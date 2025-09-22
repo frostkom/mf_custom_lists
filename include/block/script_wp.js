@@ -95,18 +95,6 @@
 									props.setAttributes({list_order: value});
 								}
 							}
-						),
-						el(
-							TextControl,
-							{
-								label: script_custom_lists_block_wp.list_amount_label,
-								type: 'number',
-								value: props.attributes.list_amount,
-								onChange: function(value)
-								{
-									props.setAttributes({list_amount: value});
-								}
-							}
 						)
 					),
 					el(
