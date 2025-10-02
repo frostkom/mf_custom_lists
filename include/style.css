@@ -249,6 +249,12 @@
 				width: 100%;
 			}
 
+		.custom_list_style_people > li .text > p
+		{
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
 	/* Screenshots */
 	.custom_list_style_screenshots > li
 	{
