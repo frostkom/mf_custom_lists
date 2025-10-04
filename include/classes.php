@@ -597,6 +597,7 @@ class mf_custom_list
 					'id' => $this->meta_prefix.'style',
 					'type' => 'select',
 					'options' => $this->get_styles_for_select(),
+					'std' => 'people',
 				),
 				array(
 					'name' => __("Custom Style", 'lang_custom_lists'),
