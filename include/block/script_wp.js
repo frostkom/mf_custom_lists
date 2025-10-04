@@ -21,7 +21,7 @@
 			},
 			'list_id':
 			{
-                'type': 'string',
+                'type': 'array',
                 'default': ''
             },
 			'list_order':
