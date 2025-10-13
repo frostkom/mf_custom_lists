@@ -470,6 +470,8 @@ class mf_custom_list
 
 	function init()
 	{
+		load_plugin_textdomain('lang_custom_lists', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
 		register_post_type($this->post_type, array(
 			'labels' => array(
 				'name' => __("Custom Lists", 'lang_custom_lists'),
