@@ -878,18 +878,23 @@ class mf_custom_list
 						{
 							foreach($arr_parent_id as $parent_id)
 							{
-								$out .= ($out != '' ? ", " : "");
+								$parent_status = get_post_status($parent_id);
 
-								if(get_post_status($parent_id) == 'publish')
+								if(in_array($parent_status, array('draft', 'publish')))
 								{
-									$out .= "<a href='".admin_url("post.php?post=".$parent_id."&action=edit")."'>";
-								}
+									$out .= ($out != '' ? ", " : "");
 
-									$out .= get_the_title($parent_id);
+									if($parent_status == 'publish')
+									{
+										$out .= "<a href='".admin_url("post.php?post=".$parent_id."&action=edit")."'>";
+									}
 
-								if(get_post_status($parent_id) == 'publish')
-								{
-									$out .= "</a>";
+										$out .= get_the_title($parent_id);
+
+									if(get_post_status($parent_id) == 'publish')
+									{
+										$out .= "</a>";
+									}
 								}
 							}
 						}
