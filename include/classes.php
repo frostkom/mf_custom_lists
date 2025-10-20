@@ -220,12 +220,7 @@ class mf_custom_list
 								}";
 							}
 
-							$out_parent .= "<style>
-								@media all
-								{"
-									.$parent_custom_style
-								."}
-							</style>";
+							$out_parent .= "<style>".$parent_custom_style."</style>";
 						}
 					}
 
