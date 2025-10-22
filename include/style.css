@@ -201,6 +201,11 @@
 			}*/
 
 /* Logos */
+.custom_list_style_logos > li
+{
+	margin-bottom: 2em;
+}
+
 .custom_list_style_logos div.image
 {
 	height: 100%;
