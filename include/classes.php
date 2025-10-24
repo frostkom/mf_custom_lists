@@ -343,7 +343,7 @@ class mf_custom_list
 												case 'list_image_no_link':
 													$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
 
-													$image_url = $image_tag = "";
+													$image_url = $image_width = $image_height = $image_tag = "";
 
 													if($child_image_id > 0)
 													{
@@ -352,6 +352,8 @@ class mf_custom_list
 														if(is_array($arr_image))
 														{
 															$image_url = $arr_image[0];
+															$image_width = $arr_image[1];
+															$image_height = $arr_image[2];
 														}
 
 														$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
@@ -364,7 +366,14 @@ class mf_custom_list
 
 													if($image_tag != '')
 													{
-														$out .= "<div class='image ".$match[1]."'>";
+														$image_class = $match[1];
+
+														if($image_width > 1 && $image_height > ($image_width * .9))
+														{
+															$image_class .= " is_portrait";
+														}
+
+														$out .= "<div class='image ".$image_class."'>";
 
 															if($image_url != '' && $match[1] == 'list_image')
 															{
@@ -420,7 +429,7 @@ class mf_custom_list
 
 				if(count($arr_data) > 2)
 				{
-					$out .= "<form method='post' action='#' class='mf_form'>"
+					$out .= "<form".apply_filters('get_form_attr', " action='#'").">"
 						.show_select(array('data' => $arr_data, 'name' => ''))
 					."</form>";
 

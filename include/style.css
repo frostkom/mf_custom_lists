@@ -211,6 +211,12 @@
 	height: 100%;
 }
 
+	.custom_list_style_logos div.image.is_portrait
+	{
+		padding-left: 4em;
+		padding-right: 4em;
+	}
+
 	.custom_list_style_logos li img
 	{
 		display: block;
