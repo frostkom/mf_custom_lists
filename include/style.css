@@ -244,12 +244,12 @@
 		height: 0;
 		padding-bottom: 100%;
 		position: relative;
-		overflow: hidden;
 	}
 
 		.custom_list_style_people div.image img
 		{
 			border-radius: 50%;
+			box-shadow: 0 .1em .4em rgba(0, 0, 0, .3);
 			height: 100%;
 			left: 0;
 			margin: 0 auto;
