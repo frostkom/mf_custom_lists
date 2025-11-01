@@ -577,6 +577,8 @@ class mf_custom_list
 			$obj_base = new mf_base();
 		}
 
+		do_action('load_font_awesome');
+
 		$meta_boxes[] = array(
 			'id' => $this->meta_prefix.'structure',
 			'title' => __("Structure", 'lang_custom_lists'),
