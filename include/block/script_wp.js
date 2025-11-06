@@ -21,19 +21,19 @@
 			},
 			'list_id':
 			{
-                'type': 'array',
-                'default': ''
-            },
+				'type': 'array',
+				'default': ''
+			},
 			'list_order':
 			{
-                'type': 'string',
-                'default': ''
-            },
+				'type': 'string',
+				'default': ''
+			},
 			'list_amount':
 			{
-                'type': 'string',
-                'default': ''
-            }
+				'type': 'string',
+				'default': ''
+			}
 		},
 		'supports':
 		{
