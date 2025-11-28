@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description:
-Version: 3.10.31
+Version: 3.10.32
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -39,6 +39,9 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		add_filter('manage_'.$obj_custom_list->post_type.'_posts_columns', array($obj_custom_list, 'column_header'), 5);
 		add_action('manage_'.$obj_custom_list->post_type.'_posts_custom_column', array($obj_custom_list, 'column_cell'), 5, 2);
+
+		// Does not work and I don't know why, yet...
+		//add_filter('post_row_actions', array($obj_custom_list, 'post_row_actions'), 10, 2);
 
 		add_filter('manage_'.$obj_custom_list->post_type_item.'_posts_columns', array($obj_custom_list, 'column_header'), 5);
 		add_action('manage_'.$obj_custom_list->post_type_item.'_posts_custom_column', array($obj_custom_list, 'column_cell'), 5, 2);

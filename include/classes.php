@@ -373,6 +373,8 @@ class mf_custom_list
 															$image_class .= " is_portrait";
 														}
 
+														do_action('load_lightbox');
+
 														$out .= "<div class='image ".$image_class."'>";
 
 															if($image_url != '' && $match[1] == 'list_image')
@@ -919,6 +921,43 @@ class mf_custom_list
 			break;
 		}
 	}
+
+	/*function post_row_actions($arr_actions, $post)
+	{
+		if($post->post_type == $this->post_type && get_post_status($post->ID) != 'trash')
+		{
+			$arr_actions['test'] = "Yes";
+
+			$arr_ids = apply_filters('get_page_from_block_code', [], '<!-- wp:mf/customlists {"list_id":"'.$post->ID.'"%} /-->');
+
+			if(count($arr_ids) > 0)
+			{
+				//unset($arr_actions['view']);
+
+				foreach($arr_ids as $post_id)
+				{
+					if(count($arr_ids) > 1)
+					{
+						$post_title = sprintf(__("View %s", 'lang_custom_lists'), "'".get_the_title($post_id)."'");
+					}
+
+					else
+					{
+						$post_title = __("View", 'lang_custom_lists');
+					}
+
+					$arr_actions['view_'.$post_id] = "<a href='".get_permalink($post_id)."'>".$post_title."</a>";
+				}
+			}
+		}
+
+		else
+		{
+			$arr_actions['test'] = "No";
+		}
+
+		return $arr_actions;
+	}*/
 
 	function get_list_items($data)
 	{
