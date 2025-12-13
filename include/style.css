@@ -17,6 +17,11 @@
 	position: relative;
 }
 
+	.widget.custom_list ul div.image img
+	{
+		padding: 0;
+	}
+
 /* Style-Specific */
 /*.custom_list_style_about_us, */.custom_list_style_logos, .custom_list_style_screenshots, .custom_list_style_people, .custom_list_style_testimonials
 {
