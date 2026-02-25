@@ -67,388 +67,390 @@ class mf_custom_list
 		if(is_array($attributes['list_id']) && count($attributes['list_id']) > 0 || $attributes['list_id'] > 0)
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
-
 			mf_enqueue_style('style_custom_lists', $plugin_include_url."style.css");
 
-			$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">";
+			$out_temp = "";
 
-				$query_where = "";
+			$query_where = "";
 
-				$arr_data = [
-					'' => "-- ".__("All", 'lang_custom_lists')." --",
-				];
+			$arr_data = [
+				'' => "-- ".__("All", 'lang_custom_lists')." --",
+			];
 
-				if(is_array($attributes['list_id']))
+			if(is_array($attributes['list_id']))
+			{
+				if(count($attributes['list_id']) > 0)
 				{
-					if(count($attributes['list_id']) > 0)
-					{
-						$query_where .= " AND ID IN (";
+					$query_where .= " AND ID IN (";
 
-							$i = 0;
+						$i = 0;
 
-							foreach($attributes['list_id'] as $list_id)
-							{
-								$query_where .= ($i > 0 ? ", " : "")."'".esc_sql($list_id)."'";
-
-								$i++;
-							}
-
-						$query_where .= ")";
-					}
-
-					else // Why does this even happen?
-					{
-						$query_where .= " AND ID = '0'";
-					}
-				}
-
-				else
-				{
-					$query_where .= " AND ID = '".esc_sql($attributes['list_id'])."'";
-				}
-
-				$out_parent = $out_children = "";
-				$arr_children = [];
-
-				$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s".$query_where." ORDER BY menu_order ASC", $this->post_type, 'publish'));
-
-				foreach($result as $r)
-				{
-					$parent_id = $r->ID;
-					$parent_title = $r->post_title;
-					$parent_content = $r->post_content;
-					$parent_excerpt = $r->post_excerpt;
-
-					$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
-					$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
-					$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
-					$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
-					$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
-					/*$parent_columns_desktop = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_desktop', true, 4);
-					$parent_columns_tablet = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_tablet', true, 3);
-					$parent_columns_mobile = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_mobile', true, 2);
-					$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);*/
-					$parent_columns_desktop = 4;
-					$parent_columns_tablet = 3;
-					$parent_columns_mobile = 2;
-					$parent_columns_gap = 5;
-
-					if($parent_container == '')
-					{
-						$parent_container = $parent_content;
-					}
-
-					if($parent_items == '')
-					{
-						$parent_items = $parent_excerpt;
-					}
-
-					if($out_parent == '')
-					{
-						if($parent_container != '')
+						foreach($attributes['list_id'] as $list_id)
 						{
-							$out_parent .= $parent_container;
+							$query_where .= ($i > 0 ? ", " : "")."'".esc_sql($list_id)."'";
+
+							$i++;
 						}
 
-						if($out_parent != '')
+					$query_where .= ")";
+				}
+
+				else // Why does this even happen?
+				{
+					$query_where .= " AND ID = '0'";
+				}
+			}
+
+			else
+			{
+				$query_where .= " AND ID = '".esc_sql($attributes['list_id'])."'";
+			}
+
+			$out_parent = $out_children = "";
+			$arr_children = [];
+
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s".$query_where." ORDER BY menu_order ASC", $this->post_type, 'publish'));
+
+			foreach($result as $r)
+			{
+				$parent_id = $r->ID;
+				$parent_title = $r->post_title;
+				$parent_content = $r->post_content;
+				$parent_excerpt = $r->post_excerpt;
+
+				$parent_container = get_post_meta($parent_id, $this->meta_prefix.'container', true);
+				$parent_items = get_post_meta($parent_id, $this->meta_prefix.'items', true);
+				$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
+				$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
+				$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
+				/*$parent_columns_desktop = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_desktop', true, 4);
+				$parent_columns_tablet = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_tablet', true, 3);
+				$parent_columns_mobile = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_mobile', true, 2);
+				$parent_columns_gap = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_gap', true, 5);*/
+				$parent_columns_desktop = 4;
+				$parent_columns_tablet = 3;
+				$parent_columns_mobile = 2;
+				$parent_columns_gap = 5;
+
+				if($parent_container == '')
+				{
+					$parent_container = $parent_content;
+				}
+
+				if($parent_items == '')
+				{
+					$parent_items = $parent_excerpt;
+				}
+
+				if($out_parent == '')
+				{
+					if($parent_container != '')
+					{
+						$out_parent .= $parent_container;
+					}
+
+					if($out_parent != '')
+					{
+						/*switch($parent_style)
 						{
-							/*switch($parent_style)
+							case 'faq':
+								mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
+							break;
+						}*/
+
+						$parent_class = $parent_class_selector = "";
+
+						if($parent_style != '')
+						{
+							$parent_class .= ($parent_class != '' ? " " : "")."custom_list_style_".$parent_style;
+							$parent_class_selector .= ".custom_list_style_".$parent_style;
+						}
+
+						if($parent_read_more == 'yes')
+						{
+							$parent_class .= ($parent_class != '' ? " " : "")."custom_list_read_more";
+
+							mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js", array(
+								'read_more' => __("Read More", 'lang_custom_lists'),
+							));
+						}
+
+						$out_parent = str_replace("[parent_class]", " class='".$parent_class."'", $out_parent);
+
+						$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
+
+						if($parent_columns_gap > 0)
+						{
+							if($parent_columns_desktop > 0)
 							{
-								case 'faq':
-									mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
-								break;
-							}*/
-
-							$parent_class = $parent_class_selector = "";
-
-							if($parent_style != '')
-							{
-								$parent_class .= ($parent_class != '' ? " " : "")."custom_list_style_".$parent_style;
-								$parent_class_selector .= ".custom_list_style_".$parent_style;
-							}
-
-							if($parent_read_more == 'yes')
-							{
-								$parent_class .= ($parent_class != '' ? " " : "")."custom_list_read_more";
-
-								mf_enqueue_script('script_custom_lists', $plugin_include_url."script_read_more.js", array(
-									'read_more' => __("Read More", 'lang_custom_lists'),
-								));
-							}
-
-							$out_parent = str_replace("[parent_class]", " class='".$parent_class."'", $out_parent);
-
-							$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
-
-							if($parent_columns_gap > 0)
-							{
-								if($parent_columns_desktop > 0)
+								$parent_custom_style .= $parent_class_selector." li
 								{
-									$parent_custom_style .= $parent_class_selector." li
-									{
-										width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
-									}";
-								}
-
-								$arr_breakpoints = apply_filters('get_layout_breakpoints', ['tablet' => 1200, 'mobile' => 930, 'suffix' => "px"]);
-
-								if($parent_columns_tablet > 0)
-								{
-									$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['tablet'].$arr_breakpoints['suffix'].")
-									{
-										".$parent_class_selector." li
-										{
-											width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
-										}
-									}";
-								}
-
-								if($parent_columns_mobile > 0)
-								{
-									$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['mobile'].$arr_breakpoints['suffix'].")
-									{
-										".$parent_class_selector." li
-										{
-											width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
-										}
-									}";
-								}
-
-								$parent_custom_style .= $parent_class_selector."
-								{
-									gap: ".$parent_columns_gap."%;
+									width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
 								}";
 							}
 
-							$out_parent .= "<style>".$parent_custom_style."</style>";
+							$arr_breakpoints = apply_filters('get_layout_breakpoints', ['tablet' => 1200, 'mobile' => 930, 'suffix' => "px"]);
+
+							if($parent_columns_tablet > 0)
+							{
+								$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['tablet'].$arr_breakpoints['suffix'].")
+								{
+									".$parent_class_selector." li
+									{
+										width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+									}
+								}";
+							}
+
+							if($parent_columns_mobile > 0)
+							{
+								$parent_custom_style .= "@media screen and (max-width: ".$arr_breakpoints['mobile'].$arr_breakpoints['suffix'].")
+								{
+									".$parent_class_selector." li
+									{
+										width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+									}
+								}";
+							}
+
+							$parent_custom_style .= $parent_class_selector."
+							{
+								gap: ".$parent_columns_gap."%;
+							}";
 						}
+
+						$out_parent .= "<style>".$parent_custom_style."</style>";
+					}
+				}
+
+				if(preg_match("/\[children\]/i", $parent_container))
+				{
+					switch($attributes['list_order'])
+					{
+						default:
+						case 'alphabetic':
+							$query_order = " ORDER BY post_title ASC";
+						break;
+
+						case 'numerical':
+							$query_order = " ORDER BY menu_order ASC";
+						break;
+
+						case 'random':
+							$query_order = " ORDER BY RAND()";
+						break;
 					}
 
-					if(preg_match("/\[children\]/i", $parent_container))
+					$query_select = "";
+
+					if($parent_items == '')
 					{
-						switch($attributes['list_order'])
+						$query_select = ", post_content";
+					}
+
+					$result_children = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order, $this->post_type_item, 'publish', $parent_id));
+
+					if($wpdb->num_rows > 0)
+					{
+						$arr_data[$parent_id] = $parent_title;
+
+						foreach($result_children as $r)
 						{
-							default:
-							case 'alphabetic':
-								$query_order = " ORDER BY post_title ASC";
-							break;
+							$child_id = $r->ID;
 
-							case 'numerical':
-								$query_order = " ORDER BY menu_order ASC";
-							break;
-
-							case 'random':
-								$query_order = " ORDER BY RAND()";
-							break;
-						}
-
-						$query_select = "";
-
-						if($parent_items == '')
-						{
-							$query_select = ", post_content";
-						}
-
-						$result_children = $wpdb->get_results($wpdb->prepare("SELECT ID".$query_select." FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND meta_value = '%d' GROUP BY ID".$query_order, $this->post_type_item, 'publish', $parent_id));
-
-						if($wpdb->num_rows > 0)
-						{
-							$arr_data[$parent_id] = $parent_title;
-
-							foreach($result_children as $r)
+							if(!in_array($child_id, $arr_children))
 							{
-								$child_id = $r->ID;
+								$arr_children[] = $child_id;
 
-								if(!in_array($child_id, $arr_children))
+								if($parent_items != '')
 								{
-									$arr_children[] = $child_id;
-
-									if($parent_items != '')
-									{
-										$child_content = $parent_items;
-									}
-
-									else
-									{
-										$child_content = $r->post_content;
-									}
-
-									if(is_array($attributes['list_id']))
-									{
-										$parent_class = "";
-										$parent_class .= ($parent_class != "" ? " " : "")."parent_".$parent_id;
-
-										$result_parents = $wpdb->get_results($wpdb->prepare("SELECT meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND ID = '%d' AND meta_value != '%d' GROUP BY meta_value", $this->post_type_item, 'publish', $child_id, $parent_id));
-
-										foreach($result_parents as $r)
-										{
-											$parent_class .= ($parent_class != "" ? " " : "")."parent_".$r->meta_value;
-										}
-
-										if($parent_class != "")
-										{
-											$child_content = str_replace("<li>", "<li class='".$parent_class."'>", $child_content);
-										}
-									}
-
-									$out_children .= preg_replace_callback(
-										"/\[(.*?)\]/i",
-										function($match) use ($child_id)
-										{
-											global $wpdb;
-
-											$out = "";
-
-											switch($match[1])
-											{
-												case 'list_id':
-													$out .= $child_id;
-												break;
-
-												case 'list_icon':
-													$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
-
-													if($child_icon != '')
-													{
-														$out .= "<i class='".$child_icon."'></i>";
-													}
-												break;
-
-												case 'list_title':
-													$child_title = get_the_title($child_id);
-
-													$out .= $child_title;
-												break;
-
-												case 'list_text':
-													$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-													$child_text = apply_filters('the_content', $child_text);
-
-													if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
-													{
-														$child_text = "<p>".$child_text."</p>";
-													}
-
-													$out .= "<div class='text'>".$child_text."</div>";
-												break;
-
-												case 'list_excerpt':
-													$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
-
-													$out .= apply_filters('the_content', $child_text);
-												break;
-
-												case 'list_image':
-												case 'list_image_no_link':
-													$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
-
-													$image_url = $image_width = $image_height = $image_tag = "";
-
-													if($child_image_id > 0)
-													{
-														$arr_image = wp_get_attachment_image_src($child_image_id, 'full');
-
-														if(is_array($arr_image))
-														{
-															$image_url = $arr_image[0];
-															$image_width = $arr_image[1];
-															$image_height = $arr_image[2];
-														}
-
-														$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
-													}
-
-													else
-													{
-														$image_tag = apply_filters('get_image_fallback', "");
-													}
-
-													if($image_tag != '')
-													{
-														$image_class = $match[1];
-
-														if($image_width > 1 && $image_height > ($image_width * .9))
-														{
-															$image_class .= " is_portrait";
-														}
-
-														do_action('load_lightbox');
-
-														$out .= "<div class='image ".$image_class."'>";
-
-															if($image_url != '' && $match[1] == 'list_image')
-															{
-																$out .= "<a href='".$image_url."'>";
-															}
-
-																$out .= $image_tag;
-
-															if($image_url != '' && $match[1] == 'list_image')
-															{
-																$out .= "</a>";
-															}
-
-														$out .= "</div>";
-													}
-												break;
-
-												case 'list_link':
-													$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
-
-													if(intval($child_page) > 0)
-													{
-														$out .= get_permalink($child_page);
-													}
-
-													else
-													{
-														$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
-
-														if($child_link == '')
-														{
-															$child_link = "#";
-														}
-
-														$out .= $child_link;
-													}
-												break;
-
-												default:
-													$out .= get_post_meta($child_id, $match[1], true);
-												break;
-											}
-
-											return $out;
-										},
-										$child_content
-									);
+									$child_content = $parent_items;
 								}
+
+								else
+								{
+									$child_content = $r->post_content;
+								}
+
+								if(is_array($attributes['list_id']))
+								{
+									$parent_class = "";
+									$parent_class .= ($parent_class != "" ? " " : "")."parent_".$parent_id;
+
+									$result_parents = $wpdb->get_results($wpdb->prepare("SELECT meta_value FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id AND meta_key = '".$this->meta_prefix."list_id' WHERE post_type = %s AND post_status = %s AND ID = '%d' AND meta_value != '%d' GROUP BY meta_value", $this->post_type_item, 'publish', $child_id, $parent_id));
+
+									foreach($result_parents as $r)
+									{
+										$parent_class .= ($parent_class != "" ? " " : "")."parent_".$r->meta_value;
+									}
+
+									if($parent_class != "")
+									{
+										$child_content = str_replace("<li>", "<li class='".$parent_class."'>", $child_content);
+									}
+								}
+
+								$out_children .= preg_replace_callback(
+									"/\[(.*?)\]/i",
+									function($match) use ($child_id)
+									{
+										global $wpdb;
+
+										$out_temp = "";
+
+										switch($match[1])
+										{
+											case 'list_id':
+												$out_temp .= $child_id;
+											break;
+
+											case 'list_icon':
+												$child_icon = get_post_meta($child_id, $this->meta_prefix.'icon', true);
+
+												if($child_icon != '')
+												{
+													$out_temp .= "<i class='".$child_icon."'></i>";
+												}
+											break;
+
+											case 'list_title':
+												$child_title = get_the_title($child_id);
+
+												$out_temp .= $child_title;
+											break;
+
+											case 'list_text':
+												$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_content FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+												$child_text = apply_filters('the_content', $child_text);
+
+												if(strpos($child_text, "</p>") === false) // If not used, the first item does not get <p> for some reason...
+												{
+													$child_text = "<p>".$child_text."</p>";
+												}
+
+												$out_temp .= "<div class='text'>".$child_text."</div>";
+											break;
+
+											case 'list_excerpt':
+												$child_text = $wpdb->get_var($wpdb->prepare("SELECT post_excerpt FROM ".$wpdb->posts." WHERE post_status = %s AND ID = '%d'", 'publish', $child_id));
+
+												$out_temp .= apply_filters('the_content', $child_text);
+											break;
+
+											case 'list_image':
+											case 'list_image_no_link':
+												$child_image_id = get_post_meta($child_id, $this->meta_prefix.'image', true);
+
+												$image_url = $image_width = $image_height = $image_tag = "";
+
+												if($child_image_id > 0)
+												{
+													$arr_image = wp_get_attachment_image_src($child_image_id, 'full');
+
+													if(is_array($arr_image))
+													{
+														$image_url = $arr_image[0];
+														$image_width = $arr_image[1];
+														$image_height = $arr_image[2];
+													}
+
+													$image_tag = render_image_tag(array('id' => $child_image_id, 'size' => 'large'));
+												}
+
+												else
+												{
+													$image_tag = apply_filters('get_image_fallback', "");
+												}
+
+												if($image_tag != '')
+												{
+													$image_class = $match[1];
+
+													if($image_width > 1 && $image_height > ($image_width * .9))
+													{
+														$image_class .= " is_portrait";
+													}
+
+													do_action('load_lightbox');
+
+													$out_temp .= "<div class='image ".$image_class."'>";
+
+														if($image_url != '' && $match[1] == 'list_image')
+														{
+															$out_temp .= "<a href='".$image_url."'>";
+														}
+
+															$out_temp .= $image_tag;
+
+														if($image_url != '' && $match[1] == 'list_image')
+														{
+															$out_temp .= "</a>";
+														}
+
+													$out_temp .= "</div>";
+												}
+											break;
+
+											case 'list_link':
+												$child_page = get_post_meta($child_id, $this->meta_prefix.'page', true);
+
+												if(intval($child_page) > 0)
+												{
+													$out_temp .= get_permalink($child_page);
+												}
+
+												else
+												{
+													$child_link = get_post_meta($child_id, $this->meta_prefix.'link', true);
+
+													if($child_link == '')
+													{
+														$child_link = "#";
+													}
+
+													$out_temp .= $child_link;
+												}
+											break;
+
+											default:
+												$out_temp .= get_post_meta($child_id, $match[1], true);
+											break;
+										}
+
+										return $out_temp;
+									},
+									$child_content
+								);
 							}
 						}
 					}
 				}
+			}
 
-				if(count($arr_data) > 2)
-				{
-					$out .= "<form".apply_filters('get_form_attr', " action='#'").">"
-						.show_select(array('data' => $arr_data, 'name' => ''))
-					."</form>";
+			if(count($arr_data) > 2)
+			{
+				$out_temp .= "<form".apply_filters('get_form_attr', " action='#'").">"
+					.show_select(array('data' => $arr_data, 'name' => ''))
+				."</form>";
 
-					mf_enqueue_script('script_custom_lists_multiple', $plugin_include_url."script_multiple.js");
-				}
+				mf_enqueue_script('script_custom_lists_multiple', $plugin_include_url."script_multiple.js");
+			}
 
-				if($out_children != '')
-				{
-					$out .= str_replace("[children]", $out_children, $out_parent);
-				}
+			if($out_children != '')
+			{
+				$out_temp .= str_replace("[children]", $out_children, $out_parent);
+			}
 
-				else
-				{
-					$out .= $out_parent;
-				}
+			else
+			{
+				$out_temp .= ""; //$out_parent
+			}
 
-			$out .= "</div>";
+			if($out_temp != '')
+			{
+				$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">".$out_temp."</div>";
+			}
 		}
 
 		return $out;
