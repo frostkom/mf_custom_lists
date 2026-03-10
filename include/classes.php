@@ -601,7 +601,7 @@ class mf_custom_list
 					'name' => __("Items", 'lang_custom_lists'),
 					'id' => $this->meta_prefix.'items',
 					'type' => 'textarea',
-					'std' => "<li>[list_icon]<h4><a href='[list_link]'>[list_title]</a></h4>[list_excerpt][list_image][list_text]</li>",
+					'std' => "<li>[list_icon]<h4><a href='[list_link]' class='grid_title'>[list_title]</a></h4>[list_excerpt][list_image][list_text]</li>",
 					'sanitize_callback' => 'none',
 				),
 				array(
