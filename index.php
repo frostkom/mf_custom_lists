@@ -3,7 +3,7 @@
 Plugin Name: MF Custom Lists
 Plugin URI: https://github.com/frostkom/mf_custom_lists
 Description: Add block to display lists of people, logos etc.
-Version: 3.10.37
+Version: 3.10.38
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
