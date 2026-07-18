@@ -1010,13 +1010,21 @@ class mf_custom_list
 
 		if(get_post_type($post_id) == $this->post_type)
 		{
-			$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d' GROUP BY ID", $this->post_type_item, $post_id));
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM ".$wpdb->posts." INNER JOIN ".$wpdb->postmeta." ON ".$wpdb->posts.".ID = ".$wpdb->postmeta.".post_id WHERE post_type = %s AND meta_key = '".$this->meta_prefix."list_id' AND meta_value = '%d' GROUP BY ID", $this->post_type_item, $post_id));
 
 			foreach($result as $r)
 			{
-				do_log(__FUNCTION__.": Trash <a href='".admin_url("post.php?post=".$r->ID."&action=edit")."'>#".$r->ID."</a> if it only is connected to one list");
+				$child_id = $r->ID;
+				$child_title = $r->post_title;
 
-				//wp_trash_post($r->ID);
+				$arr_parent_id = get_post_meta($child_id, $this->meta_prefix.$column, false);
+
+				if(is_array($arr_parent_id) && in_array($post_id, $arr_parent_id) && count($arr_parent_id) == 1)
+				{
+					do_log(__FUNCTION__.": Trash <a href='".admin_url("post.php?post=".$child_id."&action=edit")."'>#".$child_id." (".$child_title.")</a> because it is only connected to one list");
+
+					//wp_trash_post($child_id);
+				}
 			}
 		}
 	}
