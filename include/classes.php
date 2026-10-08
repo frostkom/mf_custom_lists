@@ -39,19 +39,11 @@ class mf_custom_list
 	{
 		return array(
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
-			//'about_us' => __("About Us", 'lang_custom_lists'),
-			//'faq' => __("FAQ", 'lang_custom_lists'),
-			//'flags' => __("Flags", 'lang_custom_lists'),
-			//'flex' => __("Flex", 'lang_custom_lists'),
-			//'horizontal' => __("Horizontal", 'lang_custom_lists'),
+			//'jury' => __("Jury", 'lang_custom_lists'),
 			'logos' => __("Logos", 'lang_custom_lists'),
-			//'logos_v2' => __("Logos", 'lang_custom_lists')." v2",
-			//'one_col' => __("One Column", 'lang_custom_lists'),
 			'people' => __("People", 'lang_custom_lists'),
 			'screenshots' => __("Screenshots", 'lang_custom_lists'),
-			//'slider' => __("Slider", 'lang_custom_lists'),
 			'testimonials' => __("Testimonials", 'lang_custom_lists'),
-			//'vertical' => __("Vertical", 'lang_custom_lists'),
 		);
 	}
 
@@ -123,6 +115,7 @@ class mf_custom_list
 				$parent_custom_style = get_post_meta($parent_id, $this->meta_prefix.'custom_style', true);
 				$parent_style = get_post_meta($parent_id, $this->meta_prefix.'style', true);
 				$parent_read_more = get_post_meta($parent_id, $this->meta_prefix.'read_more', true);
+
 				/*$parent_columns_desktop = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_desktop', true, 4);
 				$parent_columns_tablet = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_tablet', true, 3);
 				$parent_columns_mobile = get_post_meta_or_default($parent_id, $this->meta_prefix.'columns_mobile', true, 2);
@@ -151,12 +144,20 @@ class mf_custom_list
 
 					if($out_parent != '')
 					{
-						/*switch($parent_style)
+						switch($parent_style)
 						{
-							case 'faq':
-								mf_enqueue_script('script_custom_lists', $plugin_include_url."script_faq.js");
+							case 'jury':
+								mf_enqueue_style('style_custom_lists_'.$parent_style, $plugin_include_url."style_".$parent_style.".css");
+								mf_enqueue_script('script_custom_lists_'.$parent_style, $plugin_include_url."script_".$parent_style.".js");
 							break;
-						}*/
+
+							case 'logos':
+							case 'people':
+							case 'screenshots':
+							case 'testimonials':
+								mf_enqueue_style('style_custom_lists_'.$parent_style, $plugin_include_url."style_".$parent_style.".css");
+							break;
+						}
 
 						$parent_class = $parent_class_selector = "";
 

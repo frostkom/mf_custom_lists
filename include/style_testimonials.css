@@ -1,0 +1,31 @@
+.custom_list_style_testimonials
+{
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+	.custom_list_style_testimonials > li
+	{
+		flex: 0 1 auto;
+	}
+
+.custom_list_style_testimonials div.image
+{
+	background: #f3f3f3;
+	border-radius: 50%;
+	height: 0;
+	padding-bottom: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+	.custom_list_style_testimonials div.image img
+	{
+		height: 100%;
+		left: 0;
+		margin: 0 auto;
+		object-fit: cover;
+		position: absolute;
+		width: 100%;
+	}
