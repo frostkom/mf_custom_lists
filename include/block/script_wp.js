@@ -3,6 +3,7 @@
 	var el = wp.element.createElement,
 		registerBlockType = wp.blocks.registerBlockType,
 		SelectControl = wp.components.SelectControl,
+		PanelBody = wp.components.PanelBody,
 		InspectorControls = wp.blockEditor.InspectorControls;
 
 	registerBlockType('mf/customlists',
@@ -69,31 +70,35 @@
 				[
 					el(
 						InspectorControls,
-						'div',
+						{key: 'inspector'},
 						el(
-							SelectControl,
-							{
-								label: script_custom_lists_block_wp.list_id_label,
-								value: props.attributes.list_id,
-								options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_id),
-								multiple: true,
-								onChange: function(value)
+							PanelBody,
+							{title: script_custom_lists_block_wp.block_title, initialOpen: true},
+							el(
+								SelectControl,
 								{
-									props.setAttributes({list_id: value});
+									label: script_custom_lists_block_wp.list_id_label,
+									value: props.attributes.list_id,
+									options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_id),
+									multiple: true,
+									onChange: function(value)
+									{
+										props.setAttributes({list_id: value});
+									}
 								}
-							}
-						),
-						el(
-							SelectControl,
-							{
-								label: script_custom_lists_block_wp.list_order_label,
-								value: props.attributes.list_order,
-								options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_order),
-								onChange: function(value)
+							),
+							el(
+								SelectControl,
 								{
-									props.setAttributes({list_order: value});
+									label: script_custom_lists_block_wp.list_order_label,
+									value: props.attributes.list_order,
+									options: convert_php_array_to_block_js(script_custom_lists_block_wp.list_order),
+									onChange: function(value)
+									{
+										props.setAttributes({list_order: value});
+									}
 								}
-							}
+							)
 						)
 					),
 					el(
