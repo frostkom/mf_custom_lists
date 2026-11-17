@@ -41,6 +41,7 @@ class mf_custom_list
 			'' => "-- ".__("Choose Here", 'lang_custom_lists')." --",
 			//'jury' => __("Jury", 'lang_custom_lists'),
 			'logos' => __("Logos", 'lang_custom_lists'),
+			'logos_scroll' => __("Logos", 'lang_custom_lists')." (".__("Scroll", 'lang_custom_lists').")",
 			'people' => __("People", 'lang_custom_lists'),
 			'screenshots' => __("Screenshots", 'lang_custom_lists'),
 			'testimonials' => __("Testimonials", 'lang_custom_lists'),
@@ -98,7 +99,7 @@ class mf_custom_list
 				$query_where .= " AND ID = '".esc_sql($attributes['list_id'])."'";
 			}
 
-			$out_parent = $out_children = "";
+			$out_parent = $out_children = $widget_class = "";
 			$arr_children = [];
 
 			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title, post_excerpt, post_content FROM ".$wpdb->posts." WHERE post_type = %s AND post_status = %s".$query_where." ORDER BY menu_order ASC", $this->post_type, 'publish'));
@@ -144,11 +145,27 @@ class mf_custom_list
 
 					if($out_parent != '')
 					{
+						$parent_class = $parent_class_selector = "";
+
 						switch($parent_style)
 						{
 							case 'jury':
 								mf_enqueue_style('style_custom_lists_'.$parent_style, $plugin_include_url."style_".$parent_style.".css");
 								mf_enqueue_script('script_custom_lists_'.$parent_style, $plugin_include_url."script_".$parent_style.".js");
+							break;
+
+							case 'logos_scroll':
+								do_action('load_grid_columns_scrollable');
+
+								mf_enqueue_style('style_custom_lists_'.$parent_style, $plugin_include_url."style_".$parent_style.".css");
+
+								$widget_class .= " is_scrollable";
+								$parent_class .= ($parent_class != '' ? " " : "")."scroll_columns";
+
+								$parent_columns_desktop = 5;
+								$parent_columns_tablet = 3;
+								$parent_columns_mobile = 2;
+								$parent_columns_gap = 5;
 							break;
 
 							case 'logos':
@@ -158,8 +175,6 @@ class mf_custom_list
 								mf_enqueue_style('style_custom_lists_'.$parent_style, $plugin_include_url."style_".$parent_style.".css");
 							break;
 						}
-
-						$parent_class = $parent_class_selector = "";
 
 						if($parent_style != '')
 						{
@@ -180,13 +195,20 @@ class mf_custom_list
 
 						$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
 
+						$setting_desktop_columns = ((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop);
+
+						$parent_custom_style .= ":root
+						{
+							--custom_lists-column-width-desktop: ".$setting_desktop_columns.";
+						}";
+
 						if($parent_columns_gap > 0)
 						{
 							if($parent_columns_desktop > 0)
 							{
 								$parent_custom_style .= $parent_class_selector." li
 								{
-									width: ".((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop)."%;
+									width: calc(var(--custom_lists-column-width-desktop) * 1%);
 								}";
 							}
 
@@ -450,7 +472,7 @@ class mf_custom_list
 
 			if($out_temp != '')
 			{
-				$out .= "<div".parse_block_attributes(array('class' => "widget custom_list", 'attributes' => $attributes)).">".$out_temp."</div>";
+				$out .= "<div".parse_block_attributes(array('class' => "widget custom_list".$widget_class, 'attributes' => $attributes)).">".$out_temp."</div>";
 			}
 		}
 

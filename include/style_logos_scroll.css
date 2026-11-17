@@ -1,0 +1,44 @@
+.custom_list_style_logos_scroll
+{
+	display: flex;
+	flex-wrap: nowrap;
+	width: 100%;
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	scroll-snap-type: x proximity;
+}
+
+	.custom_list_style_logos_scroll > li
+	{
+		background: none !important;
+		box-shadow: unset !important;
+		flex: 0 0 auto;
+		flex-direction: unset !important;
+		scroll-snap-align: start;
+	}
+
+.custom_list_style_logos_scroll > li
+{
+	margin-bottom: 2em;
+}
+
+.custom_list_style_logos_scroll div.image
+{
+	height: 100%;
+}
+
+	.custom_list_style_logos_scroll div.image.is_portrait
+	{
+		padding-left: 4em;
+		padding-right: 4em;
+	}
+
+	.custom_list_style_logos_scroll li img
+	{
+		display: block;
+		height: 100%;
+		margin: 0 auto;
+		object-fit: contain;
+		max-width: 100%;
+	}
