@@ -242,7 +242,7 @@ class mf_custom_list
 							}";
 						}
 
-						$out_parent .= "<style>".$parent_custom_style."</style>";
+						$out_parent .= "<style>".wp_strip_all_tags($parent_custom_style)."</style>";
 					}
 				}
 
