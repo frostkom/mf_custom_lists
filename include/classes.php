@@ -195,11 +195,15 @@ class mf_custom_list
 
 						$parent_custom_style = str_replace("[parent_class]", $parent_class_selector, $parent_custom_style);
 
-						$setting_desktop_columns = ((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop);
+						$setting_columns_desktop = ((100 - ($parent_columns_gap * ($parent_columns_desktop - 1))) / $parent_columns_desktop);
+						$setting_columns_tablet = ((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet);
+						$setting_columns_mobile = ((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile);
 
 						$parent_custom_style .= ":root
 						{
-							--custom_lists-column-width-desktop: ".$setting_desktop_columns.";
+							--custom_lists-column-width-desktop: ".$setting_columns_desktop.";
+							--custom_lists-column-width-tablet: ".$setting_columns_tablet.";
+							--custom_lists-column-width-mobile: ".$setting_columns_mobile.";
 						}";
 
 						if($parent_columns_gap > 0)
@@ -220,7 +224,7 @@ class mf_custom_list
 								{
 									".$parent_class_selector." li
 									{
-										width: ".((100 - ($parent_columns_gap * ($parent_columns_tablet - 1))) / $parent_columns_tablet)."%;
+										width: calc(var(--custom_lists-column-width-tablet) * 1%);
 									}
 								}";
 							}
@@ -231,7 +235,7 @@ class mf_custom_list
 								{
 									".$parent_class_selector." li
 									{
-										width: ".((100 - ($parent_columns_gap * ($parent_columns_mobile - 1))) / $parent_columns_mobile)."%;
+										width: calc(var(--custom_lists-column-width-mobile) * 1%);
 									}
 								}";
 							}
